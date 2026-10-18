@@ -124,3 +124,30 @@ test('Franchise Engine: Evaluates real NHL trade with 82-game regular season and
   assert.ok(result.verdict.summary.length > 0);
   assert.ok(result.verdict.strategicAnalysisBullets.length > 0);
 });
+
+test('Franchise Engine: Evaluates prospects and draft picks trade featuring Radim Mrtka from Buffalo', () => {
+  const proposal = {
+    teamAId: 'EDM', // Edmonton Oilers (Contender buying)
+    teamBId: 'BUF', // Buffalo Sabres (Trading blue-chip prospect)
+    teamAPlayerIds: [],
+    teamBPlayerIds: [],
+    teamADraftPicks: [
+      {
+        id: 'edm-2025-rd1',
+        year: 2025,
+        round: 1,
+        originalTeam: 'EDM',
+        isProtected: true,
+      },
+    ],
+    teamBProspectIds: ['buf-radim-mrtka'], // Radim Mrtka (6'6" RHD, 1st Rd #9 Overall)
+  };
+
+  const result = evaluateFranchiseTrade(NHL_FRANCHISES, INITIAL_PLAYERS, proposal, 300);
+
+  assert.ok(result.futureCapital);
+  assert.ok(result.futureCapital.teamAAssetsAcquired.some((a) => a.includes('Radim Mrtka')));
+  assert.ok(result.futureCapital.teamBAssetsAcquired.some((a) => a.includes('Round 1')));
+  assert.ok(result.verdict.strategicAnalysisBullets.some((b) => b.includes('Futures Infusion')));
+});
+

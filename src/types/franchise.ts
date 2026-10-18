@@ -56,6 +56,8 @@ export interface FranchiseTradeProposal {
   teamBId: string; // e.g. "CGY"
   teamAPlayerIds: number[]; // Players Team A sends to Team B
   teamBPlayerIds: number[]; // Players Team B sends to Team A
+  teamAProspectIds?: string[]; // Prospect IDs Team A sends to Team B (e.g. 'buf-radim-mrtka')
+  teamBProspectIds?: string[]; // Prospect IDs Team B sends to Team A
   teamADraftPicks?: DraftPickAsset[];
   teamBDraftPicks?: DraftPickAsset[];
   salaryRetention?: {
@@ -112,6 +114,12 @@ export interface FranchiseTradeEvaluation {
       isCapCompliant: boolean;
       remainingSpace: number;
     };
+  };
+  futureCapital?: {
+    teamANetCapitalScore: number;
+    teamBNetCapitalScore: number;
+    teamAAssetsAcquired: string[];
+    teamBAssetsAcquired: string[];
   };
   verdict: {
     winner: 'TEAM_A' | 'TEAM_B' | 'EVEN' | 'WIN_WIN';

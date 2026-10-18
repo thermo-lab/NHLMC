@@ -7,16 +7,23 @@ import { PlayerBrowser } from './components/PlayerBrowser';
 import { GuideView } from './components/GuideView';
 import { NHL_FRANCHISES } from './data/nhlFranchises';
 import { INITIAL_PLAYERS } from './data/sampleLeague';
+import { INITIAL_PROSPECTS } from './data/nhlProspects';
+import { NHLProspect } from './types/prospect';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<'trade' | 'historical' | 'teams' | 'players' | 'guide'>('trade');
   const [franchises, setFranchises] = useState(NHL_FRANCHISES);
   const [players, setPlayers] = useState(INITIAL_PLAYERS);
+  const [prospects, setProspects] = useState<NHLProspect[]>(INITIAL_PROSPECTS);
   const [selectedTradeTeamAId, setSelectedTradeTeamAId] = useState<string>('EDM');
 
   const handleSelectTeamForTrade = (teamId: string) => {
     setSelectedTradeTeamAId(teamId);
     setActiveTab('trade');
+  };
+
+  const handleCreateProspect = (newProspect: NHLProspect) => {
+    setProspects((prev) => [newProspect, ...prev]);
   };
 
   return (
@@ -30,6 +37,8 @@ export function App() {
           <FranchiseTradeMachine
             franchises={franchises}
             players={players}
+            prospects={prospects}
+            onCreateProspect={handleCreateProspect}
             initialTeamAId={selectedTradeTeamAId}
           />
         )}
@@ -47,7 +56,11 @@ export function App() {
         )}
 
         {activeTab === 'players' && (
-          <PlayerBrowser players={players} />
+          <PlayerBrowser
+            players={players}
+            prospects={prospects}
+            onCreateProspect={handleCreateProspect}
+          />
         )}
 
         {activeTab === 'guide' && (

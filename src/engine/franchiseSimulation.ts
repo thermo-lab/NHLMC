@@ -1,12 +1,15 @@
 import { NHLTeam, FranchiseTradeProposal, FranchiseTradeEvaluation, FranchiseSimulationSummary } from '../types/franchise';
 import { Player } from '../types/player';
+import { NHLProspect } from '../types/prospect';
+import { INITIAL_PROSPECTS } from '../data/nhlProspects';
 import { samplePoisson, sampleNormal } from './distributions';
 
 export function evaluateFranchiseTrade(
   franchises: NHLTeam[],
   players: Player[],
   proposal: FranchiseTradeProposal,
-  iterations: number = 2000
+  iterations: number = 2000,
+  prospectsList: NHLProspect[] = INITIAL_PROSPECTS
 ): FranchiseTradeEvaluation {
   const startTime = performance.now();
   const playersMap = new Map<number, Player>();
@@ -244,6 +247,58 @@ export function evaluateFranchiseTrade(
     },
   };
 
+  // Calculate Future Capital Assets (Prospects and Draft Picks)
+  const prospectsMap = new Map<string, NHLProspect>();
+  for (const pr of prospectsList) prospectsMap.set(pr.id, pr);
+
+  let teamACapitalReceived = 0;
+  let teamBCapitalReceived = 0;
+  const teamAAssetsAcquired: string[] = [];
+  const teamBAssetsAcquired: string[] = [];
+
+  // Team A receives Team B's prospects
+  if (proposal.teamBProspectIds) {
+    for (const prId of proposal.teamBProspectIds) {
+      const pr = prospectsMap.get(prId);
+      if (pr) {
+        teamACapitalReceived += pr.tradeValueScore;
+        teamAAssetsAcquired.push(`${pr.name} (${pr.position}, ${pr.potential.replace(/_/g, ' ')})`);
+      }
+    }
+  }
+
+  // Team B receives Team A's prospects
+  if (proposal.teamAProspectIds) {
+    for (const prId of proposal.teamAProspectIds) {
+      const pr = prospectsMap.get(prId);
+      if (pr) {
+        teamBCapitalReceived += pr.tradeValueScore;
+        teamBAssetsAcquired.push(`${pr.name} (${pr.position}, ${pr.potential.replace(/_/g, ' ')})`);
+      }
+    }
+  }
+
+  // Team A receives Team B's draft picks
+  if (proposal.teamBDraftPicks) {
+    for (const dp of proposal.teamBDraftPicks) {
+      const pickVal = dp.round === 1 ? 80 : dp.round === 2 ? 48 : 28;
+      teamACapitalReceived += pickVal;
+      teamAAssetsAcquired.push(`${dp.year} Round ${dp.round} (${dp.originalTeam}${dp.isProtected ? ' - Protected' : ''})`);
+    }
+  }
+
+  // Team B receives Team A's draft picks
+  if (proposal.teamADraftPicks) {
+    for (const dp of proposal.teamADraftPicks) {
+      const pickVal = dp.round === 1 ? 80 : dp.round === 2 ? 48 : 28;
+      teamBCapitalReceived += pickVal;
+      teamBAssetsAcquired.push(`${dp.year} Round ${dp.round} (${dp.originalTeam}${dp.isProtected ? ' - Protected' : ''})`);
+    }
+  }
+
+  const teamANetCapitalScore = teamACapitalReceived - teamBCapitalReceived;
+  const teamBNetCapitalScore = teamBCapitalReceived - teamACapitalReceived;
+
   // Strategic Analysis and Recommendations
   const isCapCompliantA = teamAPostTradePayroll <= capCeiling;
   const isCapCompliantB = teamBPostTradePayroll <= capCeiling;
@@ -255,17 +310,34 @@ export function evaluateFranchiseTrade(
   let actionA: 'EXECUTE' | 'FAVORABLE' | 'LATERAL' | 'WALK_AWAY' = 'LATERAL';
   let actionB: 'EXECUTE' | 'FAVORABLE' | 'LATERAL' | 'WALK_AWAY' = 'LATERAL';
 
-  if (cupDeltaA >= 0.03 && cupDeltaB >= 0.01) {
+  // Contender vs Rebuilder Win-Win Dynamic
+  if (cupDeltaA >= 0.015 && teamBNetCapitalScore >= 50) {
     winner = 'WIN_WIN';
     actionA = 'EXECUTE';
     actionB = 'EXECUTE';
-  } else if (cupDeltaA >= 0.02 && cupDeltaB < -0.01) {
+  } else if (cupDeltaB >= 0.015 && teamANetCapitalScore >= 50) {
+    winner = 'WIN_WIN';
+    actionA = 'EXECUTE';
+    actionB = 'EXECUTE';
+  } else if (cupDeltaA >= 0.03 && cupDeltaB >= 0.01) {
+    winner = 'WIN_WIN';
+    actionA = 'EXECUTE';
+    actionB = 'EXECUTE';
+  } else if (cupDeltaA >= 0.02 && cupDeltaB < -0.01 && teamBNetCapitalScore < 40) {
     winner = 'TEAM_A';
     actionA = 'EXECUTE';
     actionB = 'WALK_AWAY';
-  } else if (cupDeltaB >= 0.02 && cupDeltaA < -0.01) {
+  } else if (cupDeltaB >= 0.02 && cupDeltaA < -0.01 && teamANetCapitalScore < 40) {
     winner = 'TEAM_B';
     actionA = 'WALK_AWAY';
+    actionB = 'EXECUTE';
+  } else if (teamANetCapitalScore >= 70 && cupDeltaA >= -0.01) {
+    winner = 'TEAM_A';
+    actionA = 'EXECUTE';
+    actionB = 'LATERAL';
+  } else if (teamBNetCapitalScore >= 70 && cupDeltaB >= -0.01) {
+    winner = 'TEAM_B';
+    actionA = 'LATERAL';
     actionB = 'EXECUTE';
   } else {
     winner = 'EVEN';
@@ -281,7 +353,7 @@ export function evaluateFranchiseTrade(
     bullets.push(
       `${teamA.name} enhances Stanley Cup championship equity by +${(cupDeltaA * 100).toFixed(1)}% (projected +${summaryTeamA.deltas.pointsDelta} regular season standings points).`
     );
-  } else if (cupDeltaA < -0.01) {
+  } else if (cupDeltaA < -0.01 && teamANetCapitalScore <= 0) {
     bullets.push(
       `${teamA.name} compromises immediate Cup window (-${(Math.abs(cupDeltaA) * 100).toFixed(1)}% title probability).`
     );
@@ -290,6 +362,22 @@ export function evaluateFranchiseTrade(
   if (cupDeltaB > 0.01) {
     bullets.push(
       `${teamB.name} boosts Cup probability by +${(cupDeltaB * 100).toFixed(1)}%.`
+    );
+  } else if (cupDeltaB < -0.01 && teamBNetCapitalScore <= 0) {
+    bullets.push(
+      `${teamB.name} compromises immediate Cup window (-${(Math.abs(cupDeltaB) * 100).toFixed(1)}% title probability).`
+    );
+  }
+
+  if (teamBAssetsAcquired.length > 0) {
+    bullets.push(
+      `Futures Infusion: ${teamB.name} captures premium pipeline assets [${teamBAssetsAcquired.join(', ')}] — injecting immense surplus value into their franchise timeline.`
+    );
+  }
+
+  if (teamAAssetsAcquired.length > 0) {
+    bullets.push(
+      `Futures Infusion: ${teamA.name} acquires key future capital [${teamAAssetsAcquired.join(', ')}].`
     );
   }
 
@@ -325,18 +413,24 @@ export function evaluateFranchiseTrade(
         remainingSpace: capCeiling - teamBPostTradePayroll,
       },
     },
+    futureCapital: {
+      teamANetCapitalScore,
+      teamBNetCapitalScore,
+      teamAAssetsAcquired,
+      teamBAssetsAcquired,
+    },
     verdict: {
       winner,
       actionRecommendationTeamA: actionA,
       actionRecommendationTeamB: actionB,
       summary:
         winner === 'TEAM_A'
-          ? `${teamA.name} scores a decisive on-ice upgrade in championship equity.`
+          ? `${teamA.name} captures decisive trade surplus value.`
           : winner === 'TEAM_B'
-          ? `${teamB.name} captures significant on-ice surplus value.`
+          ? `${teamB.name} captures significant trade surplus value.`
           : winner === 'WIN_WIN'
-          ? 'Mutual blockbuster upgrade aligning with both franchises\' competitive timelines.'
-          : 'Lateral trade redistributing team flavor with modest net shift in championship odds.',
+          ? 'Classic win-win blockbuster: one team boosts immediate Cup odds while the other lands premium future cornerstone assets.'
+          : 'Balanced trade redistributing team flavor with modest net shift in championship odds.',
       strategicAnalysisBullets: bullets,
       contentionWindowAlignment: `${teamA.name} (${teamA.contenderTier.replace(/_/g, ' ')}) ⇄ ${teamB.name} (${teamB.contenderTier.replace(/_/g, ' ')})`,
     },

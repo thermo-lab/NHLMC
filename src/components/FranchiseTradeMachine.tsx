@@ -14,14 +14,22 @@ import {
   Trash2,
   Plus,
   Percent,
+  Sparkles,
+  Ticket,
+  UserPlus,
+  Layers,
 } from 'lucide-react';
 import { NHLTeam, FranchiseTradeProposal, FranchiseTradeEvaluation } from '../types/franchise';
 import { Player } from '../types/player';
+import { NHLProspect, DraftPick, ProspectPotential } from '../types/prospect';
+import { INITIAL_PROSPECTS, generateDefaultDraftPicks } from '../data/nhlProspects';
 import { evaluateFranchiseTrade } from '../engine/franchiseSimulation';
 
 interface FranchiseTradeMachineProps {
   franchises: NHLTeam[];
   players: Player[];
+  prospects?: NHLProspect[];
+  onCreateProspect?: (newProspect: NHLProspect) => void;
   initialTeamAId?: string;
   initialTeamBId?: string;
 }
@@ -29,18 +37,25 @@ interface FranchiseTradeMachineProps {
 export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
   franchises,
   players,
+  prospects = INITIAL_PROSPECTS,
+  onCreateProspect,
   initialTeamAId = 'EDM',
-  initialTeamBId = 'FLA',
+  initialTeamBId = 'BUF', // Default to Buffalo so Radim Mrtka is immediately front and center!
 }) => {
   const [teamAId, setTeamAId] = useState<string>(initialTeamAId);
   const [teamBId, setTeamBId] = useState<string>(initialTeamBId);
 
+  // Selected asset state for Team A
   const [teamAPlayerIds, setTeamAPlayerIds] = useState<number[]>([]);
-  const [teamBPlayerIds, setTeamBPlayerIds] = useState<number[]>([]);
+  const [teamAProspectIds, setTeamAProspectIds] = useState<string[]>([]);
+  const [teamADraftPicks, setTeamADraftPicks] = useState<DraftPick[]>([]);
+  const [teamAAssetTab, setTeamAAssetTab] = useState<'roster' | 'prospects' | 'picks'>('roster');
 
-  // Draft pick additions
-  const [teamADraftPick, setTeamADraftPick] = useState<string>('2025 1st Round Pick');
-  const [includeTeamAPick, setIncludeTeamAPick] = useState<boolean>(false);
+  // Selected asset state for Team B
+  const [teamBPlayerIds, setTeamBPlayerIds] = useState<number[]>([]);
+  const [teamBProspectIds, setTeamBProspectIds] = useState<string[]>([]);
+  const [teamBDraftPicks, setTeamBDraftPicks] = useState<DraftPick[]>([]);
+  const [teamBAssetTab, setTeamBAssetTab] = useState<'roster' | 'prospects' | 'picks'>('prospects'); // Default Team B to prospects so Mrtka is visible!
 
   // Salary retention
   const [retainSalary, setRetainSalary] = useState<boolean>(false);
@@ -50,18 +65,38 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
   const [evaluation, setEvaluation] = useState<FranchiseTradeEvaluation | null>(null);
 
+  // Custom Prospect Creation Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTeam, setModalTeam] = useState('BUF');
+  const [newProspectName, setNewProspectName] = useState('');
+  const [newProspectPos, setNewProspectPos] = useState<'D' | 'C' | 'LW' | 'RW' | 'G'>('D');
+  const [newProspectAge, setNewProspectAge] = useState(19);
+  const [newProspectHeight, setNewProspectHeight] = useState("6'6\"");
+  const [newProspectWeight, setNewProspectWeight] = useState(218);
+  const [newProspectShoots, setNewProspectShoots] = useState<'R' | 'L'>('R');
+  const [newProspectDraftInfo, setNewProspectDraftInfo] = useState('2025 Round 1, #9 Overall (BUF)');
+  const [newProspectCurrentTeam, setNewProspectCurrentTeam] = useState('Rochester Americans (AHL) / Seattle (WHL)');
+  const [newProspectPotential, setNewProspectPotential] = useState<ProspectPotential>('ELITE');
+  const [newProspectNotes, setNewProspectNotes] = useState('');
+
   const playersMap = useMemo(() => {
     const map = new Map<number, Player>();
     for (const p of players) map.set(p.id, p);
     return map;
   }, [players]);
 
+  const prospectsMap = useMemo(() => {
+    const map = new Map<string, NHLProspect>();
+    for (const pr of prospects) map.set(pr.id, pr);
+    return map;
+  }, [prospects]);
+
   const teamA = useMemo(
     () => franchises.find((t) => t.id === teamAId) ?? franchises[0],
     [franchises, teamAId]
   );
   const teamB = useMemo(
-    () => franchises.find((t) => t.id === teamBId) ?? franchises[1],
+    () => franchises.find((t) => t.id === teamBId) ?? franchises.find(t => t.id === 'BUF') ?? franchises[1],
     [franchises, teamBId]
   );
 
@@ -74,6 +109,18 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     [players, teamB]
   );
 
+  const teamAProspects = useMemo(
+    () => prospects.filter((pr) => pr.nhlTeam === teamA.abbrev),
+    [prospects, teamA]
+  );
+  const teamBProspects = useMemo(
+    () => prospects.filter((pr) => pr.nhlTeam === teamB.abbrev),
+    [prospects, teamB]
+  );
+
+  const teamAPickPool = useMemo(() => generateDefaultDraftPicks(teamA.abbrev), [teamA]);
+  const teamBPickPool = useMemo(() => generateDefaultDraftPicks(teamB.abbrev), [teamB]);
+
   React.useEffect(() => {
     if (initialTeamAId) setTeamAId(initialTeamAId);
   }, [initialTeamAId]);
@@ -82,34 +129,24 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     if (initialTeamBId) setTeamBId(initialTeamBId);
   }, [initialTeamBId]);
 
+  // Clean selections if team changes
   React.useEffect(() => {
-    if (teamARoster.length > 0) {
-      const valid = teamAPlayerIds.filter((id) => teamARoster.some((p) => p.id === id));
-      if (valid.length === 0) {
-        setTeamAPlayerIds([teamARoster[0].id]);
-      } else if (valid.length !== teamAPlayerIds.length) {
-        setTeamAPlayerIds(valid);
-      }
-    } else {
-      setTeamAPlayerIds([]);
-    }
-  }, [teamARoster]);
+    setTeamAPlayerIds([]);
+    setTeamAProspectIds([]);
+    setTeamADraftPicks([]);
+  }, [teamAId]);
 
   React.useEffect(() => {
-    if (teamBRoster.length > 0) {
-      const valid = teamBPlayerIds.filter((id) => teamBRoster.some((p) => p.id === id));
-      if (valid.length === 0) {
-        setTeamBPlayerIds([teamBRoster[0].id]);
-      } else if (valid.length !== teamBPlayerIds.length) {
-        setTeamBPlayerIds(valid);
-      }
-    } else {
-      setTeamBPlayerIds([]);
-    }
-  }, [teamBRoster]);
+    setTeamBPlayerIds([]);
+    setTeamBProspectIds([]);
+    setTeamBDraftPicks([]);
+  }, [teamBId]);
 
   const teamASendingPlayers = teamAPlayerIds.map((id) => playersMap.get(id)).filter(Boolean) as Player[];
   const teamBSendingPlayers = teamBPlayerIds.map((id) => playersMap.get(id)).filter(Boolean) as Player[];
+
+  const teamASendingProspects = teamAProspectIds.map((id) => prospectsMap.get(id)).filter(Boolean) as NHLProspect[];
+  const teamBSendingProspects = teamBProspectIds.map((id) => prospectsMap.get(id)).filter(Boolean) as NHLProspect[];
 
   const handleRunSimulation = () => {
     setIsSimulating(true);
@@ -120,12 +157,29 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
           teamBId: teamB.id,
           teamAPlayerIds,
           teamBPlayerIds,
-          salaryRetention: retainSalary && teamAPlayerIds.length > 0
-            ? [{ playerId: teamAPlayerIds[0], retainedPct: retentionPct, retainingTeamId: teamA.id }]
-            : undefined,
+          teamAProspectIds,
+          teamBProspectIds,
+          teamADraftPicks: teamADraftPicks.map((p) => ({
+            id: p.id,
+            year: p.year,
+            round: p.round,
+            originalTeam: p.originalTeamId,
+            isProtected: p.protection !== 'UNPROTECTED',
+          })),
+          teamBDraftPicks: teamBDraftPicks.map((p) => ({
+            id: p.id,
+            year: p.year,
+            round: p.round,
+            originalTeam: p.originalTeamId,
+            isProtected: p.protection !== 'UNPROTECTED',
+          })),
+          salaryRetention:
+            retainSalary && teamAPlayerIds.length > 0
+              ? [{ playerId: teamAPlayerIds[0], retainedPct: retentionPct, retainingTeamId: teamA.id }]
+              : undefined,
         };
 
-        const result = evaluateFranchiseTrade(franchises, players, proposal, iterations);
+        const result = evaluateFranchiseTrade(franchises, players, proposal, iterations, prospects);
         setEvaluation(result);
       } catch (err) {
         console.error('Franchise simulation error:', err);
@@ -145,6 +199,65 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     return isPercent ? `${sign}${(val * 100).toFixed(1)}%` : `${sign}${val.toFixed(1)}`;
   };
 
+  const handleToggleDraftPick = (pick: DraftPick, isTeamA: boolean) => {
+    if (isTeamA) {
+      const exists = teamADraftPicks.some((p) => p.id === pick.id);
+      if (exists) {
+        setTeamADraftPicks(teamADraftPicks.filter((p) => p.id !== pick.id));
+      } else {
+        setTeamADraftPicks([...teamADraftPicks, pick]);
+      }
+    } else {
+      const exists = teamBDraftPicks.some((p) => p.id === pick.id);
+      if (exists) {
+        setTeamBDraftPicks(teamBDraftPicks.filter((p) => p.id !== pick.id));
+      } else {
+        setTeamBDraftPicks([...teamBDraftPicks, pick]);
+      }
+    }
+  };
+
+  const handleSaveCustomProspect = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newProspectName.trim()) return;
+
+    const newPr: NHLProspect = {
+      id: `custom-${modalTeam.toLowerCase()}-${Date.now()}`,
+      name: newProspectName.trim(),
+      nhlTeam: modalTeam,
+      position: newProspectPos,
+      age: Number(newProspectAge),
+      height: newProspectHeight.trim() || "6'2\"",
+      weight: Number(newProspectWeight) || 200,
+      shootsCatches: newProspectShoots,
+      currentTeam: newProspectCurrentTeam.trim() || 'AHL / Junior',
+      draftInfo: newProspectDraftInfo.trim() || 'Undrafted / Free Agent',
+      draftYear: 2025,
+      draftRound: 1,
+      potential: newProspectPotential,
+      potentialDescription: newProspectNotes.trim() || 'High-ceiling developmental prospect',
+      scoutingSummary: newProspectNotes.trim() || 'Custom created prospect with NHL potential.',
+      tradeValueScore: newProspectPotential === 'FRANCHISE' ? 95 : newProspectPotential === 'ELITE' ? 88 : 75,
+      capHit: 950000,
+      isCustom: true,
+    };
+
+    if (onCreateProspect) {
+      onCreateProspect(newPr);
+    }
+
+    // Auto-select for the active team if matching
+    if (modalTeam === teamA.abbrev) {
+      setTeamAProspectIds((prev) => [...prev, newPr.id]);
+    } else if (modalTeam === teamB.abbrev) {
+      setTeamBProspectIds((prev) => [...prev, newPr.id]);
+    }
+
+    setIsModalOpen(false);
+    setNewProspectName('');
+    setNewProspectNotes('');
+  };
+
   return (
     <div className="space-y-6">
       {/* Top Banner */}
@@ -153,13 +266,13 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
           <div>
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-semibold mb-2">
               <Trophy className="w-3.5 h-3.5" />
-              <span>NHL Franchise Competitiveness & Stanley Cup Simulator</span>
+              <span>NHL Franchise Monte Carlo Trade Evaluator</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              Real NHL Trade Machine
+              NHL Trade Machine: Roster, Prospects & Draft Picks
             </h1>
             <p className="text-slate-400 text-xs sm:text-sm mt-1 max-w-2xl">
-              Model authentic trades between real NHL franchises. Simulates 82-game regular season standings points, 5v5 goal differential, the \$88.0M salary cap, and true 4-round Stanley Cup Playoff win probabilities.
+              Model blockbusters involving active NHL players, elite top prospects (e.g. Buffalo's <span className="text-purple-300 font-bold">Radim Mrtka</span>, Montreal's <span className="text-purple-300 font-bold">Ivan Demidov</span>), and future 1st/2nd/3rd round draft picks with lottery protections.
             </p>
           </div>
 
@@ -173,7 +286,6 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
               <option value={1000}>1,000</option>
               <option value={2500}>2,500</option>
               <option value={5000}>5,000</option>
-              <option value={10000}>10,000</option>
             </select>
           </div>
         </div>
@@ -181,24 +293,17 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
 
       {/* Dual Team Trade Builder */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Team A */}
+        {/* ================= TEAM A ================= */}
         <div className="bg-rink-card border border-rink-border rounded-xl p-5 shadow-lg flex flex-col justify-between space-y-4">
           <div>
             {/* Team Header */}
             <div className="flex items-center justify-between border-b border-rink-border pb-3">
               <div className="flex items-center space-x-3">
-                <img
-                  src={teamA.logoUrl}
-                  alt={teamA.name}
-                  className="w-9 h-9 object-contain"
-                />
+                <img src={teamA.logoUrl} alt={teamA.name} className="w-9 h-9 object-contain" />
                 <div>
                   <select
                     value={teamAId}
-                    onChange={(e) => {
-                      setTeamAId(e.target.value);
-                      setTeamAPlayerIds([]);
-                    }}
+                    onChange={(e) => setTeamAId(e.target.value)}
                     className="bg-rink-surface border border-rink-border text-white text-base font-black rounded-lg px-2.5 py-1 focus:outline-none focus:border-brand-500"
                   >
                     {franchises.map((t) => (
@@ -217,134 +322,289 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
               </span>
             </div>
 
-            {/* Assets Sending Away */}
+            {/* Assets Sending Away Box */}
             <div className="mt-4 space-y-2 min-h-[90px]">
               <span className="text-[11px] font-bold text-sky-400 uppercase tracking-wider block">
-                {teamA.name} Sends Away:
+                {teamA.name} Sends Away ({teamASendingPlayers.length + teamASendingProspects.length + teamADraftPicks.length} Assets):
               </span>
-              {teamASendingPlayers.length === 0 ? (
+
+              {teamASendingPlayers.length === 0 && teamASendingProspects.length === 0 && teamADraftPicks.length === 0 ? (
                 <div className="border border-dashed border-slate-700 rounded-lg p-4 text-center text-xs text-slate-500">
-                  Select players below to trade from {teamA.name}.
+                  Select roster players, prospects, or draft picks below to trade from {teamA.name}.
                 </div>
               ) : (
-                teamASendingPlayers.map((p) => (
-                  <div
-                    key={p.id}
-                    className="flex items-center justify-between bg-rink-surface border border-rink-border rounded-lg p-2.5"
-                  >
-                    <div className="flex items-center space-x-2.5">
-                      {p.headshotUrl && (
-                        <img
-                          src={p.headshotUrl}
-                          alt={p.name}
-                          className="w-9 h-9 rounded-full object-cover bg-slate-800"
-                        />
-                      )}
-                      <div>
-                        <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                          <span>{p.name}</span>
-                          <span className="text-[9px] px-1 py-0.2 bg-slate-800 text-sky-400 rounded">
-                            {p.primaryPosition}
-                          </span>
-                        </div>
-                        <div className="text-[11px] text-emerald-400 font-mono">
-                          ${(p.capHit / 1e6).toFixed(2)}M AAV
+                <div className="space-y-1.5">
+                  {/* Roster Players */}
+                  {teamASendingPlayers.map((p) => (
+                    <div
+                      key={p.id}
+                      className="flex items-center justify-between bg-rink-surface border border-rink-border rounded-lg p-2"
+                    >
+                      <div className="flex items-center space-x-2.5">
+                        {p.headshotUrl && (
+                          <img src={p.headshotUrl} alt={p.name} className="w-8 h-8 rounded-full object-cover bg-slate-800" />
+                        )}
+                        <div>
+                          <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                            <span>{p.name}</span>
+                            <span className="text-[9px] px-1 py-0.2 bg-slate-800 text-sky-400 rounded">
+                              {p.primaryPosition}
+                            </span>
+                          </div>
+                          <div className="text-[10px] text-emerald-400 font-mono">
+                            ${(p.capHit / 1e6).toFixed(2)}M AAV
+                          </div>
                         </div>
                       </div>
+                      <button
+                        onClick={() => setTeamAPlayerIds(teamAPlayerIds.filter((id) => id !== p.id))}
+                        className="text-slate-500 hover:text-red-400 p-1"
+                        title="Remove player"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </div>
-                    <button
-                      onClick={() =>
-                        setTeamAPlayerIds(teamAPlayerIds.filter((id) => id !== p.id))
-                      }
-                      className="text-slate-500 hover:text-red-400 p-1"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                ))
-              )}
+                  ))}
 
-              {/* Draft Pick Inclusion */}
-              {includeTeamAPick && (
-                <div className="flex items-center justify-between bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-300">
-                  <span>Draft Pick: {teamADraftPick} ({teamA.abbrev})</span>
-                  <button
-                    onClick={() => setIncludeTeamAPick(false)}
-                    className="text-slate-500 hover:text-red-400"
-                  >
-                    ✕
-                  </button>
+                  {/* Prospects */}
+                  {teamASendingProspects.map((pr) => (
+                    <div
+                      key={pr.id}
+                      className="flex items-center justify-between bg-purple-950/30 border border-purple-800/40 rounded-lg p-2"
+                    >
+                      <div className="flex items-center space-x-2.5">
+                        <div className="w-8 h-8 rounded-full bg-purple-900/60 border border-purple-500/40 flex items-center justify-center text-purple-300 font-black text-xs">
+                          {pr.position}
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-purple-200 flex items-center gap-1.5">
+                            <span>{pr.name}</span>
+                            <span className="text-[9px] px-1 py-0.2 bg-purple-900/80 text-purple-300 rounded font-bold">
+                              ⭐️ {pr.potential}
+                            </span>
+                          </div>
+                          <div className="text-[10px] text-slate-400">
+                            {pr.height}, {pr.weight} lbs • {pr.draftInfo}
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setTeamAProspectIds(teamAProspectIds.filter((id) => id !== pr.id))}
+                        className="text-slate-500 hover:text-red-400 p-1"
+                        title="Remove prospect"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+
+                  {/* Draft Picks */}
+                  {teamADraftPicks.map((pick) => (
+                    <div
+                      key={pick.id}
+                      className="flex items-center justify-between bg-amber-950/30 border border-amber-800/40 rounded-lg p-2 text-xs"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <Ticket className="w-4 h-4 text-amber-400" />
+                        <div>
+                          <span className="font-bold text-amber-300">
+                            {pick.year} Round {pick.round} ({pick.originalTeamId})
+                          </span>
+                          <span className="ml-2 text-[10px] text-slate-400 font-mono">
+                            {pick.protection.replace(/_/g, ' ')}
+                          </span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setTeamADraftPicks(teamADraftPicks.filter((p) => p.id !== pick.id))}
+                        className="text-slate-500 hover:text-red-400 p-1"
+                        title="Remove pick"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
           </div>
 
-          {/* Add Players / Assets */}
-          <div className="border-t border-rink-border pt-3 space-y-2">
-            <select
-              value=""
-              onChange={(e) => {
-                if (e.target.value) {
-                  const id = Number(e.target.value);
-                  if (!teamAPlayerIds.includes(id)) {
-                    setTeamAPlayerIds([...teamAPlayerIds, id]);
-                  }
-                }
-              }}
-              className="w-full bg-rink-surface border border-rink-border text-slate-200 text-xs rounded-lg p-2 focus:outline-none focus:border-brand-500"
-            >
-              <option value="">+ Add {teamA.name} player to trade...</option>
-              {teamARoster
-                .filter((p) => !teamAPlayerIds.includes(p.id))
-                .map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name} ({p.primaryPosition}) - ${(p.capHit / 1e6).toFixed(2)}M
-                  </option>
-                ))}
-            </select>
-
-            <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
-              <label className="flex items-center gap-1.5 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={includeTeamAPick}
-                  onChange={(e) => setIncludeTeamAPick(e.target.checked)}
-                  className="rounded bg-slate-800 text-sky-500"
-                />
-                <span>Include Future 1st Round Pick</span>
-              </label>
-
-              <label className="flex items-center gap-1.5 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={retainSalary}
-                  onChange={(e) => setRetainSalary(e.target.checked)}
-                  className="rounded bg-slate-800 text-sky-500"
-                />
-                <span>Retain 25% Salary</span>
-              </label>
+          {/* Asset Selection Tabs */}
+          <div className="border-t border-rink-border pt-3 space-y-3">
+            <div className="flex items-center space-x-1 bg-rink-surface p-1 rounded-lg border border-rink-border">
+              <button
+                onClick={() => setTeamAAssetTab('roster')}
+                className={`flex-1 py-1.5 rounded text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+                  teamAAssetTab === 'roster' ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <span>🏒 Roster</span>
+                <span className="text-[10px] opacity-75">({teamARoster.length})</span>
+              </button>
+              <button
+                onClick={() => setTeamAAssetTab('prospects')}
+                className={`flex-1 py-1.5 rounded text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+                  teamAAssetTab === 'prospects' ? 'bg-purple-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Sparkles className="w-3 h-3 text-purple-300" />
+                <span>Prospects</span>
+                <span className="text-[10px] opacity-75">({teamAProspects.length})</span>
+              </button>
+              <button
+                onClick={() => setTeamAAssetTab('picks')}
+                className={`flex-1 py-1.5 rounded text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+                  teamAAssetTab === 'picks' ? 'bg-amber-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Ticket className="w-3 h-3 text-amber-300" />
+                <span>Draft Picks</span>
+              </button>
             </div>
+
+            {/* Tab 1: Active Roster Dropdown */}
+            {teamAAssetTab === 'roster' && (
+              <div className="space-y-2">
+                <select
+                  value=""
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      const id = Number(e.target.value);
+                      if (!teamAPlayerIds.includes(id)) {
+                        setTeamAPlayerIds([...teamAPlayerIds, id]);
+                      }
+                    }
+                  }}
+                  className="w-full bg-rink-surface border border-rink-border text-slate-200 text-xs rounded-lg p-2.5 focus:outline-none focus:border-brand-500"
+                >
+                  <option value="">+ Add {teamA.name} active player...</option>
+                  {teamARoster
+                    .filter((p) => !teamAPlayerIds.includes(p.id))
+                    .map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name} ({p.primaryPosition}) — ${(p.capHit / 1e6).toFixed(2)}M AAV ({p.actualStats.skater?.points ?? p.actualStats.goalie?.wins ?? 0} pts/w)
+                      </option>
+                    ))}
+                </select>
+
+                <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
+                  <label className="flex items-center gap-1.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={retainSalary}
+                      onChange={(e) => setRetainSalary(e.target.checked)}
+                      className="rounded bg-slate-800 text-sky-500"
+                    />
+                    <span>Retain 25% Salary on Player</span>
+                  </label>
+                </div>
+              </div>
+            )}
+
+            {/* Tab 2: Top Prospects */}
+            {teamAAssetTab === 'prospects' && (
+              <div className="space-y-2">
+                <div className="max-h-48 overflow-y-auto space-y-1.5 pr-1">
+                  {teamAProspects.length === 0 ? (
+                    <div className="text-center py-3 text-xs text-slate-500 border border-dashed border-slate-700 rounded-lg">
+                      No seeded prospects for {teamA.name}. Click below to add one!
+                    </div>
+                  ) : (
+                    teamAProspects.map((pr) => {
+                      const isSelected = teamAProspectIds.includes(pr.id);
+                      return (
+                        <div
+                          key={pr.id}
+                          className={`flex items-center justify-between p-2 rounded-lg border text-xs transition ${
+                            isSelected
+                              ? 'bg-purple-900/30 border-purple-500/50'
+                              : 'bg-rink-surface border-rink-border hover:border-purple-500/40'
+                          }`}
+                        >
+                          <div>
+                            <div className="font-bold text-white flex items-center gap-1.5">
+                              <span>{pr.name}</span>
+                              <span className="text-[10px] px-1 py-0.2 bg-purple-900/60 text-purple-300 rounded">
+                                {pr.position} • {pr.height}
+                              </span>
+                            </div>
+                            <div className="text-[10px] text-slate-400">
+                              {pr.draftInfo} • {pr.potential}
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => {
+                              if (isSelected) {
+                                setTeamAProspectIds(teamAProspectIds.filter((id) => id !== pr.id));
+                              } else {
+                                setTeamAProspectIds([...teamAProspectIds, pr.id]);
+                              }
+                            }}
+                            className={`px-2.5 py-1 rounded text-[11px] font-bold ${
+                              isSelected
+                                ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30'
+                                : 'bg-purple-600 hover:bg-purple-500 text-white'
+                            }`}
+                          >
+                            {isSelected ? 'Remove' : '+ Add'}
+                          </button>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+
+                <button
+                  onClick={() => {
+                    setModalTeam(teamA.abbrev);
+                    setIsModalOpen(true);
+                  }}
+                  className="w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg border border-dashed border-purple-700/60 hover:border-purple-400 text-purple-300 hover:text-white text-xs font-bold transition"
+                >
+                  <UserPlus className="w-3.5 h-3.5" />
+                  <span>+ Create Custom Prospect for {teamA.name}</span>
+                </button>
+              </div>
+            )}
+
+            {/* Tab 3: Draft Picks */}
+            {teamAAssetTab === 'picks' && (
+              <div className="space-y-2">
+                <div className="grid grid-cols-3 gap-1.5 text-xs">
+                  {teamAPickPool.map((pick) => {
+                    const isSelected = teamADraftPicks.some((p) => p.id === pick.id);
+                    return (
+                      <button
+                        key={pick.id}
+                        onClick={() => handleToggleDraftPick(pick, true)}
+                        className={`p-2 rounded-lg border text-center transition font-bold ${
+                          isSelected
+                            ? 'bg-amber-500 text-black border-amber-400 shadow-sm'
+                            : 'bg-rink-surface border-rink-border text-slate-300 hover:border-amber-400'
+                        }`}
+                      >
+                        <div className="text-[10px] uppercase opacity-75">{pick.year}</div>
+                        <div className="text-xs">Round {pick.round}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Team B */}
+        {/* ================= TEAM B ================= */}
         <div className="bg-rink-card border border-rink-border rounded-xl p-5 shadow-lg flex flex-col justify-between space-y-4">
           <div>
             {/* Team Header */}
             <div className="flex items-center justify-between border-b border-rink-border pb-3">
               <div className="flex items-center space-x-3">
-                <img
-                  src={teamB.logoUrl}
-                  alt={teamB.name}
-                  className="w-9 h-9 object-contain"
-                />
+                <img src={teamB.logoUrl} alt={teamB.name} className="w-9 h-9 object-contain" />
                 <div>
                   <select
                     value={teamBId}
-                    onChange={(e) => {
-                      setTeamBId(e.target.value);
-                      setTeamBPlayerIds([]);
-                    }}
+                    onChange={(e) => setTeamBId(e.target.value)}
                     className="bg-rink-surface border border-rink-border text-white text-base font-black rounded-lg px-2.5 py-1 focus:outline-none focus:border-brand-500"
                   >
                     {franchises.map((t) => (
@@ -363,78 +623,263 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
               </span>
             </div>
 
-            {/* Assets Sending Away */}
+            {/* Assets Sending Away Box */}
             <div className="mt-4 space-y-2 min-h-[90px]">
               <span className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider block">
-                {teamB.name} Sends Away:
+                {teamB.name} Sends Away ({teamBSendingPlayers.length + teamBSendingProspects.length + teamBDraftPicks.length} Assets):
               </span>
-              {teamBSendingPlayers.length === 0 ? (
+
+              {teamBSendingPlayers.length === 0 && teamBSendingProspects.length === 0 && teamBDraftPicks.length === 0 ? (
                 <div className="border border-dashed border-slate-700 rounded-lg p-4 text-center text-xs text-slate-500">
-                  Select players below to trade from {teamB.name}.
+                  Select roster players, prospects (e.g. Radim Mrtka), or draft picks below from {teamB.name}.
                 </div>
               ) : (
-                teamBSendingPlayers.map((p) => (
-                  <div
-                    key={p.id}
-                    className="flex items-center justify-between bg-rink-surface border border-rink-border rounded-lg p-2.5"
-                  >
-                    <div className="flex items-center space-x-2.5">
-                      {p.headshotUrl && (
-                        <img
-                          src={p.headshotUrl}
-                          alt={p.name}
-                          className="w-9 h-9 rounded-full object-cover bg-slate-800"
-                        />
-                      )}
-                      <div>
-                        <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                          <span>{p.name}</span>
-                          <span className="text-[9px] px-1 py-0.2 bg-slate-800 text-emerald-400 rounded">
-                            {p.primaryPosition}
-                          </span>
-                        </div>
-                        <div className="text-[11px] text-emerald-400 font-mono">
-                          ${(p.capHit / 1e6).toFixed(2)}M AAV
+                <div className="space-y-1.5">
+                  {/* Roster Players */}
+                  {teamBSendingPlayers.map((p) => (
+                    <div
+                      key={p.id}
+                      className="flex items-center justify-between bg-rink-surface border border-rink-border rounded-lg p-2"
+                    >
+                      <div className="flex items-center space-x-2.5">
+                        {p.headshotUrl && (
+                          <img src={p.headshotUrl} alt={p.name} className="w-8 h-8 rounded-full object-cover bg-slate-800" />
+                        )}
+                        <div>
+                          <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                            <span>{p.name}</span>
+                            <span className="text-[9px] px-1 py-0.2 bg-slate-800 text-emerald-400 rounded">
+                              {p.primaryPosition}
+                            </span>
+                          </div>
+                          <div className="text-[10px] text-emerald-400 font-mono">
+                            ${(p.capHit / 1e6).toFixed(2)}M AAV
+                          </div>
                         </div>
                       </div>
+                      <button
+                        onClick={() => setTeamBPlayerIds(teamBPlayerIds.filter((id) => id !== p.id))}
+                        className="text-slate-500 hover:text-red-400 p-1"
+                        title="Remove player"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </div>
-                    <button
-                      onClick={() =>
-                        setTeamBPlayerIds(teamBPlayerIds.filter((id) => id !== p.id))
-                      }
-                      className="text-slate-500 hover:text-red-400 p-1"
+                  ))}
+
+                  {/* Prospects (e.g. Radim Mrtka) */}
+                  {teamBSendingProspects.map((pr) => (
+                    <div
+                      key={pr.id}
+                      className="flex items-center justify-between bg-purple-950/30 border border-purple-800/40 rounded-lg p-2"
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                ))
+                      <div className="flex items-center space-x-2.5">
+                        <div className="w-8 h-8 rounded-full bg-purple-900/60 border border-purple-500/40 flex items-center justify-center text-purple-300 font-black text-xs">
+                          {pr.position}
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-purple-200 flex items-center gap-1.5">
+                            <span>{pr.name}</span>
+                            <span className="text-[9px] px-1 py-0.2 bg-purple-900/80 text-purple-300 rounded font-bold">
+                              ⭐️ {pr.potential}
+                            </span>
+                          </div>
+                          <div className="text-[10px] text-slate-400">
+                            {pr.height}, {pr.weight} lbs • {pr.draftInfo}
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setTeamBProspectIds(teamBProspectIds.filter((id) => id !== pr.id))}
+                        className="text-slate-500 hover:text-red-400 p-1"
+                        title="Remove prospect"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+
+                  {/* Draft Picks */}
+                  {teamBDraftPicks.map((pick) => (
+                    <div
+                      key={pick.id}
+                      className="flex items-center justify-between bg-amber-950/30 border border-amber-800/40 rounded-lg p-2 text-xs"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <Ticket className="w-4 h-4 text-amber-400" />
+                        <div>
+                          <span className="font-bold text-amber-300">
+                            {pick.year} Round {pick.round} ({pick.originalTeamId})
+                          </span>
+                          <span className="ml-2 text-[10px] text-slate-400 font-mono">
+                            {pick.protection.replace(/_/g, ' ')}
+                          </span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setTeamBDraftPicks(teamBDraftPicks.filter((p) => p.id !== pick.id))}
+                        className="text-slate-500 hover:text-red-400 p-1"
+                        title="Remove pick"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
           </div>
 
-          {/* Add Players / Assets */}
-          <div className="border-t border-rink-border pt-3 space-y-2">
-            <select
-              value=""
-              onChange={(e) => {
-                if (e.target.value) {
-                  const id = Number(e.target.value);
-                  if (!teamBPlayerIds.includes(id)) {
-                    setTeamBPlayerIds([...teamBPlayerIds, id]);
-                  }
-                }
-              }}
-              className="w-full bg-rink-surface border border-rink-border text-slate-200 text-xs rounded-lg p-2 focus:outline-none focus:border-brand-500"
-            >
-              <option value="">+ Add {teamB.name} player to trade...</option>
-              {teamBRoster
-                .filter((p) => !teamBPlayerIds.includes(p.id))
-                .map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name} ({p.primaryPosition}) - ${(p.capHit / 1e6).toFixed(2)}M
-                  </option>
-                ))}
-            </select>
+          {/* Asset Selection Tabs */}
+          <div className="border-t border-rink-border pt-3 space-y-3">
+            <div className="flex items-center space-x-1 bg-rink-surface p-1 rounded-lg border border-rink-border">
+              <button
+                onClick={() => setTeamBAssetTab('roster')}
+                className={`flex-1 py-1.5 rounded text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+                  teamBAssetTab === 'roster' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <span>🏒 Roster</span>
+                <span className="text-[10px] opacity-75">({teamBRoster.length})</span>
+              </button>
+              <button
+                onClick={() => setTeamBAssetTab('prospects')}
+                className={`flex-1 py-1.5 rounded text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+                  teamBAssetTab === 'prospects' ? 'bg-purple-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Sparkles className="w-3 h-3 text-purple-300" />
+                <span>Prospects</span>
+                <span className="text-[10px] opacity-75">({teamBProspects.length})</span>
+              </button>
+              <button
+                onClick={() => setTeamBAssetTab('picks')}
+                className={`flex-1 py-1.5 rounded text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+                  teamBAssetTab === 'picks' ? 'bg-amber-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Ticket className="w-3 h-3 text-amber-300" />
+                <span>Draft Picks</span>
+              </button>
+            </div>
+
+            {/* Tab 1: Active Roster Dropdown */}
+            {teamBAssetTab === 'roster' && (
+              <div className="space-y-2">
+                <select
+                  value=""
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      const id = Number(e.target.value);
+                      if (!teamBPlayerIds.includes(id)) {
+                        setTeamBPlayerIds([...teamBPlayerIds, id]);
+                      }
+                    }
+                  }}
+                  className="w-full bg-rink-surface border border-rink-border text-slate-200 text-xs rounded-lg p-2.5 focus:outline-none focus:border-brand-500"
+                >
+                  <option value="">+ Add {teamB.name} active player...</option>
+                  {teamBRoster
+                    .filter((p) => !teamBPlayerIds.includes(p.id))
+                    .map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name} ({p.primaryPosition}) — ${(p.capHit / 1e6).toFixed(2)}M AAV
+                      </option>
+                    ))}
+                </select>
+              </div>
+            )}
+
+            {/* Tab 2: Top Prospects (Shows Radim Mrtka for BUF) */}
+            {teamBAssetTab === 'prospects' && (
+              <div className="space-y-2">
+                <div className="max-h-48 overflow-y-auto space-y-1.5 pr-1">
+                  {teamBProspects.length === 0 ? (
+                    <div className="text-center py-3 text-xs text-slate-500 border border-dashed border-slate-700 rounded-lg">
+                      No seeded prospects for {teamB.name}. Click below to add one!
+                    </div>
+                  ) : (
+                    teamBProspects.map((pr) => {
+                      const isSelected = teamBProspectIds.includes(pr.id);
+                      return (
+                        <div
+                          key={pr.id}
+                          className={`flex items-center justify-between p-2 rounded-lg border text-xs transition ${
+                            isSelected
+                              ? 'bg-purple-900/30 border-purple-500/50'
+                              : 'bg-rink-surface border-rink-border hover:border-purple-500/40'
+                          }`}
+                        >
+                          <div>
+                            <div className="font-bold text-white flex items-center gap-1.5">
+                              <span>{pr.name}</span>
+                              <span className="text-[10px] px-1 py-0.2 bg-purple-900/60 text-purple-300 rounded font-mono">
+                                {pr.position} • {pr.height}
+                              </span>
+                            </div>
+                            <div className="text-[10px] text-slate-400">
+                              {pr.draftInfo} • {pr.potential}
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => {
+                              if (isSelected) {
+                                setTeamBProspectIds(teamBProspectIds.filter((id) => id !== pr.id));
+                              } else {
+                                setTeamBProspectIds([...teamBProspectIds, pr.id]);
+                              }
+                            }}
+                            className={`px-2.5 py-1 rounded text-[11px] font-bold ${
+                              isSelected
+                                ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30'
+                                : 'bg-purple-600 hover:bg-purple-500 text-white'
+                            }`}
+                          >
+                            {isSelected ? 'Remove' : '+ Add'}
+                          </button>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+
+                <button
+                  onClick={() => {
+                    setModalTeam(teamB.abbrev);
+                    setIsModalOpen(true);
+                  }}
+                  className="w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg border border-dashed border-purple-700/60 hover:border-purple-400 text-purple-300 hover:text-white text-xs font-bold transition"
+                >
+                  <UserPlus className="w-3.5 h-3.5" />
+                  <span>+ Create Custom Prospect for {teamB.name}</span>
+                </button>
+              </div>
+            )}
+
+            {/* Tab 3: Draft Picks */}
+            {teamBAssetTab === 'picks' && (
+              <div className="space-y-2">
+                <div className="grid grid-cols-3 gap-1.5 text-xs">
+                  {teamBPickPool.map((pick) => {
+                    const isSelected = teamBDraftPicks.some((p) => p.id === pick.id);
+                    return (
+                      <button
+                        key={pick.id}
+                        onClick={() => handleToggleDraftPick(pick, false)}
+                        className={`p-2 rounded-lg border text-center transition font-bold ${
+                          isSelected
+                            ? 'bg-amber-500 text-black border-amber-400 shadow-sm'
+                            : 'bg-rink-surface border-rink-border text-slate-300 hover:border-amber-400'
+                        }`}
+                      >
+                        <div className="text-[10px] uppercase opacity-75">{pick.year}</div>
+                        <div className="text-xs">Round {pick.round}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -454,7 +899,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
           ) : (
             <>
               <Zap className="w-4 h-4" />
-              <span>Run NHL Franchise Monte Carlo Simulation</span>
+              <span>Run Monte Carlo Trade Evaluation</span>
             </>
           )}
         </button>
@@ -468,12 +913,8 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-rink-border pb-3">
               <div className="flex items-center space-x-2.5">
                 <Trophy className="w-5 h-5 text-amber-400" />
-                <h3 className="text-base font-black text-white">
-                  Executive GM Trade Verdict
-                </h3>
-                <span className="text-xs text-slate-500">
-                  ({evaluation.executionTimeMs}ms)
-                </span>
+                <h3 className="text-base font-black text-white">Executive GM Trade Verdict</h3>
+                <span className="text-xs text-slate-500">({evaluation.executionTimeMs}ms)</span>
               </div>
               <div className="flex items-center gap-2 text-xs">
                 <span className="text-slate-400">{teamA.abbrev} Recommendation:</span>
@@ -500,11 +941,9 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
               </div>
             </div>
 
-            <p className="text-sm font-semibold text-white">
-              {evaluation.verdict.summary}
-            </p>
+            <p className="text-sm font-semibold text-white">{evaluation.verdict.summary}</p>
 
-            <div className="space-y-1 pt-1">
+            <div className="space-y-1.5 pt-1">
               {evaluation.verdict.strategicAnalysisBullets.map((bullet, idx) => (
                 <div key={idx} className="text-xs text-slate-300 flex items-start gap-2">
                   <span className="text-sky-400 font-bold">•</span>
@@ -513,6 +952,66 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
               ))}
             </div>
           </div>
+
+          {/* Future Pipeline & Draft Capital Card (If Prospects or Picks Involved) */}
+          {evaluation.futureCapital &&
+            (evaluation.futureCapital.teamAAssetsAcquired.length > 0 ||
+              evaluation.futureCapital.teamBAssetsAcquired.length > 0) && (
+              <div className="bg-gradient-to-r from-purple-950/40 via-slate-900 to-amber-950/40 border border-purple-800/40 rounded-xl p-5 shadow-lg space-y-4">
+                <div className="flex items-center space-x-2 text-purple-300 font-bold text-sm border-b border-purple-800/30 pb-2.5">
+                  <Sparkles className="w-4 h-4 text-amber-400" />
+                  <span>Future Franchise Capital & Pipeline Balance</span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                  {/* Team A Futures */}
+                  <div className="bg-black/30 p-3.5 rounded-lg border border-purple-900/40 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-white">{teamA.name} Acquired Futures:</span>
+                      <span className="font-mono text-[10px] text-purple-300">
+                        Net Score: {evaluation.futureCapital.teamANetCapitalScore > 0 ? '+' : ''}
+                        {evaluation.futureCapital.teamANetCapitalScore} pts
+                      </span>
+                    </div>
+                    {evaluation.futureCapital.teamAAssetsAcquired.length === 0 ? (
+                      <span className="text-slate-500 text-[11px] italic">No future assets acquired.</span>
+                    ) : (
+                      <div className="space-y-1">
+                        {evaluation.futureCapital.teamAAssetsAcquired.map((asset, i) => (
+                          <div key={i} className="flex items-center gap-1.5 text-purple-200">
+                            <span className="text-amber-400">★</span>
+                            <span>{asset}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Team B Futures */}
+                  <div className="bg-black/30 p-3.5 rounded-lg border border-purple-900/40 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-white">{teamB.name} Acquired Futures:</span>
+                      <span className="font-mono text-[10px] text-purple-300">
+                        Net Score: {evaluation.futureCapital.teamBNetCapitalScore > 0 ? '+' : ''}
+                        {evaluation.futureCapital.teamBNetCapitalScore} pts
+                      </span>
+                    </div>
+                    {evaluation.futureCapital.teamBAssetsAcquired.length === 0 ? (
+                      <span className="text-slate-500 text-[11px] italic">No future assets acquired.</span>
+                    ) : (
+                      <div className="space-y-1">
+                        {evaluation.futureCapital.teamBAssetsAcquired.map((asset, i) => (
+                          <div key={i} className="flex items-center gap-1.5 text-purple-200">
+                            <span className="text-amber-400">★</span>
+                            <span>{asset}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
 
           {/* Side-by-Side Impact Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -536,9 +1035,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
 
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="bg-rink-surface p-3 rounded-lg border border-rink-border">
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">
-                    Stanley Cup Win Prob
-                  </span>
+                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Stanley Cup Win Prob</span>
                   <div className="text-lg font-black text-white mt-0.5">
                     {(evaluation.teamA.postTrade.stanleyCupWinProb * 100).toFixed(1)}%
                     <span
@@ -559,9 +1056,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                 </div>
 
                 <div className="bg-rink-surface p-3 rounded-lg border border-rink-border">
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">
-                    Playoff Qualification
-                  </span>
+                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Playoff Qualification</span>
                   <div className="text-lg font-black text-white mt-0.5">
                     {(evaluation.teamA.postTrade.playoffProbability * 100).toFixed(1)}%
                     <span
@@ -582,9 +1077,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                 </div>
 
                 <div className="bg-rink-surface p-3 rounded-lg border border-rink-border">
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">
-                    Expected Regular Pts
-                  </span>
+                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Expected Regular Pts</span>
                   <div className="text-lg font-black text-white mt-0.5">
                     {evaluation.teamA.postTrade.expectedPoints} pts
                     <span
@@ -602,9 +1095,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                 </div>
 
                 <div className="bg-rink-surface p-3 rounded-lg border border-rink-border">
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">
-                    Net Goal Diff / 60
-                  </span>
+                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Net Goal Diff / 60</span>
                   <div className="text-lg font-black text-white mt-0.5">
                     {(evaluation.teamA.postTrade.xgfPer60 - evaluation.teamA.postTrade.xgaPer60).toFixed(2)}
                     <span
@@ -651,9 +1142,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
 
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="bg-rink-surface p-3 rounded-lg border border-rink-border">
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">
-                    Stanley Cup Win Prob
-                  </span>
+                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Stanley Cup Win Prob</span>
                   <div className="text-lg font-black text-white mt-0.5">
                     {(evaluation.teamB.postTrade.stanleyCupWinProb * 100).toFixed(1)}%
                     <span
@@ -674,9 +1163,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                 </div>
 
                 <div className="bg-rink-surface p-3 rounded-lg border border-rink-border">
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">
-                    Playoff Qualification
-                  </span>
+                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Playoff Qualification</span>
                   <div className="text-lg font-black text-white mt-0.5">
                     {(evaluation.teamB.postTrade.playoffProbability * 100).toFixed(1)}%
                     <span
@@ -697,9 +1184,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                 </div>
 
                 <div className="bg-rink-surface p-3 rounded-lg border border-rink-border">
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">
-                    Expected Regular Pts
-                  </span>
+                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Expected Regular Pts</span>
                   <div className="text-lg font-black text-white mt-0.5">
                     {evaluation.teamB.postTrade.expectedPoints} pts
                     <span
@@ -717,9 +1202,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                 </div>
 
                 <div className="bg-rink-surface p-3 rounded-lg border border-rink-border">
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">
-                    Net Goal Diff / 60
-                  </span>
+                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Net Goal Diff / 60</span>
                   <div className="text-lg font-black text-white mt-0.5">
                     {(evaluation.teamB.postTrade.xgfPer60 - evaluation.teamB.postTrade.xgaPer60).toFixed(2)}
                     <span
@@ -745,6 +1228,180 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                 </span>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= CUSTOM PROSPECT CREATION MODAL ================= */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="bg-rink-card border border-rink-border rounded-xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-rink-border pb-3">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-purple-400" />
+                <h3 className="text-base font-black text-white">Create Custom Prospect</h3>
+              </div>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="text-slate-400 hover:text-white p-1"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveCustomProspect} className="space-y-3.5 text-xs">
+              <div>
+                <label className="block text-slate-400 font-bold mb-1">Prospect Name</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Radim Mrtka, Konsta Helenius, Anton Silayev..."
+                  value={newProspectName}
+                  onChange={(e) => setNewProspectName(e.target.value)}
+                  className="w-full bg-rink-surface border border-rink-border rounded-lg px-3 py-2 text-white font-bold focus:outline-none focus:border-brand-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-2.5">
+                <div>
+                  <label className="block text-slate-400 font-bold mb-1">Position</label>
+                  <select
+                    value={newProspectPos}
+                    onChange={(e) => setNewProspectPos(e.target.value as any)}
+                    className="w-full bg-rink-surface border border-rink-border rounded-lg px-2.5 py-2 text-white font-bold focus:outline-none focus:border-brand-500"
+                  >
+                    <option value="D">Defense (D)</option>
+                    <option value="C">Center (C)</option>
+                    <option value="LW">Left Wing (LW)</option>
+                    <option value="RW">Right Wing (RW)</option>
+                    <option value="G">Goalie (G)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-slate-400 font-bold mb-1">Shoots / Catches</label>
+                  <select
+                    value={newProspectShoots}
+                    onChange={(e) => setNewProspectShoots(e.target.value as any)}
+                    className="w-full bg-rink-surface border border-rink-border rounded-lg px-2.5 py-2 text-white font-bold focus:outline-none focus:border-brand-500"
+                  >
+                    <option value="R">Right (R)</option>
+                    <option value="L">Left (L)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-slate-400 font-bold mb-1">NHL Rights Team</label>
+                  <select
+                    value={modalTeam}
+                    onChange={(e) => setModalTeam(e.target.value)}
+                    className="w-full bg-rink-surface border border-rink-border rounded-lg px-2.5 py-2 text-white font-bold focus:outline-none focus:border-brand-500"
+                  >
+                    {franchises.map((t) => (
+                      <option key={t.id} value={t.id}>
+                        {t.abbrev} - {t.commonName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2.5">
+                <div>
+                  <label className="block text-slate-400 font-bold mb-1">Age</label>
+                  <input
+                    type="number"
+                    value={newProspectAge}
+                    onChange={(e) => setNewProspectAge(Number(e.target.value))}
+                    className="w-full bg-rink-surface border border-rink-border rounded-lg px-3 py-2 text-white font-bold focus:outline-none focus:border-brand-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-400 font-bold mb-1">Height</label>
+                  <input
+                    type="text"
+                    value={newProspectHeight}
+                    onChange={(e) => setNewProspectHeight(e.target.value)}
+                    placeholder="6'6&quot;"
+                    className="w-full bg-rink-surface border border-rink-border rounded-lg px-3 py-2 text-white font-bold focus:outline-none focus:border-brand-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-400 font-bold mb-1">Weight (lbs)</label>
+                  <input
+                    type="number"
+                    value={newProspectWeight}
+                    onChange={(e) => setNewProspectWeight(Number(e.target.value))}
+                    className="w-full bg-rink-surface border border-rink-border rounded-lg px-3 py-2 text-white font-bold focus:outline-none focus:border-brand-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label className="block text-slate-400 font-bold mb-1">Draft Pedigree</label>
+                  <input
+                    type="text"
+                    value={newProspectDraftInfo}
+                    onChange={(e) => setNewProspectDraftInfo(e.target.value)}
+                    placeholder="2025 Round 1, #9 Overall"
+                    className="w-full bg-rink-surface border border-rink-border rounded-lg px-3 py-2 text-white font-bold focus:outline-none focus:border-brand-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-400 font-bold mb-1">Current Club / League</label>
+                  <input
+                    type="text"
+                    value={newProspectCurrentTeam}
+                    onChange={(e) => setNewProspectCurrentTeam(e.target.value)}
+                    placeholder="Rochester (AHL) / Seattle (WHL)"
+                    className="w-full bg-rink-surface border border-rink-border rounded-lg px-3 py-2 text-white font-bold focus:outline-none focus:border-brand-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-400 font-bold mb-1">Projected NHL Ceiling</label>
+                <select
+                  value={newProspectPotential}
+                  onChange={(e) => setNewProspectPotential(e.target.value as any)}
+                  className="w-full bg-rink-surface border border-rink-border rounded-lg px-3 py-2 text-white font-bold focus:outline-none focus:border-brand-500"
+                >
+                  <option value="FRANCHISE">FRANCHISE — Generational Core Piece (e.g. Celebrini/Demidov)</option>
+                  <option value="ELITE">ELITE — Top-Pair D / Top-Line Winger (e.g. Radim Mrtka)</option>
+                  <option value="TOP_PAIR_TOP_LINE">TOP_PAIR_TOP_LINE — High-Impact Top-4 D / Top-6 F</option>
+                  <option value="REGULAR">REGULAR — Reliable Middle-of-the-Lineup NHLer</option>
+                  <option value="DEPTH">DEPTH — Fringe / Bottom-Roster Depth</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-slate-400 font-bold mb-1">Scouting Summary & Toolset</label>
+                <textarea
+                  rows={2}
+                  value={newProspectNotes}
+                  onChange={(e) => setNewProspectNotes(e.target.value)}
+                  placeholder="Towering two-way defenseman with smooth mobility, high-IQ breakout passes, and shutdown reach..."
+                  className="w-full bg-rink-surface border border-rink-border rounded-lg px-3 py-2 text-white focus:outline-none focus:border-brand-500"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2 border-t border-rink-border">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg shadow-purple-900/30"
+                >
+                  Save & Add Prospect
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
