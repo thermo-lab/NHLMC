@@ -22,18 +22,21 @@ import { evaluateFranchiseTrade } from '../engine/franchiseSimulation';
 interface FranchiseTradeMachineProps {
   franchises: NHLTeam[];
   players: Player[];
+  initialTeamAId?: string;
+  initialTeamBId?: string;
 }
 
 export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
   franchises,
   players,
+  initialTeamAId = 'EDM',
+  initialTeamBId = 'FLA',
 }) => {
-  const [teamAId, setTeamAId] = useState<string>('EDM');
-  const [teamBId, setTeamBId] = useState<string>('FLA');
+  const [teamAId, setTeamAId] = useState<string>(initialTeamAId);
+  const [teamBId, setTeamBId] = useState<string>(initialTeamBId);
 
-  // Trade proposals: player IDs
-  const [teamAPlayerIds, setTeamAPlayerIds] = useState<number[]>([26]); // Zach Hyman ($5.5M)
-  const [teamBPlayerIds, setTeamBPlayerIds] = useState<number[]>([20]); // Sam Reinhart ($8.625M)
+  const [teamAPlayerIds, setTeamAPlayerIds] = useState<number[]>([]);
+  const [teamBPlayerIds, setTeamBPlayerIds] = useState<number[]>([]);
 
   // Draft pick additions
   const [teamADraftPick, setTeamADraftPick] = useState<string>('2025 1st Round Pick');
@@ -70,6 +73,40 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     () => players.filter((p) => p.nhlTeam === teamB.abbrev),
     [players, teamB]
   );
+
+  React.useEffect(() => {
+    if (initialTeamAId) setTeamAId(initialTeamAId);
+  }, [initialTeamAId]);
+
+  React.useEffect(() => {
+    if (initialTeamBId) setTeamBId(initialTeamBId);
+  }, [initialTeamBId]);
+
+  React.useEffect(() => {
+    if (teamARoster.length > 0) {
+      const valid = teamAPlayerIds.filter((id) => teamARoster.some((p) => p.id === id));
+      if (valid.length === 0) {
+        setTeamAPlayerIds([teamARoster[0].id]);
+      } else if (valid.length !== teamAPlayerIds.length) {
+        setTeamAPlayerIds(valid);
+      }
+    } else {
+      setTeamAPlayerIds([]);
+    }
+  }, [teamARoster]);
+
+  React.useEffect(() => {
+    if (teamBRoster.length > 0) {
+      const valid = teamBPlayerIds.filter((id) => teamBRoster.some((p) => p.id === id));
+      if (valid.length === 0) {
+        setTeamBPlayerIds([teamBRoster[0].id]);
+      } else if (valid.length !== teamBPlayerIds.length) {
+        setTeamBPlayerIds(valid);
+      }
+    } else {
+      setTeamBPlayerIds([]);
+    }
+  }, [teamBRoster]);
 
   const teamASendingPlayers = teamAPlayerIds.map((id) => playersMap.get(id)).filter(Boolean) as Player[];
   const teamBSendingPlayers = teamBPlayerIds.map((id) => playersMap.get(id)).filter(Boolean) as Player[];

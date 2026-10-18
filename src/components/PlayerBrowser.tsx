@@ -18,12 +18,21 @@ interface PlayerBrowserProps {
 export const PlayerBrowser: React.FC<PlayerBrowserProps> = ({ players }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [positionFilter, setPositionFilter] = useState<string>('ALL');
+  const [teamFilter, setTeamFilter] = useState<string>('ALL');
   const [sortBy, setSortBy] = useState<string>('POINTS');
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
+
+  const uniqueTeams = useMemo(() => {
+    const set = new Set<string>();
+    for (const p of players) if (p.nhlTeam) set.add(p.nhlTeam);
+    return Array.from(set).sort();
+  }, [players]);
 
   const filteredPlayers = useMemo(() => {
     return players
       .filter((p) => {
+        if (teamFilter !== 'ALL' && p.nhlTeam !== teamFilter) return false;
+
         const matchesSearch =
           p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           p.nhlTeam.toLowerCase().includes(searchTerm.toLowerCase());
@@ -33,7 +42,7 @@ export const PlayerBrowser: React.FC<PlayerBrowserProps> = ({ players }) => {
         if (positionFilter === 'ALL') return true;
         if (positionFilter === 'G') return p.playerType === 'goalie';
         if (positionFilter === 'D') return p.primaryPosition === 'D';
-        if (positionFilter === 'F') return ['C', 'LW', 'RW'].includes(p.primaryPosition);
+        if (positionFilter === 'F') return ['C', 'LW', 'RW', 'F'].includes(p.primaryPosition);
         return p.positions.includes(positionFilter as Position);
       })
       .sort((a, b) => {
@@ -62,7 +71,7 @@ export const PlayerBrowser: React.FC<PlayerBrowserProps> = ({ players }) => {
         }
         return 0;
       });
-  }, [players, searchTerm, positionFilter, sortBy]);
+  }, [players, searchTerm, positionFilter, teamFilter, sortBy]);
 
   return (
     <div className="space-y-6">
@@ -109,6 +118,23 @@ export const PlayerBrowser: React.FC<PlayerBrowserProps> = ({ players }) => {
             ))}
           </div>
 
+          {/* Team Dropdown */}
+          <div className="flex items-center space-x-2 text-xs text-slate-400">
+            <span>Team:</span>
+            <select
+              value={teamFilter}
+              onChange={(e) => setTeamFilter(e.target.value)}
+              className="bg-rink-surface border border-rink-border text-white font-bold rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500"
+            >
+              <option value="ALL">All 32 Teams</option>
+              {uniqueTeams.map((team) => (
+                <option key={team} value={team}>
+                  {team}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Sort Dropdown */}
           <div className="flex items-center space-x-2 text-xs text-slate-400">
             <span>Sort:</span>
@@ -124,6 +150,10 @@ export const PlayerBrowser: React.FC<PlayerBrowserProps> = ({ players }) => {
               <option value="WINS">Goalie Wins</option>
             </select>
           </div>
+        </div>
+
+        <div className="text-xs text-slate-500 pt-1 flex items-center justify-between">
+          <span>Showing <strong className="text-white font-mono">{filteredPlayers.length}</strong> active NHL players across 32 franchises.</span>
         </div>
       </div>
 

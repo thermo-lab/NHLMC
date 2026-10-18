@@ -50,7 +50,7 @@ test('Distributions: calculatePercentile produces monotonically increasing value
 });
 
 test('Engine: Simulating skater produces valid hockey stat lines', () => {
-  const mcdavid = INITIAL_PLAYERS.find((p) => p.name === 'Connor McDavid');
+  const mcdavid = INITIAL_PLAYERS.find((p) => p.name.includes('McDavid'));
   assert.ok(mcdavid, 'Connor McDavid must exist');
 
   const sim = simulateSkaterSeason(mcdavid, 1.0, 0.85);
@@ -61,7 +61,7 @@ test('Engine: Simulating skater produces valid hockey stat lines', () => {
 });
 
 test('Engine: Simulating goalie produces realistic GAA and SV%', () => {
-  const shesterkin = INITIAL_PLAYERS.find((p) => p.name === 'Igor Shesterkin');
+  const shesterkin = INITIAL_PLAYERS.find((p) => p.name.includes('Shesterkin'));
   assert.ok(shesterkin, 'Igor Shesterkin must exist');
 
   const sim = simulateGoalieSeason(shesterkin, 1.0, 0.85);
@@ -72,10 +72,15 @@ test('Engine: Simulating goalie produces realistic GAA and SV%', () => {
 });
 
 test('Engine: Monte Carlo simulation executes and evaluates trade proposal with cap impact', () => {
+  const userTeam = DEFAULT_LEAGUE.teams.find((t) => t.id === 'team-user');
+  const targetTeam = DEFAULT_LEAGUE.teams.find((t) => t.id === 'team-2');
+  const givingId = userTeam?.playerIds[2] ?? 72; // Zach Hyman ($5.5M)
+  const receivingId = targetTeam?.playerIds[1] ?? 409; // Mikko Rantanen ($9.25M)
+
   const tradeProposal = {
     targetTeamId: 'team-2',
-    givingPlayerIds: [26], // Zach Hyman ($5.5M)
-    receivingPlayerIds: [13], // Mikko Rantanen ($9.25M)
+    givingPlayerIds: [givingId],
+    receivingPlayerIds: [receivingId],
   };
 
   const result = runMonteCarloSimulation(DEFAULT_LEAGUE, INITIAL_PLAYERS, tradeProposal, {
@@ -95,11 +100,16 @@ test('Engine: Monte Carlo simulation executes and evaluates trade proposal with 
 });
 
 test('Franchise Engine: Evaluates real NHL trade with 82-game regular season and Stanley Cup playoff simulation', () => {
+  const hyman = INITIAL_PLAYERS.find((p) => p.name.includes('Hyman'));
+  const reinhart = INITIAL_PLAYERS.find((p) => p.name.includes('Reinhart'));
+  assert.ok(hyman, 'Hyman must exist in active NHL players');
+  assert.ok(reinhart, 'Reinhart must exist in active NHL players');
+
   const proposal = {
     teamAId: 'EDM', // Edmonton Oilers
     teamBId: 'FLA', // Florida Panthers
-    teamAPlayerIds: [26], // Zach Hyman ($5.5M)
-    teamBPlayerIds: [20], // Sam Reinhart ($8.625M)
+    teamAPlayerIds: [hyman.id], // Zach Hyman ($5.5M)
+    teamBPlayerIds: [reinhart.id], // Sam Reinhart ($8.625M)
   };
 
   const result = evaluateFranchiseTrade(NHL_FRANCHISES, INITIAL_PLAYERS, proposal, 500);

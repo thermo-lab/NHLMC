@@ -190,6 +190,16 @@ export const TeamsHub: React.FC<TeamsHubProps> = ({ franchises, players, onSelec
                     </div>
                   </div>
                 )}
+
+                {/* Trade Button */}
+                <div className="mt-4 pt-3 border-t border-rink-border/50">
+                  <button
+                    onClick={() => onSelectTeamForTrade?.(team.id)}
+                    className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-sky-600/20 hover:bg-sky-600/30 text-sky-400 border border-sky-500/30 text-xs font-bold transition"
+                  >
+                    <span>Trade Machine with {team.commonName} ⇄</span>
+                  </button>
+                </div>
               </div>
             </div>
           );

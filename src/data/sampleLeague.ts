@@ -4,6 +4,78 @@ import { Player } from '../types/player';
 
 export const INITIAL_PLAYERS: Player[] = rawPlayers as unknown as Player[];
 
+const getPlayerId = (query: string, fallback: number): number => {
+  const match = INITIAL_PLAYERS.find((p) => p.name.toLowerCase().includes(query.toLowerCase()));
+  return match ? match.id : fallback;
+};
+
+// Edmonton Ice Kings
+const pMcDavid = getPlayerId('McDavid', 78);
+const pDraisaitl = getPlayerId('Draisaitl', 75);
+const pHyman = getPlayerId('Hyman', 72);
+const pBouchard = getPlayerId('Bouchard', 84);
+const pSkinner = getPlayerId('Stuart Skinner', 351);
+
+// Mile High Snipers
+const pMacKinnon = getPlayerId('MacKinnon', 235);
+const pRantanen = getPlayerId('Rantanen', 409);
+const pMakar = getPlayerId('Makar', 240);
+
+// Bay Street Blueliners
+const pMatthews = getPlayerId('Matthews', 591);
+const pNylander = getPlayerId('Nylander', 588);
+const pMarner = getPlayerId('Marner', 14);
+
+// Broadway Blueshirts
+const pPanarin = getPlayerId('Panarin', 769);
+const pFox = getPlayerId('Fox', 106);
+const pShesterkin = getPlayerId('Shesterkin', 123);
+
+// Sunshine State Rink Rats
+const pBarkov = getPlayerId('Barkov', 208);
+const pTkachuk = getPlayerId('Matthew Tkachuk', 218);
+const pReinhart = getPlayerId('Reinhart', 212);
+const pBobrovsky = getPlayerId('Bobrovsky', 601);
+
+// Tampa Bay Bolts
+const pKucherov = getPlayerId('Kucherov', 131);
+const pPoint = getPlayerId('Brayden Point', 135);
+const pHedman = getPlayerId('Hedman', 130);
+const pVasilevskiy = getPlayerId('Vasilevskiy', 150);
+
+// Boston Bruins Legacy
+const pPastrnak = getPlayerId('Pastrnak', 53);
+const pMcAvoy = getPlayerId('McAvoy', 56);
+const pSwayman = getPlayerId('Swayman', 70);
+
+// North Star Jets
+const pConnor = getPlayerId('Kyle Connor', 337);
+const pMorrissey = getPlayerId('Morrissey', 335);
+const pHellebuyck = getPlayerId('Hellebuyck', 353);
+
+// Lone Star Outlaws
+const pHintz = getPlayerId('Hintz', 410);
+const pRobertson = getPlayerId('Jason Robertson', 413);
+const pHeiskanen = getPlayerId('Heiskanen', 414);
+const pOettinger = getPlayerId('Oettinger', 424);
+
+// Smashville Predators
+const pForsberg = getPlayerId('Filip Forsberg', 433);
+const pStamkos = getPlayerId('Stamkos', 428);
+const pJosi = getPlayerId('Josi', 429);
+const pSaros = getPlayerId('Saros', 450);
+
+// Pacific Canucks
+const pMiller = getPlayerId('J.T. Miller', 102);
+const pQHughes = getPlayerId('Quinn Hughes', 263);
+const pDemko = getPlayerId('Demko', 729);
+
+// Motor City Wings
+const pJHughes = getPlayerId('Jack Hughes', 544);
+const pBTkachuk = getPlayerId('Brady Tkachuk', 220);
+const pDahlin = getPlayerId('Dahlin', 363);
+const pSeider = getPlayerId('Seider', 566);
+
 export const DEFAULT_LEAGUE: FantasyLeague = {
   id: 'league-stanley-dynasty',
   name: 'Lord Stanley Fantasy Roto (12-Team)',
@@ -23,10 +95,9 @@ export const DEFAULT_LEAGUE: FantasyLeague = {
       name: 'Edmonton Ice Kings (Your Team)',
       manager: 'Mike / User',
       isUserTeam: true,
-      // Connor McDavid (1), Leon Draisaitl (4), Zach Hyman (26), Evan Bouchard (34), Stuart Skinner (49)
-      playerIds: [1, 4, 26, 34, 49],
-      activeSkaterIds: [1, 4, 26, 34],
-      activeGoalieIds: [49],
+      playerIds: [pMcDavid, pDraisaitl, pHyman, pBouchard, pSkinner],
+      activeSkaterIds: [pMcDavid, pDraisaitl, pHyman, pBouchard],
+      activeGoalieIds: [pSkinner],
       benchPlayerIds: [],
       seasonTotals: {
         g: 52,
@@ -51,9 +122,8 @@ export const DEFAULT_LEAGUE: FantasyLeague = {
       name: 'Mile High Snipers',
       manager: 'Nathan',
       isUserTeam: false,
-      // Nathan MacKinnon (2), Mikko Rantanen (13), Cale Makar (29)
-      playerIds: [2, 13, 29],
-      activeSkaterIds: [2, 13, 29],
+      playerIds: [pMacKinnon, pRantanen, pMakar],
+      activeSkaterIds: [pMacKinnon, pRantanen, pMakar],
       activeGoalieIds: [],
       benchPlayerIds: [],
       seasonTotals: {
@@ -79,9 +149,8 @@ export const DEFAULT_LEAGUE: FantasyLeague = {
       name: 'Bay Street Blueliners',
       manager: 'Auston',
       isUserTeam: false,
-      // Auston Matthews (3), William Nylander (18), Mitch Marner (19)
-      playerIds: [3, 18, 19],
-      activeSkaterIds: [3, 18, 19],
+      playerIds: [pMatthews, pNylander, pMarner],
+      activeSkaterIds: [pMatthews, pNylander, pMarner],
       activeGoalieIds: [],
       benchPlayerIds: [],
       seasonTotals: {
@@ -107,10 +176,9 @@ export const DEFAULT_LEAGUE: FantasyLeague = {
       name: 'Broadway Blueshirts',
       manager: 'Igor',
       isUserTeam: false,
-      // Artemi Panarin (14), Adam Fox (32), Igor Shesterkin (41)
-      playerIds: [14, 32, 41],
-      activeSkaterIds: [14, 32],
-      activeGoalieIds: [41],
+      playerIds: [pPanarin, pFox, pShesterkin],
+      activeSkaterIds: [pPanarin, pFox],
+      activeGoalieIds: [pShesterkin],
       benchPlayerIds: [],
       seasonTotals: {
         g: 46,
@@ -135,10 +203,9 @@ export const DEFAULT_LEAGUE: FantasyLeague = {
       name: 'Sunshine State Rink Rats',
       manager: 'Aleksander',
       isUserTeam: false,
-      // Aleksander Barkov (6), Matthew Tkachuk (16), Sam Reinhart (20), Sergei Bobrovsky (46)
-      playerIds: [6, 16, 20, 46],
-      activeSkaterIds: [6, 16, 20],
-      activeGoalieIds: [46],
+      playerIds: [pBarkov, pTkachuk, pReinhart, pBobrovsky],
+      activeSkaterIds: [pBarkov, pTkachuk, pReinhart],
+      activeGoalieIds: [pBobrovsky],
       benchPlayerIds: [],
       seasonTotals: {
         g: 50,
@@ -163,10 +230,9 @@ export const DEFAULT_LEAGUE: FantasyLeague = {
       name: 'Tampa Bay Bolts',
       manager: 'Nikita',
       isUserTeam: false,
-      // Nikita Kucherov (11), Brayden Point (8), Victor Hedman (35), Andrei Vasilevskiy (43)
-      playerIds: [8, 11, 35, 43],
-      activeSkaterIds: [8, 11, 35],
-      activeGoalieIds: [43],
+      playerIds: [pKucherov, pPoint, pHedman, pVasilevskiy],
+      activeSkaterIds: [pKucherov, pPoint, pHedman],
+      activeGoalieIds: [pVasilevskiy],
       benchPlayerIds: [],
       seasonTotals: {
         g: 56,
@@ -191,10 +257,9 @@ export const DEFAULT_LEAGUE: FantasyLeague = {
       name: 'Boston Bruins Legacy',
       manager: 'David',
       isUserTeam: false,
-      // David Pastrnak (12), Charlie McAvoy (38), Jeremy Swayman (44)
-      playerIds: [12, 38, 44],
-      activeSkaterIds: [12, 38],
-      activeGoalieIds: [44],
+      playerIds: [pPastrnak, pMcAvoy, pSwayman],
+      activeSkaterIds: [pPastrnak, pMcAvoy],
+      activeGoalieIds: [pSwayman],
       benchPlayerIds: [],
       seasonTotals: {
         g: 48,
@@ -219,10 +284,9 @@ export const DEFAULT_LEAGUE: FantasyLeague = {
       name: 'North Star Jets',
       manager: 'Connor H.',
       isUserTeam: false,
-      // Kyle Connor (22), Josh Morrissey (37), Connor Hellebuyck (42)
-      playerIds: [22, 37, 42],
-      activeSkaterIds: [22, 37],
-      activeGoalieIds: [42],
+      playerIds: [pConnor, pMorrissey, pHellebuyck],
+      activeSkaterIds: [pConnor, pMorrissey],
+      activeGoalieIds: [pHellebuyck],
       benchPlayerIds: [],
       seasonTotals: {
         g: 44,
@@ -247,10 +311,9 @@ export const DEFAULT_LEAGUE: FantasyLeague = {
       name: 'Lone Star Outlaws',
       manager: 'Jason',
       isUserTeam: false,
-      // Roope Hintz (10), Jason Robertson (23), Miro Heiskanen (39), Jake Oettinger (45)
-      playerIds: [10, 23, 39, 45],
-      activeSkaterIds: [10, 23, 39],
-      activeGoalieIds: [45],
+      playerIds: [pHintz, pRobertson, pHeiskanen, pOettinger],
+      activeSkaterIds: [pHintz, pRobertson, pHeiskanen],
+      activeGoalieIds: [pOettinger],
       benchPlayerIds: [],
       seasonTotals: {
         g: 47,
@@ -275,10 +338,9 @@ export const DEFAULT_LEAGUE: FantasyLeague = {
       name: 'Smashville Predators',
       manager: 'Roman',
       isUserTeam: false,
-      // Filip Forsberg (21), Steven Stamkos (27), Roman Josi (31), Juuse Saros (47)
-      playerIds: [21, 27, 31, 47],
-      activeSkaterIds: [21, 27, 31],
-      activeGoalieIds: [47],
+      playerIds: [pForsberg, pStamkos, pJosi, pSaros],
+      activeSkaterIds: [pForsberg, pStamkos, pJosi],
+      activeGoalieIds: [pSaros],
       benchPlayerIds: [],
       seasonTotals: {
         g: 45,
@@ -303,10 +365,9 @@ export const DEFAULT_LEAGUE: FantasyLeague = {
       name: 'Pacific Canucks',
       manager: 'Quinn',
       isUserTeam: false,
-      // J.T. Miller (24), Quinn Hughes (30), Thatcher Demko (48)
-      playerIds: [24, 30, 48],
-      activeSkaterIds: [24, 30],
-      activeGoalieIds: [48],
+      playerIds: [pMiller, pQHughes, pDemko],
+      activeSkaterIds: [pMiller, pQHughes],
+      activeGoalieIds: [pDemko],
       benchPlayerIds: [],
       seasonTotals: {
         g: 46,
@@ -331,9 +392,8 @@ export const DEFAULT_LEAGUE: FantasyLeague = {
       name: 'Motor City Wings',
       manager: 'Moritz',
       isUserTeam: false,
-      // Jack Hughes (5), Brady Tkachuk (17), Rasmus Dahlin (33), Moritz Seider (36)
-      playerIds: [5, 17, 33, 36],
-      activeSkaterIds: [5, 17, 33, 36],
+      playerIds: [pJHughes, pBTkachuk, pDahlin, pSeider],
+      activeSkaterIds: [pJHughes, pBTkachuk, pDahlin, pSeider],
       activeGoalieIds: [],
       benchPlayerIds: [],
       seasonTotals: {

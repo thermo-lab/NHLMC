@@ -12,6 +12,12 @@ export function App() {
   const [activeTab, setActiveTab] = useState<'trade' | 'historical' | 'teams' | 'players' | 'guide'>('trade');
   const [franchises, setFranchises] = useState(NHL_FRANCHISES);
   const [players, setPlayers] = useState(INITIAL_PLAYERS);
+  const [selectedTradeTeamAId, setSelectedTradeTeamAId] = useState<string>('EDM');
+
+  const handleSelectTeamForTrade = (teamId: string) => {
+    setSelectedTradeTeamAId(teamId);
+    setActiveTab('trade');
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#080C14] text-slate-100 selection:bg-sky-500 selection:text-black">
@@ -24,6 +30,7 @@ export function App() {
           <FranchiseTradeMachine
             franchises={franchises}
             players={players}
+            initialTeamAId={selectedTradeTeamAId}
           />
         )}
 
@@ -35,7 +42,7 @@ export function App() {
           <TeamsHub
             franchises={franchises}
             players={players}
-            onSelectTeamForTrade={() => setActiveTab('trade')}
+            onSelectTeamForTrade={handleSelectTeamForTrade}
           />
         )}
 
