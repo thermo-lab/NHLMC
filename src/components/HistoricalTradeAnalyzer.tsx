@@ -56,20 +56,47 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
 
   const marqueeIds = useMemo(() => new Set(HISTORICAL_TRADES.map((t) => t.id)), []);
 
-  const availableTeams = useMemo(() => {
-    const map = new Map<string, string>();
-    for (const t of allTrades) {
-      if (t.teamA.teamAbbrev && !map.has(t.teamA.teamAbbrev)) {
-        map.set(t.teamA.teamAbbrev, t.teamA.teamName);
-      }
-      if (t.teamB.teamAbbrev && !map.has(t.teamB.teamAbbrev)) {
-        map.set(t.teamB.teamAbbrev, t.teamB.teamName);
-      }
-    }
-    return Array.from(map.entries())
-      .map(([abbrev, name]) => ({ abbrev, name }))
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }, [allTrades]);
+  const CANONICAL_NHL_TEAMS = useMemo(() => [
+    { abbrev: 'ANA', name: 'Anaheim Ducks' },
+    { abbrev: 'ARI', name: 'Arizona / Phoenix Coyotes' },
+    { abbrev: 'BOS', name: 'Boston Bruins' },
+    { abbrev: 'BUF', name: 'Buffalo Sabres' },
+    { abbrev: 'CGY', name: 'Calgary Flames' },
+    { abbrev: 'CAR', name: 'Carolina Hurricanes' },
+    { abbrev: 'CHI', name: 'Chicago Blackhawks' },
+    { abbrev: 'COL', name: 'Colorado Avalanche' },
+    { abbrev: 'CBJ', name: 'Columbus Blue Jackets' },
+    { abbrev: 'DAL', name: 'Dallas Stars' },
+    { abbrev: 'DET', name: 'Detroit Red Wings' },
+    { abbrev: 'EDM', name: 'Edmonton Oilers' },
+    { abbrev: 'FLA', name: 'Florida Panthers' },
+    { abbrev: 'LAK', name: 'Los Angeles Kings' },
+    { abbrev: 'MIN', name: 'Minnesota Wild' },
+    { abbrev: 'MTL', name: 'Montreal Canadiens' },
+    { abbrev: 'NSH', name: 'Nashville Predators' },
+    { abbrev: 'NJD', name: 'New Jersey Devils' },
+    { abbrev: 'NYI', name: 'New York Islanders' },
+    { abbrev: 'NYR', name: 'New York Rangers' },
+    { abbrev: 'OTT', name: 'Ottawa Senators' },
+    { abbrev: 'PHI', name: 'Philadelphia Flyers' },
+    { abbrev: 'PIT', name: 'Pittsburgh Penguins' },
+    { abbrev: 'SJS', name: 'San Jose Sharks' },
+    { abbrev: 'SEA', name: 'Seattle Kraken' },
+    { abbrev: 'STL', name: 'St. Louis Blues' },
+    { abbrev: 'TBL', name: 'Tampa Bay Lightning' },
+    { abbrev: 'TOR', name: 'Toronto Maple Leafs' },
+    { abbrev: 'UTA', name: 'Utah Hockey Club' },
+    { abbrev: 'VAN', name: 'Vancouver Canucks' },
+    { abbrev: 'VGK', name: 'Vegas Golden Knights' },
+    { abbrev: 'WSH', name: 'Washington Capitals' },
+    { abbrev: 'WPG', name: 'Winnipeg Jets' },
+    { abbrev: 'ATL', name: 'Atlanta Thrashers' },
+    { abbrev: 'HFD', name: 'Hartford Whalers' },
+    { abbrev: 'MNS', name: 'Minnesota North Stars' },
+    { abbrev: 'QUE', name: 'Quebec Nordiques' },
+  ], []);
+
+  const availableTeams = CANONICAL_NHL_TEAMS;
 
   const filteredTrades = useMemo(() => {
     return allTrades.filter((t) => {
@@ -191,32 +218,6 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
             <p className="text-slate-400 text-sm mt-1 max-w-2xl">
               Inspect thousands of NHL trades through two analytical lenses: the available information at the moment of the handshake (<span className="text-sky-400 font-semibold">Snapshot</span>), versus how the assets materialized and affected franchises years later (<span className="text-emerald-400 font-semibold">Retrospective</span>).
             </p>
-          </div>
-
-          {/* Mode Switcher */}
-          <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2 bg-rink-surface p-1.5 rounded-lg border border-rink-border w-full sm:w-auto self-start md:self-auto shrink-0">
-            <button
-              onClick={() => setViewMode('SNAPSHOT')}
-              className={`flex items-center justify-center gap-2 px-4 py-2 rounded-md text-xs font-bold transition-all ${
-                viewMode === 'SNAPSHOT'
-                  ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30 ring-1 ring-sky-400/50'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Clock className="w-3.5 h-3.5 shrink-0" />
-              <span>At the Time (Snapshot)</span>
-            </button>
-            <button
-              onClick={() => setViewMode('RETROSPECTIVE')}
-              className={`flex items-center justify-center gap-2 px-4 py-2 rounded-md text-xs font-bold transition-all ${
-                viewMode === 'RETROSPECTIVE'
-                  ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30 ring-1 ring-emerald-400/50'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Trophy className="w-3.5 h-3.5 shrink-0" />
-              <span>Hindsight & Legacy (After)</span>
-            </button>
           </div>
         </div>
       </div>
@@ -408,8 +409,8 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
       <div className="bg-rink-card border border-rink-border rounded-xl p-6 shadow-xl space-y-6">
         {/* Title & Headline */}
         <div className="border-b border-rink-border pb-5">
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
-            <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
+            <div className="flex flex-wrap items-center gap-3">
               <span className="px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-xs font-mono text-slate-300">
                 {selectedTrade.tradeDate}
               </span>
@@ -423,9 +424,35 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
                   Curated Deep-Dive
                 </span>
               )}
+              <span className="text-xs text-slate-400 font-medium hidden md:inline">
+                Era: <span className="text-slate-200">{selectedTrade.seasonEra}</span>
+              </span>
             </div>
-            <div className="text-xs text-slate-400 font-medium">
-              Era: <span className="text-slate-200">{selectedTrade.seasonEra}</span>
+
+            {/* Mode Switcher: Positioned right before the trade info */}
+            <div className="flex items-center gap-1.5 bg-rink-surface p-1 rounded-lg border border-rink-border self-start sm:self-auto shrink-0 shadow-inner">
+              <button
+                onClick={() => setViewMode('SNAPSHOT')}
+                className={`flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${
+                  viewMode === 'SNAPSHOT'
+                    ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30 ring-1 ring-sky-400/50'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <Clock className="w-3.5 h-3.5 shrink-0" />
+                <span>At the Time (Snapshot)</span>
+              </button>
+              <button
+                onClick={() => setViewMode('RETROSPECTIVE')}
+                className={`flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${
+                  viewMode === 'RETROSPECTIVE'
+                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30 ring-1 ring-emerald-400/50'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <Trophy className="w-3.5 h-3.5 shrink-0" />
+                <span>Hindsight & Legacy (After)</span>
+              </button>
             </div>
           </div>
 
