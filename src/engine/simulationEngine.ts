@@ -56,15 +56,21 @@ export function simulateSkaterSeason(
     1.3
   );
 
-  const actualGames = Math.round(baseGames * playingTimeFactor);
+  const actualGames = Math.min(82, Math.max(0, Math.round(baseGames * playingTimeFactor)));
   if (actualGames <= 0) {
     return { games: 0, goals: 0, assists: 0, points: 0, plusMinus: 0, ppp: 0, sog: 0, hits: 0, blocks: 0, pim: 0 };
   }
 
-  const gRate = (proj.rosGoals ?? 20) / Math.max(1, baseGames);
+  // Regression to prevent small-sample unregressed pace distortion (e.g. 23 pts in 8 GP -> 236 pts)
+  const rawGRate = (proj.rosGoals ?? 20) / Math.max(1, baseGames);
+  const rawARate = (proj.rosAssists ?? 30) / Math.max(1, baseGames);
+  const rawPtsRate = rawGRate + rawARate;
+  const rateScale = rawPtsRate * 82 > 155 ? 155 / (rawPtsRate * 82) : 1.0;
+
+  const gRate = rawGRate * rateScale;
   const sampledGoals = samplePoisson(actualGames * gRate);
 
-  const aRate = (proj.rosAssists ?? 30) / Math.max(1, baseGames);
+  const aRate = rawARate * rateScale;
   const sampledAssists = samplePoisson(actualGames * aRate);
 
   const sampledPoints = sampledGoals + sampledAssists;

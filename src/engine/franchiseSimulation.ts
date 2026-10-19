@@ -47,10 +47,11 @@ export function evaluateFranchiseTrade(
     }
   }
 
+  // Exact conservation of salary cap across both franchises under retention
   const teamAPostTradePayroll =
-    teamA.activePayroll - teamASendingSalary + teamBSendingSalary + teamARetainedSalary;
+    teamA.activePayroll - (teamASendingSalary - teamARetainedSalary) + (teamBSendingSalary - teamBRetainedSalary);
   const teamBPostTradePayroll =
-    teamB.activePayroll - teamBSendingSalary + teamASendingSalary + teamBRetainedSalary;
+    teamB.activePayroll - (teamBSendingSalary - teamBRetainedSalary) + (teamASendingSalary - teamARetainedSalary);
 
   const teamACapDelta = teamAPostTradePayroll - teamA.activePayroll;
   const teamBCapDelta = teamBPostTradePayroll - teamB.activePayroll;
@@ -62,11 +63,21 @@ export function evaluateFranchiseTrade(
       const gsax = (svPct - 0.905) * 30 * 2.0;
       return { xgf: 0, xga: -gsax * 0.05, isGoalie: true };
     }
-    const pts = p.actualStats.skater?.points ?? 20;
-    const goals = p.actualStats.skater?.goals ?? 10;
+
+    const skater = p.actualStats.skater;
+    const gp = skater?.gamesPlayed && skater.gamesPlayed > 0 ? skater.gamesPlayed : 20;
+    const rawPts = skater?.points ?? 20;
+    const rawGoals = skater?.goals ?? 10;
+
+    // Bayesian regression to 82-game pace:
+    // weight actual sample by gp / (gp + 15), regressing the rest to league average (45 pts, 18 goals)
+    const weight = Math.min(1.0, gp / (gp + 15));
+    const pacePts = ((rawPts / gp) * 82) * weight + 45 * (1 - weight);
+    const paceGoals = ((rawGoals / gp) * 82) * weight + 18 * (1 - weight);
+
     const isDef = p.primaryPosition === 'D';
 
-    const xgf = (pts / 82) * 0.35 + (goals / 82) * 0.15;
+    const xgf = (pacePts / 82) * 0.35 + (paceGoals / 82) * 0.15;
     const xga = isDef ? -0.22 : -0.06;
     return { xgf, xga, isGoalie: false };
   };
@@ -323,11 +334,11 @@ export function evaluateFranchiseTrade(
     winner = 'WIN_WIN';
     actionA = 'EXECUTE';
     actionB = 'EXECUTE';
-  } else if (cupDeltaA >= 0.02 && cupDeltaB < -0.01 && teamBNetCapitalScore < 40) {
+  } else if (((cupDeltaA >= 0.015 && cupDeltaB < -0.01) || (cupDeltaA >= 0.01 && cupDeltaB <= -0.02)) && teamBNetCapitalScore < 40) {
     winner = 'TEAM_A';
     actionA = 'EXECUTE';
     actionB = 'WALK_AWAY';
-  } else if (cupDeltaB >= 0.02 && cupDeltaA < -0.01 && teamANetCapitalScore < 40) {
+  } else if (((cupDeltaB >= 0.015 && cupDeltaA < -0.01) || (cupDeltaB >= 0.01 && cupDeltaA <= -0.02)) && teamANetCapitalScore < 40) {
     winner = 'TEAM_B';
     actionA = 'WALK_AWAY';
     actionB = 'EXECUTE';

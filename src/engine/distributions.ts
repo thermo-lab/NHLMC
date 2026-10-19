@@ -62,9 +62,9 @@ export function samplePoisson(lambda: number): number {
  * Save Percentage sampling via Gaussian approximation of binomial proportion.
  * Used for goalie SV% (bounded realistically between 0.820 and 0.970).
  */
-export function sampleSavePctg(meanSavePct: number, totalShots: number): number {
-  if (totalShots <= 0) return meanSavePct;
-  const variance = (meanSavePct * (1 - meanSavePct)) / totalShots;
+export function sampleSavePctg(meanSavePct: number, totalShots: number = 1000): number {
+  const shots = (!totalShots || totalShots <= 0) ? 1000 : totalShots;
+  const variance = (meanSavePct * (1 - meanSavePct)) / shots;
   const stdDev = Math.sqrt(Math.max(1e-6, variance));
   return sampleTruncatedNormal(meanSavePct, stdDev, 0.820, 0.970);
 }
