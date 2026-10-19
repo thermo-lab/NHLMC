@@ -3227,7 +3227,7 @@
     "id": 62,
     "nhlId": 8482175,
     "name": "JJ Peterka",
-    "nhlTeam": "BOS",
+    "nhlTeam": "BUF",
     "capHit": 3500000,
     "positions": [
       "RW",
@@ -3237,7 +3237,7 @@
     "primaryPosition": "RW",
     "playerType": "skater",
     "injuryStatus": "ACTIVE",
-    "headshotUrl": "https://assets.nhle.com/mugs/nhl/20262027/BOS/8482175.png",
+    "headshotUrl": "https://assets.nhle.com/mugs/nhl/20262027/BUF/8482175.png",
     "actualStats": {
       "skater": {
         "gamesPlayed": 9,

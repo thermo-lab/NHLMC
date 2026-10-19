@@ -2,12 +2,12 @@ import { test } from 'node:test';
 import assert from 'node:assert';
 import { encodeTradeToUrl, decodeTradeFromUrl, buildShareableTradeUrl } from '../src/utils/tradeUrl.ts';
 
-// Sample mock data
+// Sample mock data with official NHL API IDs
 const mockPlayers = [
-  { id: 442, nhlId: 8476883, name: 'Connor Hellebuyck', nhlTeam: 'WPG', capHit: 8500000 },
-  { id: 448, nhlId: 8477465, name: 'Neal Pionk', nhlTeam: 'WPG', capHit: 5875000 },
-  { id: 412, nhlId: 8479420, name: 'Tage Thompson', nhlTeam: 'BUF', capHit: 7142857 },
-  { id: 414, nhlId: 8482149, name: 'JJ Peterka', nhlTeam: 'BUF', capHit: 850000 },
+  { id: 353, nhlId: 8476945, name: 'Connor Hellebuyck', nhlTeam: 'WPG', capHit: 8500000 },
+  { id: 342, nhlId: 8480145, name: 'Neal Pionk', nhlTeam: 'WPG', capHit: 6500000 },
+  { id: 358, nhlId: 8479420, name: 'Tage Thompson', nhlTeam: 'BUF', capHit: 7142857 },
+  { id: 62, nhlId: 8482175, name: 'JJ Peterka', nhlTeam: 'BUF', capHit: 3500000 },
 ];
 
 const mockProspects = [
@@ -42,22 +42,22 @@ test('URL Engine: Encodes Winnipeg & Buffalo trade into durable URL query string
   assert.ok(query.includes('v=1'), 'Includes protocol version 1');
   assert.ok(query.includes('tA=WPG'), 'Includes team A WPG');
   assert.ok(query.includes('tB=BUF'), 'Includes team B BUF');
-  assert.ok(query.includes('pA=8476883%2C8477465') || query.includes('pA=8476883,8477465'), 'Includes immutable NHL IDs for Team A');
-  assert.ok(query.includes('pB=8479420%2C8482149') || query.includes('pB=8479420,8482149'), 'Includes immutable NHL IDs for Team B');
+  assert.ok(query.includes('pA=8476945%2C8480145') || query.includes('pA=8476945,8480145'), 'Includes immutable NHL IDs for Team A');
+  assert.ok(query.includes('pB=8479420%2C8482175') || query.includes('pB=8479420,8482175'), 'Includes immutable NHL IDs for Team B');
   assert.ok(query.includes('prB=buf-radim-mrtka'), 'Includes Radim Mrtka prospect ID');
   assert.ok(query.includes('dpB=buf-2027-rd1'), 'Includes 2027 Round 1 draft pick');
   assert.ok(query.includes('ret=25'), 'Includes salary retention');
 });
 
 test('URL Engine: Decodes durable URL back to exact trade state', () => {
-  const url = 'https://nhlmc.pages.dev/?v=1&tA=WPG&tB=BUF&pA=8476883,8477465&pB=8479420,8482149&prB=buf-radim-mrtka&dpB=buf-2027-rd1&ret=25';
+  const url = 'https://nhlmc.pages.dev/?v=1&tA=WPG&tB=BUF&pA=8476945,8480145&pB=8479420,8482175&prB=buf-radim-mrtka&dpB=buf-2027-rd1&ret=25';
   const decoded = decodeTradeFromUrl(url, mockPlayers, mockProspects);
 
   assert.ok(decoded !== null, 'Decoded state should not be null');
   assert.strictEqual(decoded.teamAId, 'WPG');
   assert.strictEqual(decoded.teamBId, 'BUF');
-  assert.deepStrictEqual(decoded.teamAPlayerIds, [442, 448], 'Resolves Hellebuyck and Pionk by NHL ID');
-  assert.deepStrictEqual(decoded.teamBPlayerIds, [412, 414], 'Resolves Thompson and Peterka by NHL ID');
+  assert.deepStrictEqual(decoded.teamAPlayerIds, [353, 342], 'Resolves Hellebuyck and Pionk by NHL ID');
+  assert.deepStrictEqual(decoded.teamBPlayerIds, [358, 62], 'Resolves Thompson and Peterka by NHL ID');
   assert.deepStrictEqual(decoded.teamBProspectIds, ['buf-radim-mrtka'], 'Resolves Radim Mrtka');
   assert.strictEqual(decoded.teamBDraftPicks.length, 1);
   assert.strictEqual(decoded.teamBDraftPicks[0].year, 2027);

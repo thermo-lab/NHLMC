@@ -153,7 +153,6 @@ export const NHL_FRANCHISES: NHLTeam[] = [
       59,
       60,
       61,
-      62,
       63,
       64,
       65,
@@ -842,7 +841,8 @@ export const NHL_FRANCHISES: NHLTeam[] = [
       376,
       377,
       378,
-      379
+      379,
+      62
     ]
   },
   {
