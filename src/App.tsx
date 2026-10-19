@@ -27,7 +27,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#080C14] text-slate-100 selection:bg-sky-500 selection:text-black">
+    <div className="min-h-screen flex flex-col bg-[#080C14] text-slate-100 selection:bg-sky-500 selection:text-black overflow-x-hidden w-full max-w-full">
       {/* Top Navbar */}
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 

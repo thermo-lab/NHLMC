@@ -171,33 +171,33 @@ export const PlayerBrowser: React.FC<PlayerBrowserProps> = ({
           </div>
 
           {/* Mode Switcher */}
-          <div className="flex items-center space-x-1 bg-rink-surface p-1 rounded-lg border border-rink-border">
+          <div className="flex items-center space-x-1 bg-rink-surface p-1 rounded-lg border border-rink-border w-full sm:w-auto">
             <button
               onClick={() => setViewMode('roster')}
-              className={`px-3.5 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-1.5 ${
+              className={`flex-1 sm:flex-initial px-3.5 py-1.5 rounded-md text-xs font-bold transition flex items-center justify-center gap-1.5 ${
                 viewMode === 'roster' ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Users className="w-3.5 h-3.5" />
+              <Users className="w-3.5 h-3.5 shrink-0" />
               <span>Active Rosters ({players.length})</span>
             </button>
             <button
               onClick={() => setViewMode('prospects')}
-              className={`px-3.5 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-1.5 ${
+              className={`flex-1 sm:flex-initial px-3.5 py-1.5 rounded-md text-xs font-bold transition flex items-center justify-center gap-1.5 ${
                 viewMode === 'prospects' ? 'bg-purple-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
               <span>Prospect Pipeline ({prospects.length})</span>
             </button>
           </div>
         </div>
 
         {/* Filter Controls */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-rink-border">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 pt-2 border-t border-rink-border">
           {/* Search Box */}
           <div className="relative flex-1 max-w-md">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 shrink-0" />
             <input
               type="text"
               value={searchTerm}
@@ -211,71 +211,74 @@ export const PlayerBrowser: React.FC<PlayerBrowserProps> = ({
             />
           </div>
 
-          {/* Position Pills */}
-          <div className="flex items-center space-x-1 overflow-x-auto pb-1 sm:pb-0">
-            {['ALL', 'F', 'C', 'LW', 'RW', 'D', 'G'].map((pos) => (
-              <button
-                key={pos}
-                onClick={() => setPositionFilter(pos)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap ${
-                  positionFilter === pos
-                    ? viewMode === 'prospects'
-                      ? 'bg-purple-600 text-white shadow-sm'
-                      : 'bg-sky-600 text-white shadow-sm'
-                    : 'bg-rink-surface text-slate-400 hover:text-white border border-rink-border'
-                }`}
-              >
-                {pos}
-              </button>
-            ))}
-          </div>
-
-          {/* Team Dropdown */}
-          <div className="flex items-center space-x-2 text-xs text-slate-400">
-            <span>Team:</span>
-            <select
-              value={teamFilter}
-              onChange={(e) => setTeamFilter(e.target.value)}
-              className="bg-rink-surface border border-rink-border text-white font-bold rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500"
-            >
-              <option value="ALL">All 32 Teams</option>
-              {uniqueTeams.map((team) => (
-                <option key={team} value={team}>
-                  {team}
-                </option>
+          {/* Position Pills & Selectors Group */}
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Position Pills */}
+            <div className="flex items-center space-x-1 overflow-x-auto pb-1 sm:pb-0 max-w-full">
+              {['ALL', 'F', 'C', 'LW', 'RW', 'D', 'G'].map((pos) => (
+                <button
+                  key={pos}
+                  onClick={() => setPositionFilter(pos)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap shrink-0 ${
+                    positionFilter === pos
+                      ? viewMode === 'prospects'
+                        ? 'bg-purple-600 text-white shadow-sm'
+                        : 'bg-sky-600 text-white shadow-sm'
+                      : 'bg-rink-surface text-slate-400 hover:text-white border border-rink-border'
+                  }`}
+                >
+                  {pos}
+                </button>
               ))}
-            </select>
-          </div>
+            </div>
 
-          {viewMode === 'roster' && (
+            {/* Team Dropdown */}
             <div className="flex items-center space-x-2 text-xs text-slate-400">
-              <span>Sort:</span>
+              <span>Team:</span>
               <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="bg-rink-surface border border-rink-border text-sky-400 font-bold rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500"
+                value={teamFilter}
+                onChange={(e) => setTeamFilter(e.target.value)}
+                className="bg-rink-surface border border-rink-border text-white font-bold rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500"
               >
-                <option value="POINTS">Points (PTS)</option>
-                <option value="GOALS">Goals (G)</option>
-                <option value="ASSISTS">Assists (A)</option>
-                <option value="CAP">Cap Hit ($ AAV)</option>
-                <option value="WINS">Goalie Wins (W)</option>
+                <option value="ALL">All 32 Teams</option>
+                {uniqueTeams.map((team) => (
+                  <option key={team} value={team}>
+                    {team}
+                  </option>
+                ))}
               </select>
             </div>
-          )}
 
-          {viewMode === 'prospects' && (
-            <button
-              onClick={() => {
-                setModalTeam(teamFilter !== 'ALL' ? teamFilter : 'BUF');
-                setIsModalOpen(true);
-              }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition shadow-sm"
-            >
-              <UserPlus className="w-3.5 h-3.5" />
-              <span>+ Add Prospect</span>
-            </button>
-          )}
+            {viewMode === 'roster' && (
+              <div className="flex items-center space-x-2 text-xs text-slate-400">
+                <span>Sort:</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="bg-rink-surface border border-rink-border text-sky-400 font-bold rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500"
+                >
+                  <option value="POINTS">Points (PTS)</option>
+                  <option value="GOALS">Goals (G)</option>
+                  <option value="ASSISTS">Assists (A)</option>
+                  <option value="CAP">Cap Hit ($ AAV)</option>
+                  <option value="WINS">Goalie Wins (W)</option>
+                </select>
+              </div>
+            )}
+
+            {viewMode === 'prospects' && (
+              <button
+                onClick={() => {
+                  setModalTeam(teamFilter !== 'ALL' ? teamFilter : 'BUF');
+                  setIsModalOpen(true);
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition shadow-sm shrink-0"
+              >
+                <UserPlus className="w-3.5 h-3.5" />
+                <span>+ Add Prospect</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
 

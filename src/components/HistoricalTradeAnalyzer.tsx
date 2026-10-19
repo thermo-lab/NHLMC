@@ -81,28 +81,28 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
           </div>
 
           {/* Mode Switcher */}
-          <div className="flex items-center gap-2 bg-rink-surface p-1.5 rounded-lg border border-rink-border self-start md:self-auto">
+          <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2 bg-rink-surface p-1.5 rounded-lg border border-rink-border w-full sm:w-auto self-start md:self-auto">
             <button
               onClick={() => setViewMode('SNAPSHOT')}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-md text-xs font-bold transition-all ${
+              className={`flex items-center justify-center gap-2 px-3.5 py-2 rounded-md text-xs font-bold transition-all ${
                 viewMode === 'SNAPSHOT'
                   ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              <Clock className="w-3.5 h-3.5" />
-              At the Time (Snapshot)
+              <Clock className="w-3.5 h-3.5 shrink-0" />
+              <span>At the Time (Snapshot)</span>
             </button>
             <button
               onClick={() => setViewMode('RETROSPECTIVE')}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-md text-xs font-bold transition-all ${
+              className={`flex items-center justify-center gap-2 px-3.5 py-2 rounded-md text-xs font-bold transition-all ${
                 viewMode === 'RETROSPECTIVE'
                   ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              <Trophy className="w-3.5 h-3.5" />
-              Hindsight & Legacy (After)
+              <Trophy className="w-3.5 h-3.5 shrink-0" />
+              <span>Hindsight & Legacy (After)</span>
             </button>
           </div>
         </div>
@@ -110,7 +110,7 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
 
       {/* Trade Selector Carousel / Pills */}
       <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between text-xs text-slate-400">
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
           <span>Select Blockbuster Trade Archive:</span>
           <div className="flex items-center gap-2">
             <span>Filter Era:</span>

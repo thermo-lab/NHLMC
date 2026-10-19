@@ -87,21 +87,21 @@ export const TeamsHub: React.FC<TeamsHubProps> = ({ franchises, players, onSelec
             >
               <div>
                 {/* Team Info */}
-                <div className="flex items-center justify-between border-b border-rink-border pb-3">
-                  <div className="flex items-center space-x-3">
+                <div className="flex flex-wrap sm:flex-nowrap items-start sm:items-center justify-between gap-2 border-b border-rink-border pb-3">
+                  <div className="flex items-center space-x-3 min-w-0 flex-1">
                     <img
                       src={team.logoUrl}
                       alt={team.name}
-                      className="w-10 h-10 object-contain"
+                      className="w-10 h-10 object-contain shrink-0"
                     />
-                    <div>
-                      <h3 className="text-base font-black text-white">{team.name}</h3>
-                      <span className="text-xs text-slate-400 font-mono">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-base font-black text-white truncate">{team.name}</h3>
+                      <span className="text-xs text-slate-400 font-mono truncate block">
                         {team.division} Division • {team.conference}
                       </span>
                     </div>
                   </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-sky-400 border border-slate-700">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-sky-400 border border-slate-700 shrink-0 self-start sm:self-center whitespace-nowrap">
                     {team.contenderTier.replace(/_/g, ' ')}
                   </span>
                 </div>

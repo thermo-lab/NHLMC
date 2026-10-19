@@ -106,24 +106,25 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
           </div>
 
           {/* Right Status Badges */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 shrink-0">
             <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-[11px] font-mono text-slate-300">
               <span className="text-emerald-400 font-bold">$88.0M</span>
               <span className="text-slate-500">Cap Ceiling</span>
             </div>
 
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-sky-950/40 border border-sky-800/40 text-[11px] font-mono text-sky-300">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Official NHL API</span>
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-sky-950/40 border border-sky-800/40 text-[11px] font-mono text-sky-300 shrink-0">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <span className="hidden xs:inline">Official NHL API</span>
+              <span className="xs:hidden">NHL API</span>
             </div>
           </div>
         </div>
 
         {/* Mobile Navigation */}
-        <div className="md:hidden flex items-center justify-between border-t border-rink-border py-2 overflow-x-auto space-x-1">
+        <div className="md:hidden flex items-center border-t border-rink-border py-2 overflow-x-auto space-x-1 max-w-full">
           <button
             onClick={() => setActiveTab('trade')}
-            className={`flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-semibold whitespace-nowrap ${
+            className={`flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-semibold whitespace-nowrap shrink-0 ${
               activeTab === 'trade'
                 ? 'bg-sky-500/20 text-sky-400 border border-sky-500/30'
                 : 'text-slate-400'
@@ -134,7 +135,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
           </button>
           <button
             onClick={() => setActiveTab('historical')}
-            className={`flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-semibold whitespace-nowrap ${
+            className={`flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-semibold whitespace-nowrap shrink-0 ${
               activeTab === 'historical'
                 ? 'bg-sky-500/20 text-sky-400 border border-sky-500/30'
                 : 'text-slate-400'
@@ -145,7 +146,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
           </button>
           <button
             onClick={() => setActiveTab('teams')}
-            className={`flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-semibold whitespace-nowrap ${
+            className={`flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-semibold whitespace-nowrap shrink-0 ${
               activeTab === 'teams'
                 ? 'bg-sky-500/20 text-sky-400 border border-sky-500/30'
                 : 'text-slate-400'
@@ -156,7 +157,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
           </button>
           <button
             onClick={() => setActiveTab('players')}
-            className={`flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-semibold whitespace-nowrap ${
+            className={`flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-semibold whitespace-nowrap shrink-0 ${
               activeTab === 'players'
                 ? 'bg-sky-500/20 text-sky-400 border border-sky-500/30'
                 : 'text-slate-400'
@@ -167,7 +168,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
           </button>
           <button
             onClick={() => setActiveTab('guide')}
-            className={`flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-semibold whitespace-nowrap ${
+            className={`flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-semibold whitespace-nowrap shrink-0 ${
               activeTab === 'guide'
                 ? 'bg-sky-500/20 text-sky-400 border border-sky-500/30'
                 : 'text-slate-400'

@@ -297,14 +297,14 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
         <div className="bg-rink-card border border-rink-border rounded-xl p-5 shadow-lg flex flex-col justify-between space-y-4">
           <div>
             {/* Team Header */}
-            <div className="flex items-center justify-between border-b border-rink-border pb-3">
-              <div className="flex items-center space-x-3">
-                <img src={teamA.logoUrl} alt={teamA.name} className="w-9 h-9 object-contain" />
-                <div>
+            <div className="flex flex-wrap sm:flex-nowrap items-start sm:items-center justify-between gap-2.5 border-b border-rink-border pb-3">
+              <div className="flex items-center space-x-3 min-w-0 flex-1">
+                <img src={teamA.logoUrl} alt={teamA.name} className="w-9 h-9 object-contain shrink-0" />
+                <div className="min-w-0 flex-1">
                   <select
                     value={teamAId}
                     onChange={(e) => setTeamAId(e.target.value)}
-                    className="bg-rink-surface border border-rink-border text-white text-base font-black rounded-lg px-2.5 py-1 focus:outline-none focus:border-brand-500"
+                    className="w-full max-w-[210px] xs:max-w-[260px] sm:max-w-none bg-rink-surface border border-rink-border text-white text-base font-black rounded-lg px-2.5 py-1 focus:outline-none focus:border-brand-500 truncate"
                   >
                     {franchises.map((t) => (
                       <option key={t.id} value={t.id}>
@@ -312,12 +312,12 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                       </option>
                     ))}
                   </select>
-                  <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+                  <div className="text-[11px] text-slate-400 font-mono mt-0.5 truncate">
                     {teamA.record.wins}-{teamA.record.losses}-{teamA.record.otLosses} ({teamA.record.points} pts) • Cap Space: ${(teamA.capSpace / 1e6).toFixed(2)}M
                   </div>
                 </div>
               </div>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-500/20 text-sky-400 border border-sky-500/30">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-500/20 text-sky-400 border border-sky-500/30 shrink-0 self-start sm:self-center whitespace-nowrap">
                 {teamA.contenderTier.replace(/_/g, ' ')}
               </span>
             </div>
@@ -338,27 +338,27 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                   {teamASendingPlayers.map((p) => (
                     <div
                       key={p.id}
-                      className="flex items-center justify-between bg-rink-surface border border-rink-border rounded-lg p-2"
+                      className="flex items-center justify-between bg-rink-surface border border-rink-border rounded-lg p-2 gap-2"
                     >
-                      <div className="flex items-center space-x-2.5">
+                      <div className="flex items-center space-x-2.5 min-w-0 flex-1">
                         {p.headshotUrl && (
-                          <img src={p.headshotUrl} alt={p.name} className="w-8 h-8 rounded-full object-cover bg-slate-800" />
+                          <img src={p.headshotUrl} alt={p.name} className="w-8 h-8 rounded-full object-cover bg-slate-800 shrink-0" />
                         )}
-                        <div>
-                          <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                            <span>{p.name}</span>
-                            <span className="text-[9px] px-1 py-0.2 bg-slate-800 text-sky-400 rounded">
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs font-bold text-white flex flex-wrap items-center gap-1.5">
+                            <span className="truncate">{p.name}</span>
+                            <span className="text-[9px] px-1 py-0.2 bg-slate-800 text-sky-400 rounded shrink-0">
                               {p.primaryPosition}
                             </span>
                           </div>
-                          <div className="text-[10px] text-emerald-400 font-mono">
+                          <div className="text-[10px] text-emerald-400 font-mono truncate">
                             ${(p.capHit / 1e6).toFixed(2)}M AAV
                           </div>
                         </div>
                       </div>
                       <button
                         onClick={() => setTeamAPlayerIds(teamAPlayerIds.filter((id) => id !== p.id))}
-                        className="text-slate-500 hover:text-red-400 p-1"
+                        className="text-slate-500 hover:text-red-400 p-1 shrink-0"
                         title="Remove player"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -370,27 +370,27 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                   {teamASendingProspects.map((pr) => (
                     <div
                       key={pr.id}
-                      className="flex items-center justify-between bg-purple-950/30 border border-purple-800/40 rounded-lg p-2"
+                      className="flex items-center justify-between bg-purple-950/30 border border-purple-800/40 rounded-lg p-2 gap-2"
                     >
-                      <div className="flex items-center space-x-2.5">
-                        <div className="w-8 h-8 rounded-full bg-purple-900/60 border border-purple-500/40 flex items-center justify-center text-purple-300 font-black text-xs">
+                      <div className="flex items-center space-x-2.5 min-w-0 flex-1">
+                        <div className="w-8 h-8 rounded-full bg-purple-900/60 border border-purple-500/40 flex items-center justify-center text-purple-300 font-black text-xs shrink-0">
                           {pr.position}
                         </div>
-                        <div>
-                          <div className="text-xs font-bold text-purple-200 flex items-center gap-1.5">
-                            <span>{pr.name}</span>
-                            <span className="text-[9px] px-1 py-0.2 bg-purple-900/80 text-purple-300 rounded font-bold">
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs font-bold text-purple-200 flex flex-wrap items-center gap-1.5">
+                            <span className="truncate">{pr.name}</span>
+                            <span className="text-[9px] px-1 py-0.2 bg-purple-900/80 text-purple-300 rounded font-bold whitespace-nowrap shrink-0">
                               ⭐️ {pr.potential}
                             </span>
                           </div>
-                          <div className="text-[10px] text-slate-400">
+                          <div className="text-[10px] text-slate-400 truncate">
                             {pr.height}, {pr.weight} lbs • {pr.draftInfo}
                           </div>
                         </div>
                       </div>
                       <button
                         onClick={() => setTeamAProspectIds(teamAProspectIds.filter((id) => id !== pr.id))}
-                        className="text-slate-500 hover:text-red-400 p-1"
+                        className="text-slate-500 hover:text-red-400 p-1 shrink-0"
                         title="Remove prospect"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -402,22 +402,22 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                   {teamADraftPicks.map((pick) => (
                     <div
                       key={pick.id}
-                      className="flex items-center justify-between bg-amber-950/30 border border-amber-800/40 rounded-lg p-2 text-xs"
+                      className="flex items-center justify-between bg-amber-950/30 border border-amber-800/40 rounded-lg p-2 text-xs gap-2"
                     >
-                      <div className="flex items-center space-x-2">
-                        <Ticket className="w-4 h-4 text-amber-400" />
-                        <div>
-                          <span className="font-bold text-amber-300">
+                      <div className="flex items-center space-x-2 min-w-0 flex-1">
+                        <Ticket className="w-4 h-4 text-amber-400 shrink-0" />
+                        <div className="min-w-0 flex-1 flex flex-wrap items-center gap-1">
+                          <span className="font-bold text-amber-300 truncate">
                             {pick.year} Round {pick.round} ({pick.originalTeamId})
                           </span>
-                          <span className="ml-2 text-[10px] text-slate-400 font-mono">
+                          <span className="text-[10px] text-slate-400 font-mono shrink-0">
                             {pick.protection.replace(/_/g, ' ')}
                           </span>
                         </div>
                       </div>
                       <button
                         onClick={() => setTeamADraftPicks(teamADraftPicks.filter((p) => p.id !== pick.id))}
-                        className="text-slate-500 hover:text-red-400 p-1"
+                        className="text-slate-500 hover:text-red-400 p-1 shrink-0"
                         title="Remove pick"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -598,14 +598,14 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
         <div className="bg-rink-card border border-rink-border rounded-xl p-5 shadow-lg flex flex-col justify-between space-y-4">
           <div>
             {/* Team Header */}
-            <div className="flex items-center justify-between border-b border-rink-border pb-3">
-              <div className="flex items-center space-x-3">
-                <img src={teamB.logoUrl} alt={teamB.name} className="w-9 h-9 object-contain" />
-                <div>
+            <div className="flex flex-wrap sm:flex-nowrap items-start sm:items-center justify-between gap-2.5 border-b border-rink-border pb-3">
+              <div className="flex items-center space-x-3 min-w-0 flex-1">
+                <img src={teamB.logoUrl} alt={teamB.name} className="w-9 h-9 object-contain shrink-0" />
+                <div className="min-w-0 flex-1">
                   <select
                     value={teamBId}
                     onChange={(e) => setTeamBId(e.target.value)}
-                    className="bg-rink-surface border border-rink-border text-white text-base font-black rounded-lg px-2.5 py-1 focus:outline-none focus:border-brand-500"
+                    className="w-full max-w-[210px] xs:max-w-[260px] sm:max-w-none bg-rink-surface border border-rink-border text-white text-base font-black rounded-lg px-2.5 py-1 focus:outline-none focus:border-brand-500 truncate"
                   >
                     {franchises.map((t) => (
                       <option key={t.id} value={t.id}>
@@ -613,12 +613,12 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                       </option>
                     ))}
                   </select>
-                  <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+                  <div className="text-[11px] text-slate-400 font-mono mt-0.5 truncate">
                     {teamB.record.wins}-{teamB.record.losses}-{teamB.record.otLosses} ({teamB.record.points} pts) • Cap Space: ${(teamB.capSpace / 1e6).toFixed(2)}M
                   </div>
                 </div>
               </div>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shrink-0 self-start sm:self-center whitespace-nowrap">
                 {teamB.contenderTier.replace(/_/g, ' ')}
               </span>
             </div>
@@ -639,27 +639,27 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                   {teamBSendingPlayers.map((p) => (
                     <div
                       key={p.id}
-                      className="flex items-center justify-between bg-rink-surface border border-rink-border rounded-lg p-2"
+                      className="flex items-center justify-between bg-rink-surface border border-rink-border rounded-lg p-2 gap-2"
                     >
-                      <div className="flex items-center space-x-2.5">
+                      <div className="flex items-center space-x-2.5 min-w-0 flex-1">
                         {p.headshotUrl && (
-                          <img src={p.headshotUrl} alt={p.name} className="w-8 h-8 rounded-full object-cover bg-slate-800" />
+                          <img src={p.headshotUrl} alt={p.name} className="w-8 h-8 rounded-full object-cover bg-slate-800 shrink-0" />
                         )}
-                        <div>
-                          <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                            <span>{p.name}</span>
-                            <span className="text-[9px] px-1 py-0.2 bg-slate-800 text-emerald-400 rounded">
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs font-bold text-white flex flex-wrap items-center gap-1.5">
+                            <span className="truncate">{p.name}</span>
+                            <span className="text-[9px] px-1 py-0.2 bg-slate-800 text-emerald-400 rounded shrink-0">
                               {p.primaryPosition}
                             </span>
                           </div>
-                          <div className="text-[10px] text-emerald-400 font-mono">
+                          <div className="text-[10px] text-emerald-400 font-mono truncate">
                             ${(p.capHit / 1e6).toFixed(2)}M AAV
                           </div>
                         </div>
                       </div>
                       <button
                         onClick={() => setTeamBPlayerIds(teamBPlayerIds.filter((id) => id !== p.id))}
-                        className="text-slate-500 hover:text-red-400 p-1"
+                        className="text-slate-500 hover:text-red-400 p-1 shrink-0"
                         title="Remove player"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -671,27 +671,27 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                   {teamBSendingProspects.map((pr) => (
                     <div
                       key={pr.id}
-                      className="flex items-center justify-between bg-purple-950/30 border border-purple-800/40 rounded-lg p-2"
+                      className="flex items-center justify-between bg-purple-950/30 border border-purple-800/40 rounded-lg p-2 gap-2"
                     >
-                      <div className="flex items-center space-x-2.5">
-                        <div className="w-8 h-8 rounded-full bg-purple-900/60 border border-purple-500/40 flex items-center justify-center text-purple-300 font-black text-xs">
+                      <div className="flex items-center space-x-2.5 min-w-0 flex-1">
+                        <div className="w-8 h-8 rounded-full bg-purple-900/60 border border-purple-500/40 flex items-center justify-center text-purple-300 font-black text-xs shrink-0">
                           {pr.position}
                         </div>
-                        <div>
-                          <div className="text-xs font-bold text-purple-200 flex items-center gap-1.5">
-                            <span>{pr.name}</span>
-                            <span className="text-[9px] px-1 py-0.2 bg-purple-900/80 text-purple-300 rounded font-bold">
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs font-bold text-purple-200 flex flex-wrap items-center gap-1.5">
+                            <span className="truncate">{pr.name}</span>
+                            <span className="text-[9px] px-1 py-0.2 bg-purple-900/80 text-purple-300 rounded font-bold whitespace-nowrap shrink-0">
                               ⭐️ {pr.potential}
                             </span>
                           </div>
-                          <div className="text-[10px] text-slate-400">
+                          <div className="text-[10px] text-slate-400 truncate">
                             {pr.height}, {pr.weight} lbs • {pr.draftInfo}
                           </div>
                         </div>
                       </div>
                       <button
                         onClick={() => setTeamBProspectIds(teamBProspectIds.filter((id) => id !== pr.id))}
-                        className="text-slate-500 hover:text-red-400 p-1"
+                        className="text-slate-500 hover:text-red-400 p-1 shrink-0"
                         title="Remove prospect"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -703,22 +703,22 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                   {teamBDraftPicks.map((pick) => (
                     <div
                       key={pick.id}
-                      className="flex items-center justify-between bg-amber-950/30 border border-amber-800/40 rounded-lg p-2 text-xs"
+                      className="flex items-center justify-between bg-amber-950/30 border border-amber-800/40 rounded-lg p-2 text-xs gap-2"
                     >
-                      <div className="flex items-center space-x-2">
-                        <Ticket className="w-4 h-4 text-amber-400" />
-                        <div>
-                          <span className="font-bold text-amber-300">
+                      <div className="flex items-center space-x-2 min-w-0 flex-1">
+                        <Ticket className="w-4 h-4 text-amber-400 shrink-0" />
+                        <div className="min-w-0 flex-1 flex flex-wrap items-center gap-1">
+                          <span className="font-bold text-amber-300 truncate">
                             {pick.year} Round {pick.round} ({pick.originalTeamId})
                           </span>
-                          <span className="ml-2 text-[10px] text-slate-400 font-mono">
+                          <span className="text-[10px] text-slate-400 font-mono shrink-0">
                             {pick.protection.replace(/_/g, ' ')}
                           </span>
                         </div>
                       </div>
                       <button
                         onClick={() => setTeamBDraftPicks(teamBDraftPicks.filter((p) => p.id !== pick.id))}
-                        className="text-slate-500 hover:text-red-400 p-1"
+                        className="text-slate-500 hover:text-red-400 p-1 shrink-0"
                         title="Remove pick"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -885,20 +885,20 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
       </div>
 
       {/* Execute Simulation Button */}
-      <div className="flex justify-center">
+      <div className="flex justify-center px-2">
         <button
           onClick={handleRunSimulation}
           disabled={isSimulating}
-          className="flex items-center gap-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-sky-600 via-blue-600 to-cyan-500 hover:from-sky-500 hover:to-cyan-400 text-white font-black text-sm shadow-xl shadow-sky-900/40 active:scale-95 transition disabled:opacity-50"
+          className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 rounded-xl bg-gradient-to-r from-sky-600 via-blue-600 to-cyan-500 hover:from-sky-500 hover:to-cyan-400 text-white font-black text-xs sm:text-sm shadow-xl shadow-sky-900/40 active:scale-95 transition disabled:opacity-50 text-center"
         >
           {isSimulating ? (
             <>
-              <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin shrink-0" />
               <span>Simulating 82 Games & Stanley Cup Playoffs...</span>
             </>
           ) : (
             <>
-              <Zap className="w-4 h-4" />
+              <Zap className="w-4 h-4 shrink-0" />
               <span>Run Monte Carlo Trade Evaluation</span>
             </>
           )}
@@ -909,35 +909,39 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
       {evaluation && (
         <div className="space-y-6">
           {/* Executive Verdict Banner */}
-          <div className="bg-rink-card border border-rink-border rounded-xl p-5 shadow-lg space-y-3">
+          <div className="bg-rink-card border border-rink-border rounded-xl p-4 sm:p-5 shadow-lg space-y-3">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-rink-border pb-3">
               <div className="flex items-center space-x-2.5">
-                <Trophy className="w-5 h-5 text-amber-400" />
+                <Trophy className="w-5 h-5 text-amber-400 shrink-0" />
                 <h3 className="text-base font-black text-white">Executive GM Trade Verdict</h3>
                 <span className="text-xs text-slate-500">({evaluation.executionTimeMs}ms)</span>
               </div>
-              <div className="flex items-center gap-2 text-xs">
-                <span className="text-slate-400">{teamA.abbrev} Recommendation:</span>
-                <span
-                  className={`font-black px-2 py-0.5 rounded ${
-                    evaluation.verdict.actionRecommendationTeamA === 'EXECUTE'
-                      ? 'bg-emerald-500/20 text-emerald-400'
-                      : 'bg-slate-800 text-slate-300'
-                  }`}
-                >
-                  {evaluation.verdict.actionRecommendationTeamA}
-                </span>
+              <div className="flex flex-wrap items-center gap-2 text-xs">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-slate-400">{teamA.abbrev} Recommendation:</span>
+                  <span
+                    className={`font-black px-2 py-0.5 rounded ${
+                      evaluation.verdict.actionRecommendationTeamA === 'EXECUTE'
+                        ? 'bg-emerald-500/20 text-emerald-400'
+                        : 'bg-slate-800 text-slate-300'
+                    }`}
+                  >
+                    {evaluation.verdict.actionRecommendationTeamA}
+                  </span>
+                </div>
 
-                <span className="text-slate-400 ml-2">{teamB.abbrev} Recommendation:</span>
-                <span
-                  className={`font-black px-2 py-0.5 rounded ${
-                    evaluation.verdict.actionRecommendationTeamB === 'EXECUTE'
-                      ? 'bg-emerald-500/20 text-emerald-400'
-                      : 'bg-slate-800 text-slate-300'
-                  }`}
-                >
-                  {evaluation.verdict.actionRecommendationTeamB}
-                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-slate-400 sm:ml-2">{teamB.abbrev} Recommendation:</span>
+                  <span
+                    className={`font-black px-2 py-0.5 rounded ${
+                      evaluation.verdict.actionRecommendationTeamB === 'EXECUTE'
+                        ? 'bg-emerald-500/20 text-emerald-400'
+                        : 'bg-slate-800 text-slate-300'
+                    }`}
+                  >
+                    {evaluation.verdict.actionRecommendationTeamB}
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -1017,13 +1021,13 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Team A Metrics */}
             <div className="bg-rink-card border border-rink-border rounded-xl p-5 shadow-lg space-y-4">
-              <div className="flex items-center justify-between border-b border-rink-border pb-3">
-                <div className="flex items-center gap-2">
-                  <img src={teamA.logoUrl} alt={teamA.name} className="w-6 h-6 object-contain" />
-                  <h4 className="text-sm font-bold text-white">{teamA.name} Impact</h4>
+              <div className="flex flex-wrap sm:flex-nowrap items-start sm:items-center justify-between gap-2 border-b border-rink-border pb-3">
+                <div className="flex items-center gap-2 min-w-0">
+                  <img src={teamA.logoUrl} alt={teamA.name} className="w-6 h-6 object-contain shrink-0" />
+                  <h4 className="text-sm font-bold text-white truncate">{teamA.name} Impact</h4>
                 </div>
                 <span
-                  className={`text-xs font-bold px-2 py-0.5 rounded ${
+                  className={`text-xs font-bold px-2 py-0.5 rounded shrink-0 ${
                     evaluation.capImpact.teamA.isCapCompliant
                       ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
                       : 'bg-red-500/20 text-red-400 border border-red-500/30'
@@ -1124,13 +1128,13 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
 
             {/* Team B Metrics */}
             <div className="bg-rink-card border border-rink-border rounded-xl p-5 shadow-lg space-y-4">
-              <div className="flex items-center justify-between border-b border-rink-border pb-3">
-                <div className="flex items-center gap-2">
-                  <img src={teamB.logoUrl} alt={teamB.name} className="w-6 h-6 object-contain" />
-                  <h4 className="text-sm font-bold text-white">{teamB.name} Impact</h4>
+              <div className="flex flex-wrap sm:flex-nowrap items-start sm:items-center justify-between gap-2 border-b border-rink-border pb-3">
+                <div className="flex items-center gap-2 min-w-0">
+                  <img src={teamB.logoUrl} alt={teamB.name} className="w-6 h-6 object-contain shrink-0" />
+                  <h4 className="text-sm font-bold text-white truncate">{teamB.name} Impact</h4>
                 </div>
                 <span
-                  className={`text-xs font-bold px-2 py-0.5 rounded ${
+                  className={`text-xs font-bold px-2 py-0.5 rounded shrink-0 ${
                     evaluation.capImpact.teamB.isCapCompliant
                       ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
                       : 'bg-red-500/20 text-red-400 border border-red-500/30'
