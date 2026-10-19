@@ -623,3 +623,13 @@ export const HISTORICAL_TRADES: HistoricalTrade[] = [
     },
   },
 ];
+
+export async function loadAllHistoricalTrades(): Promise<HistoricalTrade[]> {
+  try {
+    const data = await import('./allHistoricalTrades.json');
+    return (data.default || data) as HistoricalTrade[];
+  } catch (err) {
+    console.warn('Failed to load full historical trades archive, falling back to marquee trades:', err);
+    return HISTORICAL_TRADES;
+  }
+}
