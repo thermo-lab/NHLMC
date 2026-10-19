@@ -8,6 +8,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const url = new URL(context.request.url);
   const q = (url.searchParams.get('q') || '').toLowerCase().trim();
   const era = url.searchParams.get('era') || 'ALL';
+  const team = url.searchParams.get('team') || 'ALL';
   const id = url.searchParams.get('id');
   const limit = Math.min(parseInt(url.searchParams.get('limit') || '50', 10), 100);
   const page = Math.max(parseInt(url.searchParams.get('page') || '1', 10), 1);
@@ -31,6 +32,12 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         if (era !== 'ALL') {
           whereClauses.push('season_era LIKE ?');
           params.push(`%${era}%`);
+        }
+
+        if (team !== 'ALL') {
+          whereClauses.push('(team_a LIKE ? OR team_b LIKE ?)');
+          const teamWildcard = `%"teamAbbrev":"${team}"%`;
+          params.push(teamWildcard, teamWildcard);
         }
 
         if (q) {
@@ -75,6 +82,11 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
   if (era !== 'ALL') {
     filtered = filtered.filter((t) => t.seasonEra.includes(era));
+  }
+  if (team !== 'ALL') {
+    filtered = filtered.filter(
+      (t) => t.teamA.teamAbbrev === team || t.teamB.teamAbbrev === team
+    );
   }
   if (q) {
     filtered = filtered.filter(

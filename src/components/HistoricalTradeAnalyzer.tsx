@@ -30,6 +30,7 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
   const [viewMode, setViewMode] = useState<'SNAPSHOT' | 'RETROSPECTIVE'>('SNAPSHOT');
   const [activeCategory, setActiveCategory] = useState<'ALL' | 'MARQUEE'>('ALL');
   const [eraFilter, setEraFilter] = useState<string>('ALL');
+  const [teamFilter, setTeamFilter] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const pageSize = 12;
@@ -55,6 +56,21 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
 
   const marqueeIds = useMemo(() => new Set(HISTORICAL_TRADES.map((t) => t.id)), []);
 
+  const availableTeams = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const t of allTrades) {
+      if (t.teamA.teamAbbrev && !map.has(t.teamA.teamAbbrev)) {
+        map.set(t.teamA.teamAbbrev, t.teamA.teamName);
+      }
+      if (t.teamB.teamAbbrev && !map.has(t.teamB.teamAbbrev)) {
+        map.set(t.teamB.teamAbbrev, t.teamB.teamName);
+      }
+    }
+    return Array.from(map.entries())
+      .map(([abbrev, name]) => ({ abbrev, name }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [allTrades]);
+
   const filteredTrades = useMemo(() => {
     return allTrades.filter((t) => {
       // Category filter
@@ -65,6 +81,18 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
       // Era filter
       if (eraFilter !== 'ALL') {
         if (!t.seasonEra.toLowerCase().includes(eraFilter.toLowerCase())) {
+          return false;
+        }
+      }
+
+      // Team filter
+      if (teamFilter !== 'ALL') {
+        const matchesTeam =
+          t.teamA.teamAbbrev === teamFilter ||
+          t.teamB.teamAbbrev === teamFilter ||
+          t.teamA.teamName.toLowerCase().includes(teamFilter.toLowerCase()) ||
+          t.teamB.teamName.toLowerCase().includes(teamFilter.toLowerCase());
+        if (!matchesTeam) {
           return false;
         }
       }
@@ -88,12 +116,12 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
 
       return true;
     });
-  }, [allTrades, activeCategory, eraFilter, searchQuery, marqueeIds]);
+  }, [allTrades, activeCategory, eraFilter, teamFilter, searchQuery, marqueeIds]);
 
   // Reset to page 1 whenever filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [activeCategory, eraFilter, searchQuery]);
+  }, [activeCategory, eraFilter, teamFilter, searchQuery]);
 
   const totalPages = Math.max(1, Math.ceil(filteredTrades.length / pageSize));
   const paginatedTrades = useMemo(() => {
@@ -258,6 +286,23 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
                 <option value="80s" className="bg-rink-surface text-white">1980s</option>
               </select>
             </div>
+
+            {/* Team Filter Dropdown */}
+            <div className="flex items-center gap-1.5 bg-rink-surface border border-rink-border rounded-lg px-2.5 py-1.5 text-xs text-slate-300">
+              <ShieldAlert className="w-3 h-3 text-brand-400" />
+              <select
+                value={teamFilter}
+                onChange={(e) => setTeamFilter(e.target.value)}
+                className="bg-transparent text-slate-200 text-xs focus:outline-none cursor-pointer max-w-[140px] truncate"
+              >
+                <option value="ALL" className="bg-rink-surface text-white">All Teams ({availableTeams.length})</option>
+                {availableTeams.map((team) => (
+                  <option key={team.abbrev} value={team.abbrev} className="bg-rink-surface text-white">
+                    {team.name} ({team.abbrev})
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
@@ -299,11 +344,12 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
           <div className="text-center py-10 bg-rink-surface/50 rounded-xl border border-dashed border-rink-border">
             <AlertOctagon className="w-8 h-8 text-slate-500 mx-auto mb-2" />
             <p className="text-sm font-semibold text-slate-300">No trades match your search filters.</p>
-            <p className="text-xs text-slate-500 mt-1">Try clearing your search query or selecting "All Eras".</p>
+            <p className="text-xs text-slate-500 mt-1">Try clearing your search query or selecting "All Teams" / "All Eras".</p>
             <button
               onClick={() => {
                 setSearchQuery('');
                 setEraFilter('ALL');
+                setTeamFilter('ALL');
                 setActiveCategory('ALL');
               }}
               className="mt-3 px-3 py-1.5 bg-brand-600 hover:bg-brand-500 text-white rounded text-xs font-semibold"
