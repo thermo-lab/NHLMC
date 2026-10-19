@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS franchises (
 -- 2. Active NHL Players Table
 CREATE TABLE IF NOT EXISTS players (
   id INTEGER PRIMARY KEY,            -- Internal ID (1..807)
-  nhl_id INTEGER UNIQUE,             -- Official NHL API ID (e.g. 8478402 for McDavid)
+  nhl_id INTEGER,                    -- Official NHL API ID (e.g. 8478402 for McDavid)
   name TEXT NOT NULL,
   nhl_team TEXT REFERENCES franchises(id),
   cap_hit INTEGER NOT NULL,
@@ -95,6 +95,7 @@ CREATE TABLE IF NOT EXISTS sync_log (
 
 -- Indexes for lightning-fast edge reads
 CREATE INDEX IF NOT EXISTS idx_players_team ON players(nhl_team);
+CREATE INDEX IF NOT EXISTS idx_players_nhl_id ON players(nhl_id);
 CREATE INDEX IF NOT EXISTS idx_players_pos ON players(primary_position);
 CREATE INDEX IF NOT EXISTS idx_prospects_team ON prospects(nhl_team);
 CREATE INDEX IF NOT EXISTS idx_prospects_potential ON prospects(potential);

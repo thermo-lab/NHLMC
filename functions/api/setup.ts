@@ -24,8 +24,13 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       );
     }
 
-    // 1. Create Schema Tables
+    // 1. Create Schema Tables (Drop first if re-initializing schema)
     const schemaStatements = [
+      `DROP TABLE IF EXISTS sync_log;`,
+      `DROP TABLE IF EXISTS historical_trades;`,
+      `DROP TABLE IF EXISTS prospects;`,
+      `DROP TABLE IF EXISTS players;`,
+      `DROP TABLE IF EXISTS franchises;`,
       `CREATE TABLE IF NOT EXISTS franchises (
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
@@ -49,7 +54,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       );`,
       `CREATE TABLE IF NOT EXISTS players (
         id INTEGER PRIMARY KEY,
-        nhl_id INTEGER UNIQUE,
+        nhl_id INTEGER,
         name TEXT NOT NULL,
         nhl_team TEXT,
         cap_hit INTEGER NOT NULL,
@@ -103,6 +108,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );`,
       `CREATE INDEX IF NOT EXISTS idx_players_team ON players(nhl_team);`,
+      `CREATE INDEX IF NOT EXISTS idx_players_nhl_id ON players(nhl_id);`,
       `CREATE INDEX IF NOT EXISTS idx_prospects_team ON prospects(nhl_team);`,
     ];
 
