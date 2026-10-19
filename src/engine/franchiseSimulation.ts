@@ -59,9 +59,23 @@ export function evaluateFranchiseTrade(
   // Calculate On-Ice Rating Shifts for Team A and Team B
   const calculatePlayerImpact = (p: Player) => {
     if (p.playerType === 'goalie') {
-      const svPct = p.actualStats.goalie?.savePercentage ?? 0.910;
-      const gsax = (svPct - 0.905) * 30 * 2.0;
-      return { xgf: 0, xga: -gsax * 0.05, isGoalie: true };
+      const g = p.actualStats.goalie;
+      const gp = g?.gamesPlayed ?? 0;
+      let svPct = 0.905;
+      if (gp >= 5 && g?.savePercentage) {
+        svPct = g.savePercentage;
+      } else if (p.projections?.rosSavePctg && p.projections.rosSavePctg > 0.905) {
+        svPct = p.projections.rosSavePctg;
+      } else if (p.capHit >= 6000000) {
+        // Elite franchise starter (Hellebuyck, Shesterkin, Swayman, Vasilevskiy, Sorokin)
+        svPct = 0.917;
+      } else if (p.capHit >= 3500000) {
+        svPct = 0.910;
+      }
+      // League average SV% is ~0.902. Each 0.010 above league average is ~0.30 goals per 60 saved
+      const gsaxPer60 = (svPct - 0.902) * 30.0;
+      const xgaReduction = Math.max(0.10, Math.min(0.65, gsaxPer60));
+      return { xgf: 0, xga: -Number(xgaReduction.toFixed(2)), isGoalie: true };
     }
 
     const skater = p.actualStats.skater;
@@ -142,9 +156,12 @@ export function evaluateFranchiseTrade(
     teamABaselinePointsSum += basePtsA;
     teamBBaselinePointsSum += basePtsB;
 
-    // Playoff qualification threshold in NHL typically ~95 points
-    const madePlayoffsBaseA = basePtsA >= 94;
-    const madePlayoffsBaseB = basePtsB >= 94;
+    // In the NHL, wildcard bubble cutoffs fluctuate from season to season (mean ~93.5 pts, sd ~2.2 pts)
+    const playoffCutoffA = sampleNormal(93.5, 2.2);
+    const playoffCutoffB = sampleNormal(93.5, 2.2);
+
+    const madePlayoffsBaseA = basePtsA >= playoffCutoffA;
+    const madePlayoffsBaseB = basePtsB >= playoffCutoffB;
     if (madePlayoffsBaseA) teamABaselinePlayoffCount++;
     if (madePlayoffsBaseB) teamBBaselinePlayoffCount++;
 
@@ -169,8 +186,8 @@ export function evaluateFranchiseTrade(
     teamAPostTradePointsSum += postPtsA;
     teamBPostTradePointsSum += postPtsB;
 
-    const madePlayoffsPostA = postPtsA >= 94;
-    const madePlayoffsPostB = postPtsB >= 94;
+    const madePlayoffsPostA = postPtsA >= playoffCutoffA;
+    const madePlayoffsPostB = postPtsB >= playoffCutoffB;
     if (madePlayoffsPostA) teamAPostTradePlayoffCount++;
     if (madePlayoffsPostB) teamBPostTradePlayoffCount++;
 

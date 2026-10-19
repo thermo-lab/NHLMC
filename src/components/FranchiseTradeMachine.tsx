@@ -287,6 +287,34 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     }
   }, [initialTradeParams]);
 
+  // Automatically re-run simulation whenever trade assets change (debounced 200ms)
+  const isInitialMount = React.useRef(true);
+  React.useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    if (isHydratingRef.current) return;
+
+    const timer = setTimeout(() => {
+      handleRunSimulation();
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [
+    teamAId,
+    teamBId,
+    teamAPlayerIds,
+    teamBPlayerIds,
+    teamAProspectIds,
+    teamBProspectIds,
+    teamADraftPicks,
+    teamBDraftPicks,
+    retainSalary,
+    retentionPct,
+    iterations,
+  ]);
+
   const handleSelectFeaturedProposal = (proposal: FeaturedTradeProposal) => {
     loadTradeFromQuery(proposal.tradeUrlParams, proposal.id);
   };
@@ -324,9 +352,22 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     setTimeout(() => setQuickCopiedToast(false), 2500);
   };
 
+  const formatProb = (val: number) => {
+    const pct = val * 100;
+    if (pct > 0 && pct < 0.1) return `${pct.toFixed(2)}%`;
+    return `${pct.toFixed(1)}%`;
+  };
+
   const formatDelta = (val: number, isPercent: boolean = false) => {
     const sign = val > 0 ? '+' : '';
-    return isPercent ? `${sign}${(val * 100).toFixed(1)}%` : `${sign}${val.toFixed(1)}`;
+    if (isPercent) {
+      const pct = val * 100;
+      if (Math.abs(pct) > 0 && Math.abs(pct) < 0.1) {
+        return `${sign}${pct.toFixed(2)}%`;
+      }
+      return `${sign}${pct.toFixed(1)}%`;
+    }
+    return `${sign}${val.toFixed(1)}`;
   };
 
   const handleToggleDraftPick = (pick: DraftPick, isTeamA: boolean) => {
@@ -1204,7 +1245,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                 <div className="bg-rink-surface p-3 rounded-lg border border-rink-border">
                   <span className="text-slate-400 block text-[10px] uppercase font-semibold">Stanley Cup Win Prob</span>
                   <div className="text-lg font-black text-white mt-0.5">
-                    {(evaluation.teamA.postTrade.stanleyCupWinProb * 100).toFixed(1)}%
+                    {formatProb(evaluation.teamA.postTrade.stanleyCupWinProb)}
                     <span
                       className={`text-xs ml-1.5 font-bold ${
                         evaluation.teamA.deltas.stanleyCupDelta > 0
@@ -1218,14 +1259,14 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                     </span>
                   </div>
                   <div className="text-[10px] text-slate-500 mt-1">
-                    Baseline: {(evaluation.teamA.baseline.stanleyCupWinProb * 100).toFixed(1)}%
+                    Baseline: {formatProb(evaluation.teamA.baseline.stanleyCupWinProb)}
                   </div>
                 </div>
 
                 <div className="bg-rink-surface p-3 rounded-lg border border-rink-border">
                   <span className="text-slate-400 block text-[10px] uppercase font-semibold">Playoff Qualification</span>
                   <div className="text-lg font-black text-white mt-0.5">
-                    {(evaluation.teamA.postTrade.playoffProbability * 100).toFixed(1)}%
+                    {formatProb(evaluation.teamA.postTrade.playoffProbability)}
                     <span
                       className={`text-xs ml-1.5 font-bold ${
                         evaluation.teamA.deltas.playoffProbDelta > 0
@@ -1239,7 +1280,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                     </span>
                   </div>
                   <div className="text-[10px] text-slate-500 mt-1">
-                    Baseline: {(evaluation.teamA.baseline.playoffProbability * 100).toFixed(1)}%
+                    Baseline: {formatProb(evaluation.teamA.baseline.playoffProbability)}
                   </div>
                 </div>
 
@@ -1311,7 +1352,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                 <div className="bg-rink-surface p-3 rounded-lg border border-rink-border">
                   <span className="text-slate-400 block text-[10px] uppercase font-semibold">Stanley Cup Win Prob</span>
                   <div className="text-lg font-black text-white mt-0.5">
-                    {(evaluation.teamB.postTrade.stanleyCupWinProb * 100).toFixed(1)}%
+                    {formatProb(evaluation.teamB.postTrade.stanleyCupWinProb)}
                     <span
                       className={`text-xs ml-1.5 font-bold ${
                         evaluation.teamB.deltas.stanleyCupDelta > 0
@@ -1325,14 +1366,14 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                     </span>
                   </div>
                   <div className="text-[10px] text-slate-500 mt-1">
-                    Baseline: {(evaluation.teamB.baseline.stanleyCupWinProb * 100).toFixed(1)}%
+                    Baseline: {formatProb(evaluation.teamB.baseline.stanleyCupWinProb)}
                   </div>
                 </div>
 
                 <div className="bg-rink-surface p-3 rounded-lg border border-rink-border">
                   <span className="text-slate-400 block text-[10px] uppercase font-semibold">Playoff Qualification</span>
                   <div className="text-lg font-black text-white mt-0.5">
-                    {(evaluation.teamB.postTrade.playoffProbability * 100).toFixed(1)}%
+                    {formatProb(evaluation.teamB.postTrade.playoffProbability)}
                     <span
                       className={`text-xs ml-1.5 font-bold ${
                         evaluation.teamB.deltas.playoffProbDelta > 0
@@ -1346,7 +1387,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                     </span>
                   </div>
                   <div className="text-[10px] text-slate-500 mt-1">
-                    Baseline: {(evaluation.teamB.baseline.playoffProbability * 100).toFixed(1)}%
+                    Baseline: {formatProb(evaluation.teamB.baseline.playoffProbability)}
                   </div>
                 </div>
 
