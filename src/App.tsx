@@ -5,6 +5,7 @@ import { HistoricalTradeAnalyzer } from './components/HistoricalTradeAnalyzer';
 import { TeamsHub } from './components/TeamsHub';
 import { PlayerBrowser } from './components/PlayerBrowser';
 import { GuideView } from './components/GuideView';
+import { AdminPortal } from './components/AdminPortal';
 import { NHL_FRANCHISES } from './data/nhlFranchises';
 import { INITIAL_PLAYERS } from './data/sampleLeague';
 import { INITIAL_PROSPECTS } from './data/nhlProspects';
@@ -12,11 +13,26 @@ import { NHLProspect } from './types/prospect';
 import { fetchFranchises, fetchPlayers, fetchProspects, saveProspectToD1 } from './services/api';
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<'trade' | 'historical' | 'teams' | 'players' | 'guide'>('trade');
+  const [activeTab, setActiveTab] = useState<'trade' | 'historical' | 'teams' | 'players' | 'guide' | 'admin'>('trade');
   const [franchises, setFranchises] = useState(NHL_FRANCHISES);
   const [players, setPlayers] = useState(INITIAL_PLAYERS);
   const [prospects, setProspects] = useState<NHLProspect[]>(INITIAL_PROSPECTS);
   const [selectedTradeTeamAId, setSelectedTradeTeamAId] = useState<string>('EDM');
+  const [initialTradeParams, setInitialTradeParams] = useState<string>('');
+
+  // Check URL query parameters on initial page load
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const search = window.location.search;
+      const params = new URLSearchParams(search);
+      if (params.has('tA') || params.has('v') || params.has('pA') || params.has('pB')) {
+        setInitialTradeParams(search);
+        setActiveTab('trade');
+      } else if (params.get('tab') === 'admin' || window.location.pathname.startsWith('/admin')) {
+        setActiveTab('admin');
+      }
+    }
+  }, []);
 
   // Background hydration from Cloudflare D1
   useEffect(() => {
@@ -41,6 +57,13 @@ export function App() {
     saveProspectToD1(newProspect);
   };
 
+  const handleLoadTradeIntoMachine = (paramsString: string) => {
+    let clean = paramsString;
+    if (clean.includes('?')) clean = clean.split('?')[1];
+    setInitialTradeParams(`?${clean}`);
+    setActiveTab('trade');
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-[#080C14] text-slate-100 selection:bg-sky-500 selection:text-black overflow-x-hidden w-full max-w-full">
       {/* Top Navbar */}
@@ -55,6 +78,7 @@ export function App() {
             prospects={prospects}
             onCreateProspect={handleCreateProspect}
             initialTeamAId={selectedTradeTeamAId}
+            initialTradeParams={initialTradeParams}
           />
         )}
 
@@ -81,6 +105,14 @@ export function App() {
         {activeTab === 'guide' && (
           <GuideView />
         )}
+
+        {activeTab === 'admin' && (
+          <AdminPortal
+            players={players}
+            prospects={prospects}
+            onLoadTradeIntoMachine={handleLoadTradeIntoMachine}
+          />
+        )}
       </main>
 
       {/* Footer */}
@@ -91,8 +123,15 @@ export function App() {
             <span>•</span>
             <span>National Hockey League Monte Carlo & Historical Retrospective Engine</span>
           </div>
-          <div className="text-[11px] text-slate-600">
-            Official NHL statistics provided via NHL Web API. Simulates regular season points, \$88M salary cap, and Stanley Cup odds.
+          <div className="flex items-center gap-3 text-[11px] text-slate-600">
+            <span>Official NHL statistics via NHL Web API. Simulates regular season points, \$88M salary cap, and Stanley Cup odds.</span>
+            <span>•</span>
+            <button
+              onClick={() => setActiveTab('admin')}
+              className="text-slate-500 hover:text-slate-300 transition underline underline-offset-2 font-mono"
+            >
+              Admin
+            </button>
           </div>
         </div>
       </footer>

@@ -2,6 +2,7 @@ import { NHL_FRANCHISES } from '../../src/data/nhlFranchises';
 import rawPlayers from '../../src/data/nhlPlayers.json';
 import { INITIAL_PROSPECTS } from '../../src/data/nhlProspects';
 import { HISTORICAL_TRADES } from '../../src/data/historicalTrades';
+import { INITIAL_FEATURED_TRADES } from '../../src/data/featuredTrades';
 
 interface Env {
   DB: D1Database;
@@ -27,6 +28,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     // 1. Create Schema Tables (Drop first if re-initializing schema)
     const schemaStatements = [
       `DROP TABLE IF EXISTS sync_log;`,
+      `DROP TABLE IF EXISTS featured_trades;`,
       `DROP TABLE IF EXISTS historical_trades;`,
       `DROP TABLE IF EXISTS prospects;`,
       `DROP TABLE IF EXISTS players;`,
@@ -98,6 +100,21 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         historical_outcome JSON NOT NULL,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );`,
+      `CREATE TABLE IF NOT EXISTS featured_trades (
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        headline TEXT,
+        description TEXT,
+        trade_url_params TEXT NOT NULL,
+        team_a_id TEXT NOT NULL,
+        team_b_id TEXT NOT NULL,
+        team_a_assets JSON NOT NULL,
+        team_b_assets JSON NOT NULL,
+        status TEXT DEFAULT 'PUBLISHED',
+        display_order INTEGER DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );`,
       `CREATE TABLE IF NOT EXISTS sync_log (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         source TEXT NOT NULL,
@@ -110,6 +127,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       `CREATE INDEX IF NOT EXISTS idx_players_team ON players(nhl_team);`,
       `CREATE INDEX IF NOT EXISTS idx_players_nhl_id ON players(nhl_id);`,
       `CREATE INDEX IF NOT EXISTS idx_prospects_team ON prospects(nhl_team);`,
+      `CREATE INDEX IF NOT EXISTS idx_featured_status ON featured_trades(status);`,
     ];
 
     for (const sql of schemaStatements) {
@@ -230,8 +248,35 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       );
     }
 
+    // 6. Prepare Featured Trades Statements
+    const featuredStmts: D1PreparedStatement[] = [];
+    for (const ft of INITIAL_FEATURED_TRADES) {
+      featuredStmts.push(
+        db
+          .prepare(
+            `INSERT INTO featured_trades (id, title, headline, description, trade_url_params, team_a_id, team_b_id, team_a_assets, team_b_assets, status, display_order, created_at) ` +
+            `VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ` +
+            `ON CONFLICT(id) DO UPDATE SET title=excluded.title, headline=excluded.headline, description=excluded.description, trade_url_params=excluded.trade_url_params;`
+          )
+          .bind(
+            ft.id,
+            ft.title,
+            ft.headline ?? '',
+            ft.description ?? '',
+            ft.tradeUrlParams,
+            ft.teamAId,
+            ft.teamBId,
+            JSON.stringify(ft.teamAAssets),
+            JSON.stringify(ft.teamBAssets),
+            ft.status,
+            ft.displayOrder,
+            ft.createdAt
+          )
+      );
+    }
+
     // Execute in batches of 50 to stay within D1 batch limits
-    const allStmts = [...franchiseStmts, ...playersStmts, ...prospectStmts, ...historyStmts];
+    const allStmts = [...franchiseStmts, ...playersStmts, ...prospectStmts, ...historyStmts, ...featuredStmts];
     const BATCH_SIZE = 50;
     for (let i = 0; i < allStmts.length; i += BATCH_SIZE) {
       const batch = allStmts.slice(i, i + BATCH_SIZE);
@@ -257,6 +302,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
           playersSeeded: playersStmts.length,
           prospectsSeeded: prospectStmts.length,
           historicalTradesSeeded: historyStmts.length,
+          featuredTradesSeeded: featuredStmts.length,
           totalStatementsExecuted: allStmts.length + schemaStatements.length,
           executionTimeMs: elapsed,
         },

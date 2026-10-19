@@ -82,7 +82,24 @@ CREATE TABLE IF NOT EXISTS historical_trades (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 5. Automated Sync Log Table
+-- 5. Featured Community & Editorial Trade Proposals
+CREATE TABLE IF NOT EXISTS featured_trades (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  headline TEXT,
+  description TEXT,
+  trade_url_params TEXT NOT NULL,
+  team_a_id TEXT NOT NULL,
+  team_b_id TEXT NOT NULL,
+  team_a_assets JSON NOT NULL,
+  team_b_assets JSON NOT NULL,
+  status TEXT DEFAULT 'PUBLISHED',     -- 'PUBLISHED' | 'DRAFT' | 'ARCHIVED'
+  display_order INTEGER DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 6. Automated Sync Log Table
 CREATE TABLE IF NOT EXISTS sync_log (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   source TEXT NOT NULL,              -- 'api-web.nhle.com'
@@ -99,3 +116,5 @@ CREATE INDEX IF NOT EXISTS idx_players_nhl_id ON players(nhl_id);
 CREATE INDEX IF NOT EXISTS idx_players_pos ON players(primary_position);
 CREATE INDEX IF NOT EXISTS idx_prospects_team ON prospects(nhl_team);
 CREATE INDEX IF NOT EXISTS idx_prospects_potential ON prospects(potential);
+CREATE INDEX IF NOT EXISTS idx_featured_status ON featured_trades(status);
+

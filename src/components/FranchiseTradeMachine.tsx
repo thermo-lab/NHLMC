@@ -18,12 +18,20 @@ import {
   Ticket,
   UserPlus,
   Layers,
+  Share2,
+  Copy,
+  Check,
 } from 'lucide-react';
 import { NHLTeam, FranchiseTradeProposal, FranchiseTradeEvaluation } from '../types/franchise';
 import { Player } from '../types/player';
 import { NHLProspect, DraftPick, ProspectPotential } from '../types/prospect';
 import { INITIAL_PROSPECTS, generateDefaultDraftPicks } from '../data/nhlProspects';
 import { evaluateFranchiseTrade } from '../engine/franchiseSimulation';
+import { FeaturedTradesTray } from './FeaturedTradesTray';
+import { ShareTradeModal } from './ShareTradeModal';
+import { decodeTradeFromUrl, encodeTradeToUrl } from '../utils/tradeUrl';
+import { fetchFeaturedTrades } from '../services/featuredApi';
+import { FeaturedTradeProposal } from '../types/featured';
 
 interface FranchiseTradeMachineProps {
   franchises: NHLTeam[];
@@ -32,6 +40,7 @@ interface FranchiseTradeMachineProps {
   onCreateProspect?: (newProspect: NHLProspect) => void;
   initialTeamAId?: string;
   initialTeamBId?: string;
+  initialTradeParams?: string;
 }
 
 export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
@@ -41,6 +50,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
   onCreateProspect,
   initialTeamAId = 'EDM',
   initialTeamBId = 'BUF', // Default to Buffalo so Radim Mrtka is immediately front and center!
+  initialTradeParams,
 }) => {
   const [teamAId, setTeamAId] = useState<string>(initialTeamAId);
   const [teamBId, setTeamBId] = useState<string>(initialTeamBId);
@@ -64,6 +74,12 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
   const [iterations, setIterations] = useState<number>(2500);
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
   const [evaluation, setEvaluation] = useState<FranchiseTradeEvaluation | null>(null);
+
+  // Featured Proposals & Share State
+  const [featuredProposals, setFeaturedProposals] = useState<FeaturedTradeProposal[]>([]);
+  const [activeFeaturedProposalId, setActiveFeaturedProposalId] = useState<string | null>(null);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [quickCopiedToast, setQuickCopiedToast] = useState(false);
 
   // Custom Prospect Creation Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -129,17 +145,23 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     if (initialTeamBId) setTeamBId(initialTeamBId);
   }, [initialTeamBId]);
 
-  // Clean selections if team changes
+  const isHydratingRef = React.useRef(false);
+
+  // Clean selections if team changes manually
   React.useEffect(() => {
+    if (isHydratingRef.current) return;
     setTeamAPlayerIds([]);
     setTeamAProspectIds([]);
     setTeamADraftPicks([]);
+    setActiveFeaturedProposalId(null);
   }, [teamAId]);
 
   React.useEffect(() => {
+    if (isHydratingRef.current) return;
     setTeamBPlayerIds([]);
     setTeamBProspectIds([]);
     setTeamBDraftPicks([]);
+    setActiveFeaturedProposalId(null);
   }, [teamBId]);
 
   const teamASendingPlayers = teamAPlayerIds.map((id) => playersMap.get(id)).filter(Boolean) as Player[];
@@ -189,10 +211,118 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     }, 60);
   };
 
-  // Run initial trade evaluation on mount
+  // Load initial featured proposals
   React.useEffect(() => {
-    handleRunSimulation();
+    fetchFeaturedTrades().then((data) => {
+      if (data && data.length > 0) setFeaturedProposals(data);
+    });
   }, []);
+
+  const loadTradeFromQuery = (query: string, proposalId?: string) => {
+    const decoded = decodeTradeFromUrl(query, players, prospects);
+    if (!decoded) return;
+
+    isHydratingRef.current = true;
+    if (proposalId) {
+      setActiveFeaturedProposalId(proposalId);
+    }
+    setTeamAId(decoded.teamAId);
+    setTeamBId(decoded.teamBId);
+    setTeamAPlayerIds(decoded.teamAPlayerIds);
+    setTeamBPlayerIds(decoded.teamBPlayerIds);
+    setTeamAProspectIds(decoded.teamAProspectIds);
+    setTeamBProspectIds(decoded.teamBProspectIds);
+    setTeamADraftPicks(decoded.teamADraftPicks);
+    setTeamBDraftPicks(decoded.teamBDraftPicks);
+    setRetainSalary(decoded.retainSalary);
+    setRetentionPct(decoded.retentionPct);
+
+    // Auto-evaluate
+    setTimeout(() => {
+      isHydratingRef.current = false;
+      try {
+        const teamAObj = franchises.find((t) => t.id === decoded.teamAId) || franchises[0];
+        const teamBObj = franchises.find((t) => t.id === decoded.teamBId) || franchises[1];
+
+        const proposal: FranchiseTradeProposal = {
+          teamAId: teamAObj.id,
+          teamBId: teamBObj.id,
+          teamAPlayerIds: decoded.teamAPlayerIds,
+          teamBPlayerIds: decoded.teamBPlayerIds,
+          teamAProspectIds: decoded.teamAProspectIds,
+          teamBProspectIds: decoded.teamBProspectIds,
+          teamADraftPicks: decoded.teamADraftPicks.map((p) => ({
+            id: p.id,
+            year: p.year,
+            round: p.round,
+            originalTeam: p.originalTeamId,
+            isProtected: p.protection !== 'UNPROTECTED',
+          })),
+          teamBDraftPicks: decoded.teamBDraftPicks.map((p) => ({
+            id: p.id,
+            year: p.year,
+            round: p.round,
+            originalTeam: p.originalTeamId,
+            isProtected: p.protection !== 'UNPROTECTED',
+          })),
+          salaryRetention:
+            decoded.retainSalary && decoded.teamAPlayerIds.length > 0
+              ? [{ playerId: decoded.teamAPlayerIds[0], retainedPct: decoded.retentionPct, retainingTeamId: teamAObj.id }]
+              : undefined,
+        };
+
+        const result = evaluateFranchiseTrade(franchises, players, proposal, iterations, prospects);
+        setEvaluation(result);
+      } catch (err) {
+        console.error('Error auto-evaluating trade:', err);
+      }
+    }, 60);
+  };
+
+  React.useEffect(() => {
+    if (initialTradeParams) {
+      loadTradeFromQuery(initialTradeParams);
+    } else {
+      handleRunSimulation();
+    }
+  }, [initialTradeParams]);
+
+  const handleSelectFeaturedProposal = (proposal: FeaturedTradeProposal) => {
+    loadTradeFromQuery(proposal.tradeUrlParams, proposal.id);
+  };
+
+  const currentTradePayload = {
+    teamAId: teamA.id,
+    teamBId: teamB.id,
+    teamAPlayers: teamASendingPlayers,
+    teamBPlayers: teamBSendingPlayers,
+    teamAProspects: teamASendingProspects,
+    teamBProspects: teamBSendingProspects,
+    teamADraftPicks,
+    teamBDraftPicks,
+    retainSalary,
+    retentionPct,
+  };
+
+  const handleOpenShareModal = () => {
+    const query = encodeTradeToUrl(currentTradePayload);
+    if (typeof window !== 'undefined') {
+      window.history.replaceState(null, '', `/?${query}`);
+    }
+    setIsShareModalOpen(true);
+  };
+
+  const handleQuickCopy = async () => {
+    const query = encodeTradeToUrl(currentTradePayload);
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://nhlmc.pages.dev';
+    const fullUrl = `${origin}/?${query}`;
+    if (typeof window !== 'undefined') {
+      window.history.replaceState(null, '', `/?${query}`);
+    }
+    await navigator.clipboard.writeText(fullUrl);
+    setQuickCopiedToast(true);
+    setTimeout(() => setQuickCopiedToast(false), 2500);
+  };
 
   const formatDelta = (val: number, isPercent: boolean = false) => {
     const sign = val > 0 ? '+' : '';
@@ -290,6 +420,13 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Featured Blockbusters & Rumors Showcase */}
+      <FeaturedTradesTray
+        proposals={featuredProposals}
+        onSelectProposal={handleSelectFeaturedProposal}
+        activeProposalId={activeFeaturedProposalId}
+      />
 
       {/* Dual Team Trade Builder */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -884,8 +1021,8 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
         </div>
       </div>
 
-      {/* Execute Simulation Button */}
-      <div className="flex justify-center px-2">
+      {/* Execute Simulation & Share Buttons */}
+      <div className="flex flex-wrap items-center justify-center gap-3 px-2">
         <button
           onClick={handleRunSimulation}
           disabled={isSimulating}
@@ -903,7 +1040,33 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
             </>
           )}
         </button>
+
+        <button
+          onClick={handleOpenShareModal}
+          className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-sky-500/60 text-slate-100 font-bold text-xs sm:text-sm shadow-lg transition active:scale-95"
+          title="Share Trade via Durable Link"
+        >
+          <Share2 className="w-4 h-4 text-sky-400" />
+          <span>Share Trade</span>
+        </button>
+
+        <button
+          onClick={handleQuickCopy}
+          className="p-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-400 hover:text-white transition shrink-0"
+          title="Quick Copy Link"
+        >
+          {quickCopiedToast ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+        </button>
       </div>
+
+      {quickCopiedToast && (
+        <div className="flex justify-center -mt-2">
+          <div className="px-3.5 py-1.5 rounded-full bg-emerald-950/90 border border-emerald-800 text-emerald-300 text-xs font-semibold shadow-xl animate-in fade-in duration-150 flex items-center gap-1.5">
+            <Check className="w-3.5 h-3.5" />
+            <span>Trade link copied to clipboard!</span>
+          </div>
+        </div>
+      )}
 
       {/* Simulation Results Section */}
       {evaluation && (
@@ -1409,6 +1572,27 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
           </div>
         </div>
       )}
+
+      {/* Share Trade Modal */}
+      <ShareTradeModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        teamA={teamA}
+        teamB={teamB}
+        teamAPlayers={teamASendingPlayers}
+        teamBPlayers={teamBSendingPlayers}
+        teamAProspects={teamASendingProspects}
+        teamBProspects={teamBSendingProspects}
+        teamADraftPicks={teamADraftPicks}
+        teamBDraftPicks={teamBDraftPicks}
+        retainSalary={retainSalary}
+        retentionPct={retentionPct}
+        onFeatureSaved={() => {
+          fetchFeaturedTrades().then((data) => {
+            if (data && data.length > 0) setFeaturedProposals(data);
+          });
+        }}
+      />
     </div>
   );
 };

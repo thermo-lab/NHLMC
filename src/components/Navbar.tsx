@@ -11,8 +11,8 @@ import {
 } from 'lucide-react';
 
 interface NavbarProps {
-  activeTab: 'trade' | 'historical' | 'teams' | 'players' | 'guide';
-  setActiveTab: (tab: 'trade' | 'historical' | 'teams' | 'players' | 'guide') => void;
+  activeTab: 'trade' | 'historical' | 'teams' | 'players' | 'guide' | 'admin';
+  setActiveTab: (tab: 'trade' | 'historical' | 'teams' | 'players' | 'guide' | 'admin') => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
@@ -117,6 +117,19 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
               <span className="hidden xs:inline">Official NHL API</span>
               <span className="xs:hidden">NHL API</span>
             </div>
+
+            <button
+              onClick={() => setActiveTab('admin')}
+              className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
+                activeTab === 'admin'
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent'
+              }`}
+              title="Admin & Editorial Portal"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden sm:inline">Admin</span>
+            </button>
           </div>
         </div>
 
@@ -176,6 +189,17 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
           >
             <BookOpen className="w-3 h-3" />
             <span>Guide</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('admin')}
+            className={`flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-semibold whitespace-nowrap shrink-0 ${
+              activeTab === 'admin'
+                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                : 'text-slate-400'
+            }`}
+          >
+            <ShieldCheck className="w-3 h-3 text-amber-400" />
+            <span>Admin</span>
           </button>
         </div>
       </div>
