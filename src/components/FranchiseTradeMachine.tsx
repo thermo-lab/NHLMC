@@ -65,7 +65,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
   const [teamBPlayerIds, setTeamBPlayerIds] = useState<number[]>([]);
   const [teamBProspectIds, setTeamBProspectIds] = useState<string[]>([]);
   const [teamBDraftPicks, setTeamBDraftPicks] = useState<DraftPick[]>([]);
-  const [teamBAssetTab, setTeamBAssetTab] = useState<'roster' | 'prospects' | 'picks'>('prospects'); // Default Team B to prospects so Mrtka is visible!
+  const [teamBAssetTab, setTeamBAssetTab] = useState<'roster' | 'prospects' | 'picks'>('roster');
 
   // Salary retention
   const [retainSalary, setRetainSalary] = useState<boolean>(false);
