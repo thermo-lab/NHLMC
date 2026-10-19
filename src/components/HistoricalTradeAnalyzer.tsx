@@ -91,6 +91,7 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
     { abbrev: 'WSH', name: 'Washington Capitals' },
     { abbrev: 'WPG', name: 'Winnipeg Jets' },
     { abbrev: 'ATL', name: 'Atlanta Thrashers' },
+    { abbrev: 'CLR', name: 'Colorado Rockies (1976–82)' },
     { abbrev: 'HFD', name: 'Hartford Whalers' },
     { abbrev: 'MNS', name: 'Minnesota North Stars' },
     { abbrev: 'QUE', name: 'Quebec Nordiques' },
@@ -232,7 +233,7 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search 2,960+ historical trades by player (e.g. Roy, Thornton, Subban, Tkachuk), team, or year..."
+              placeholder="Search 4,300+ historical trades by player (e.g. Gretzky, Roy, Domi, Selänne, Tkachuk), team, or year..."
               className="w-full bg-rink-surface border border-rink-border rounded-lg pl-10 pr-9 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 transition-colors"
             />
             {searchQuery && (

@@ -84,14 +84,14 @@ test('Accuracy Benchmark: Skater season simulation capped at 82 games and realis
 
 test('Accuracy Benchmark: Asymmetric fleecing trade expected outcomes', () => {
   const mcdavid = INITIAL_PLAYERS.find((p) => p.name.includes('McDavid'));
-  const verhaeghe = INITIAL_PLAYERS.find((p) => p.name.includes('Verhaeghe'));
-  assert.ok(mcdavid && verhaeghe);
+  const reinhart = INITIAL_PLAYERS.find((p) => p.name.includes('Reinhart'));
+  assert.ok(mcdavid && reinhart);
 
   const proposal = {
     teamAId: 'EDM', // Edmonton gives McDavid
-    teamBId: 'FLA', // Florida gives Verhaeghe
+    teamBId: 'FLA', // Florida gives Reinhart
     teamAPlayerIds: [mcdavid.id],
-    teamBPlayerIds: [verhaeghe.id],
+    teamBPlayerIds: [reinhart.id],
   };
 
   const result = evaluateFranchiseTrade(NHL_FRANCHISES, INITIAL_PLAYERS, proposal, 500);
