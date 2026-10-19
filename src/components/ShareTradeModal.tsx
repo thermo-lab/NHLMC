@@ -58,6 +58,15 @@ export const ShareTradeModal: React.FC<ShareTradeModalProps> = ({
   const [isSubmittingFeature, setIsSubmittingFeature] = useState(false);
   const [featureMessage, setFeatureMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
+  const hasAdminAccess = Boolean(
+    adminPasscode ||
+    (typeof window !== 'undefined' && (
+      new URLSearchParams(window.location.search).has('admin') ||
+      window.location.hash === '#admin' ||
+      window.location.pathname.startsWith('/admin')
+    ))
+  );
+
   if (!isOpen) return null;
 
   const tradePayload = {
@@ -235,97 +244,99 @@ export const ShareTradeModal: React.FC<ShareTradeModalProps> = ({
             </div>
           </div>
 
-          {/* Admin Publish Accordion */}
-          <div className="pt-2 border-t border-slate-800">
-            <button
-              onClick={() => setShowAdminPanel(!showAdminPanel)}
-              className="w-full flex items-center justify-between py-2 text-xs font-semibold text-slate-400 hover:text-amber-300 transition"
-            >
-              <span className="flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                <span>Admin: Feature on Homepage</span>
-              </span>
-              <span>{showAdminPanel ? '▲ Close' : '▼ Expand'}</span>
-            </button>
+          {/* Admin Publish Accordion (only for authorized admin sessions) */}
+          {hasAdminAccess && (
+            <div className="pt-2 border-t border-slate-800">
+              <button
+                onClick={() => setShowAdminPanel(!showAdminPanel)}
+                className="w-full flex items-center justify-between py-2 text-xs font-semibold text-slate-400 hover:text-amber-300 transition"
+              >
+                <span className="flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Admin: Feature on Homepage</span>
+                </span>
+                <span>{showAdminPanel ? '▲ Close' : '▼ Expand'}</span>
+              </button>
 
-            {showAdminPanel && (
-              <form onSubmit={handleSaveToFeatured} className="mt-3 p-3.5 bg-slate-950/80 border border-slate-800 rounded-xl space-y-3 text-xs">
-                <div>
-                  <label className="block text-[11px] font-semibold text-slate-300 mb-1">
-                    Featured Title
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={featureTitle}
-                    onChange={(e) => setFeatureTitle(e.target.value)}
-                    placeholder="e.g. Hellebuyck Blockbuster: Jets & Sabres Re-tool"
-                    className="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-slate-100 focus:outline-none focus:border-sky-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-semibold text-slate-300 mb-1">
-                    Headline Summary
-                  </label>
-                  <input
-                    type="text"
-                    value={featureHeadline}
-                    onChange={(e) => setFeatureHeadline(e.target.value)}
-                    placeholder="e.g. Hellebuyck & Pionk for Thompson, Peterka, Mrtka & 2027 1st"
-                    className="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-slate-100 focus:outline-none focus:border-sky-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-semibold text-slate-300 mb-1">
-                    Editorial Rationale / Notes
-                  </label>
-                  <textarea
-                    rows={2}
-                    value={featureDescription}
-                    onChange={(e) => setFeatureDescription(e.target.value)}
-                    placeholder="Explain why this trade makes strategic sense for both clubs..."
-                    className="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-slate-100 focus:outline-none focus:border-sky-500 text-xs"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-semibold text-slate-300 mb-1">
-                    Cloudflare OTP / Admin Passcode
-                  </label>
-                  <input
-                    type="password"
-                    value={adminPasscode}
-                    onChange={(e) => setAdminPasscode(e.target.value)}
-                    placeholder="Enter admin passcode (or leave blank if on CF Zero Trust)"
-                    className="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-slate-100 focus:outline-none focus:border-sky-500 font-mono"
-                  />
-                </div>
-
-                {featureMessage && (
-                  <div
-                    className={`p-2.5 rounded text-xs ${
-                      featureMessage.type === 'success'
-                        ? 'bg-emerald-950/60 border border-emerald-800 text-emerald-300'
-                        : 'bg-rose-950/60 border border-rose-800 text-rose-300'
-                    }`}
-                  >
-                    {featureMessage.text}
+              {showAdminPanel && (
+                <form onSubmit={handleSaveToFeatured} className="mt-3 p-3.5 bg-slate-950/80 border border-slate-800 rounded-xl space-y-3 text-xs">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-300 mb-1">
+                      Featured Title
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={featureTitle}
+                      onChange={(e) => setFeatureTitle(e.target.value)}
+                      placeholder="e.g. Hellebuyck Blockbuster: Jets & Sabres Re-tool"
+                      className="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-slate-100 focus:outline-none focus:border-sky-500"
+                    />
                   </div>
-                )}
 
-                <button
-                  type="submit"
-                  disabled={isSubmittingFeature}
-                  className="w-full py-2 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold rounded-lg transition disabled:opacity-50 flex items-center justify-center gap-1.5"
-                >
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>{isSubmittingFeature ? 'Publishing...' : 'Publish to Featured Proposals'}</span>
-                </button>
-              </form>
-            )}
-          </div>
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-300 mb-1">
+                      Headline Summary
+                    </label>
+                    <input
+                      type="text"
+                      value={featureHeadline}
+                      onChange={(e) => setFeatureHeadline(e.target.value)}
+                      placeholder="e.g. Hellebuyck & Pionk for Thompson, Peterka, Mrtka & 2027 1st"
+                      className="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-slate-100 focus:outline-none focus:border-sky-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-300 mb-1">
+                      Editorial Rationale / Notes
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={featureDescription}
+                      onChange={(e) => setFeatureDescription(e.target.value)}
+                      placeholder="Explain why this trade makes strategic sense for both clubs..."
+                      className="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-slate-100 focus:outline-none focus:border-sky-500 text-xs"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-300 mb-1">
+                      Cloudflare OTP / Admin Passcode
+                    </label>
+                    <input
+                      type="password"
+                      value={adminPasscode}
+                      onChange={(e) => setAdminPasscode(e.target.value)}
+                      placeholder="Enter admin passcode (or leave blank if on CF Zero Trust)"
+                      className="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-slate-100 focus:outline-none focus:border-sky-500 font-mono"
+                    />
+                  </div>
+
+                  {featureMessage && (
+                    <div
+                      className={`p-2.5 rounded text-xs ${
+                        featureMessage.type === 'success'
+                          ? 'bg-emerald-950/60 border border-emerald-800 text-emerald-300'
+                          : 'bg-rose-950/60 border border-rose-800 text-rose-300'
+                      }`}
+                    >
+                      {featureMessage.text}
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={isSubmittingFeature}
+                    className="w-full py-2 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold rounded-lg transition disabled:opacity-50 flex items-center justify-center gap-1.5"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>{isSubmittingFeature ? 'Publishing...' : 'Publish to Featured Proposals'}</span>
+                  </button>
+                </form>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

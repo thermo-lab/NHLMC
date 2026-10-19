@@ -28,9 +28,22 @@ export function App() {
       if (params.has('tA') || params.has('v') || params.has('pA') || params.has('pB')) {
         setInitialTradeParams(search);
         setActiveTab('trade');
-      } else if (params.get('tab') === 'admin' || window.location.pathname.startsWith('/admin')) {
+      } else if (
+        params.get('tab') === 'admin' ||
+        params.has('admin') ||
+        window.location.hash === '#admin' ||
+        window.location.pathname.startsWith('/admin')
+      ) {
         setActiveTab('admin');
       }
+
+      const handleHashChange = () => {
+        if (window.location.hash === '#admin') {
+          setActiveTab('admin');
+        }
+      };
+      window.addEventListener('hashchange', handleHashChange);
+      return () => window.removeEventListener('hashchange', handleHashChange);
     }
   }, []);
 
@@ -123,15 +136,8 @@ export function App() {
             <span>•</span>
             <span>National Hockey League Monte Carlo & Historical Retrospective Engine</span>
           </div>
-          <div className="flex items-center gap-3 text-[11px] text-slate-600">
-            <span>Official NHL statistics via NHL Web API. Simulates regular season points, \$88M salary cap, and Stanley Cup odds.</span>
-            <span>•</span>
-            <button
-              onClick={() => setActiveTab('admin')}
-              className="text-slate-500 hover:text-slate-300 transition underline underline-offset-2 font-mono"
-            >
-              Admin
-            </button>
+          <div className="text-[11px] text-slate-600">
+            <span>Official NHL statistics via NHL Web API. Simulates regular season points, $88M salary cap, and Stanley Cup odds.</span>
           </div>
         </div>
       </footer>
