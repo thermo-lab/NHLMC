@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.wrangler
+_worker.bundle
+worker-configuration.d.ts
