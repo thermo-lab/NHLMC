@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { FranchiseTradeMachine } from './components/FranchiseTradeMachine';
 import { HistoricalTradeAnalyzer } from './components/HistoricalTradeAnalyzer';
@@ -9,6 +9,7 @@ import { NHL_FRANCHISES } from './data/nhlFranchises';
 import { INITIAL_PLAYERS } from './data/sampleLeague';
 import { INITIAL_PROSPECTS } from './data/nhlProspects';
 import { NHLProspect } from './types/prospect';
+import { fetchFranchises, fetchPlayers, fetchProspects, saveProspectToD1 } from './services/api';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<'trade' | 'historical' | 'teams' | 'players' | 'guide'>('trade');
@@ -17,6 +18,19 @@ export function App() {
   const [prospects, setProspects] = useState<NHLProspect[]>(INITIAL_PROSPECTS);
   const [selectedTradeTeamAId, setSelectedTradeTeamAId] = useState<string>('EDM');
 
+  // Background hydration from Cloudflare D1
+  useEffect(() => {
+    fetchFranchises().then((f) => {
+      if (f && f.length > 0) setFranchises(f);
+    });
+    fetchPlayers().then((p) => {
+      if (p && p.length > 0) setPlayers(p);
+    });
+    fetchProspects().then((pr) => {
+      if (pr && pr.length > 0) setProspects(pr);
+    });
+  }, []);
+
   const handleSelectTeamForTrade = (teamId: string) => {
     setSelectedTradeTeamAId(teamId);
     setActiveTab('trade');
@@ -24,6 +38,7 @@ export function App() {
 
   const handleCreateProspect = (newProspect: NHLProspect) => {
     setProspects((prev) => [newProspect, ...prev]);
+    saveProspectToD1(newProspect);
   };
 
   return (

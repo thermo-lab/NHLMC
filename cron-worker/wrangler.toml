@@ -1,0 +1,13 @@
+name = "nhlmc-nightly-cron"
+main = "index.ts"
+compatibility_date = "2026-10-18"
+
+# Cron trigger: Runs every night at 4:00 AM EST (09:00 UTC)
+# Included in Cloudflare Workers Free Tier (up to 100,000 requests/day, 100% free)
+[triggers]
+crons = ["0 9 * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "nhlmc-db"
+database_id = "nhlmc-db"
