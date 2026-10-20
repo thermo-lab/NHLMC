@@ -160,3 +160,28 @@ test('Player Spotlight: Validates Hellebuyck options and ensures all URL query s
     assert.strictEqual(decoded.teamBId, opt.destinationTeamId);
   }
 });
+
+test('URL Engine: Correctly resolves Connor Hellebuyck (8476945) and Ryan McLeod (8480802) without ID collisions', async () => {
+  const { INITIAL_PLAYERS } = await import('../src/data/sampleLeague.ts');
+  const { INITIAL_PROSPECTS } = await import('../src/data/nhlProspects.ts');
+
+  const testUrl = 'https://nhlmc.pages.dev/?v=1&tA=WPG&tB=BUF&pA=8476945&pB=8480802&prB=buf-radim-mrtka&dpB=buf-2028-rd1';
+  const decoded = decodeTradeFromUrl(testUrl, INITIAL_PLAYERS, INITIAL_PROSPECTS);
+
+  assert.ok(decoded !== null, 'Decodes cleanly');
+  assert.strictEqual(decoded.teamAId, 'WPG');
+  assert.strictEqual(decoded.teamBId, 'BUF');
+
+  const playerMap = new Map();
+  for (const p of INITIAL_PLAYERS) {
+    playerMap.set(p.id, p);
+    if (p.nhlId) playerMap.set(p.nhlId, p);
+  }
+
+  const teamAPlayers = decoded.teamAPlayerIds.map(id => playerMap.get(id)?.name);
+  const teamBPlayers = decoded.teamBPlayerIds.map(id => playerMap.get(id)?.name);
+
+  assert.deepStrictEqual(teamAPlayers, ['Connor Hellebuyck'], 'Must resolve Connor Hellebuyck on Team A');
+  assert.deepStrictEqual(teamBPlayers, ['Ryan McLeod'], 'Must resolve Ryan McLeod on Team B');
+  assert.ok(!teamAPlayers.includes('Bradly Nadeau'), 'Bradly Nadeau must NOT appear on Team A');
+});

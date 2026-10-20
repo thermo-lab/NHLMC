@@ -103,7 +103,10 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
 
   const playersMap = useMemo(() => {
     const map = new Map<number, Player>();
-    for (const p of players) map.set(p.id, p);
+    for (const p of players) {
+      map.set(p.id, p);
+      if (p.nhlId) map.set(p.nhlId, p);
+    }
     return map;
   }, [players]);
 
@@ -324,7 +327,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     } else {
       handleRunSimulation();
     }
-  }, [initialTradeParams]);
+  }, [initialTradeParams, players.length]);
 
   // Automatically re-run simulation whenever trade assets change (debounced 200ms)
   const isInitialMount = React.useRef(true);
