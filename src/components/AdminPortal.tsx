@@ -107,11 +107,24 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
       };
     }
 
-    const playersMap = new Map(players.map((p) => [p.nhlId || p.id, p]));
+    const playersMap = new Map<number, Player>();
+    for (const p of players) {
+      playersMap.set(p.id, p);
+      if (p.nhlId) playersMap.set(p.nhlId, p);
+    }
     const prospectsMap = new Map(prospects.map((pr) => [pr.id, pr]));
 
+    // Determine home vs away orientation relative to the spotlighted team
+    const isTeamAHome = decoded.teamAId === spotlightConfig.currentTeamId;
+    const homePlayerIds = isTeamAHome ? decoded.teamAPlayerIds : decoded.teamBPlayerIds;
+    const homeDraftPicks = isTeamAHome ? decoded.teamADraftPicks : decoded.teamBDraftPicks;
+    const awayPlayerIds = isTeamAHome ? decoded.teamBPlayerIds : decoded.teamAPlayerIds;
+    const awayProspectIds = isTeamAHome ? decoded.teamBProspectIds : decoded.teamAProspectIds;
+    const awayDraftPicks = isTeamAHome ? decoded.teamBDraftPicks : decoded.teamADraftPicks;
+    const awayTeamId = isTeamAHome ? decoded.teamBId : decoded.teamAId;
+
     const surrenders: string[] = [];
-    for (const pid of decoded.teamAPlayerIds) {
+    for (const pid of homePlayerIds) {
       const p = playersMap.get(pid);
       if (p) {
         const ret = decoded.playerRetentions?.[pid];
@@ -119,13 +132,13 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
         surrenders.push(`${p.name} ($${(p.capHit / 1e6).toFixed(2)}M AAV)${retText}`);
       }
     }
-    for (const dp of decoded.teamADraftPicks) {
+    for (const dp of homeDraftPicks) {
       const prot = dp.protection ? ` - ${dp.protection.replace(/_/g, ' ')}` : '';
       surrenders.push(`${dp.year} Round ${dp.round} (${dp.originalTeamId}${prot})`);
     }
 
     const receives: string[] = [];
-    for (const pid of decoded.teamBPlayerIds) {
+    for (const pid of awayPlayerIds) {
       const p = playersMap.get(pid);
       if (p) {
         const ret = decoded.playerRetentions?.[pid];
@@ -133,23 +146,25 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
         receives.push(`${p.name} ($${(p.capHit / 1e6).toFixed(2)}M AAV)${retText}`);
       }
     }
-    for (const prId of decoded.teamBProspectIds) {
+    for (const prId of awayProspectIds) {
       const pr = prospectsMap.get(prId);
       if (pr) {
         receives.push(`${pr.name} (${pr.nhlTeam}, ${pr.potential.replace(/_/g, ' ')})`);
       }
     }
-    for (const dp of decoded.teamBDraftPicks) {
+    for (const dp of awayDraftPicks) {
       const prot = dp.protection ? ` - ${dp.protection.replace(/_/g, ' ')}` : '';
       receives.push(`${dp.year} Round ${dp.round} (${dp.originalTeamId}${prot})`);
     }
 
-    const teamBObj = NHL_FRANCHISES.find((f) => f.id === decoded.teamBId);
+    const teamBObj = NHL_FRANCHISES.find((f) => f.id === awayTeamId);
     const capFit = teamBObj
       ? `${teamBObj.name} cap space: $${(teamBObj.capSpace / 1e6).toFixed(2)}M under $88.0M cap ceiling.`
       : 'Financial cap compliance analyzed by engine.';
 
     return {
+      destinationTeamId: awayTeamId,
+      destinationTeamName: teamBObj?.name || awayTeamId,
       wpgReceives: receives.length > 0 ? receives : ['Assets determined by trade scenario'],
       wpgSurrenders: surrenders.length > 0 ? surrenders : ['Assets determined by trade scenario'],
       capFitSummary: capFit,
@@ -196,6 +211,12 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
         wpgReceives: synced.wpgReceives,
         wpgSurrenders: synced.wpgSurrenders,
         capFitSummary: synced.capFitSummary,
+        ...(synced.destinationTeamId
+          ? {
+              destinationTeamId: synced.destinationTeamId,
+              destinationTeamName: synced.destinationTeamName || synced.destinationTeamId,
+            }
+          : {}),
       };
       return { ...prev, options: nextOptions };
     });
