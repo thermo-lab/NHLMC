@@ -25,29 +25,27 @@ export const INITIAL_PLAYER_SPOTLIGHT: PlayerSpotlight = {
   isActive: true,
   options: [
     {
-      id: 'opt-buf-retool',
+      id: 'opt-buf-championship',
       destinationTeamId: 'BUF',
       destinationTeamName: 'Buffalo Sabres',
-      title: 'The Core Retool',
-      subtitle: 'End the 14-Year Playoff Drought',
+      title: 'The Championship Leap',
+      subtitle: 'From Game 7 Heartbreak to Stanley Cup Favorite',
       pitch:
-        'Buffalo possesses the NHL\'s deepest pool of young offensive talent and draft equity, but desperately needs a proven Vezina-caliber anchor to stabilize their net. Winnipeg solves their scoring woes by landing 6\'6" center Tage Thompson and dynamic winger JJ Peterka.',
+        'Coming off an electric playoff run where they eliminated Boston in six games and pushed Montreal to the brink in Game 7 of Round 2, Buffalo proved their core is ready to win right now. Surrendering dynamic two-way center Ryan McLeod, 6\'6" top blueliner Radim Mrtka, and a 2028 1st round pick lands the two-time Vezina winner to finish the job.',
       tradeUrlParams:
-        'v=1&tA=WPG&tB=BUF&pA=8476945,8480145&pB=8479420,8482175&prB=buf-radim-mrtka&dpB=buf-2028-rd1',
+        'v=1&tA=WPG&tB=BUF&pA=8476945&pB=8480802&prB=buf-radim-mrtka&dpB=buf-2028-rd1',
       wpgReceives: [
-        'Tage Thompson ($7.14M AAV)',
-        'JJ Peterka ($3.50M AAV)',
+        'Ryan McLeod ($3.50M AAV)',
         'Radim Mrtka (6\'6" Top D Prospect)',
         '2028 1st Round Pick (BUF - Top 10 Protected)',
       ],
       wpgSurrenders: [
         'Connor Hellebuyck ($8.50M AAV)',
-        'Neal Pionk ($6.50M AAV)',
       ],
       capFitSummary:
-        'Buffalo absorbs +$4.36M in active cap payroll, remaining fully cap compliant under the $88.0M ceiling.',
-      projectedCupDeltaWinnipeg: '-0.4% (Immediate retool with long-term offensive core)',
-      projectedCupDeltaDestination: '+6.8% (Buffalo vaults directly into Eastern playoff seed)',
+        'Buffalo absorbs net +$5.00M in salary commitment ($8.50M Hellebuyck vs $3.50M McLeod outgoing), remaining safely cap compliant under the $88.0M ceiling.',
+      projectedCupDeltaWinnipeg: '-0.3% (Clears $5.0M cap space while landing elite youth and 1st round draft equity)',
+      projectedCupDeltaDestination: '+7.6% (Vaults Buffalo from Round 2 Game 7 heartbreak into Eastern Conference powerhouse)',
     },
     {
       id: 'opt-car-contender',
