@@ -12,13 +12,13 @@ export const INITIAL_FEATURED_TRADES: FeaturedTradeProposal[] = [
     teamBId: 'BUF',
     teamAAssets: {
       playerNames: ['Connor Hellebuyck ($8.5M)', 'Neal Pionk ($6.5M)'],
-      playerIds: [353, 342],
+      playerIds: [8476945, 8480145],
     },
     teamBAssets: {
       playerNames: ['Tage Thompson ($7.14M)', 'JJ Peterka ($3.5M)'],
       prospectNames: ['Radim Mrtka (BUF, Top D Prospect)'],
       draftPicks: ['2027 Round 1 (BUF)'],
-      playerIds: [358, 62],
+      playerIds: [8479420, 8482175],
       prospectIds: ['buf-radim-mrtka'],
     },
     status: 'PUBLISHED',
@@ -36,13 +36,13 @@ export const INITIAL_FEATURED_TRADES: FeaturedTradeProposal[] = [
     teamBId: 'BOS',
     teamAAssets: {
       playerNames: ['Leon Draisaitl ($14.0M)'],
-      playerIds: [75],
+      playerIds: [8477934],
     },
     teamBAssets: {
       playerNames: ['Jeremy Swayman ($8.25M)'],
       prospectNames: ['Fabian Lysell (BOS, RW)'],
       draftPicks: ['2027 Round 1 (BOS)'],
-      playerIds: [70],
+      playerIds: [8480280],
       prospectIds: ['bos-fabian-lysell'],
     },
     status: 'PUBLISHED',
@@ -60,13 +60,13 @@ export const INITIAL_FEATURED_TRADES: FeaturedTradeProposal[] = [
     teamBId: 'CGY',
     teamAAssets: {
       playerNames: ['William Nylander ($11.5M)'],
-      playerIds: [588],
+      playerIds: [8477939],
     },
     teamBAssets: {
       playerNames: ['Jonathan Huberdeau ($10.5M)', 'Matt Coronato ($3.5M)'],
       prospectNames: ['Matt Coronato (CGY, RW)'],
       draftPicks: ['2027 Round 1 (CGY)'],
-      playerIds: [807, 795],
+      playerIds: [8476456, 8482679],
       prospectIds: ['cgy-matt-coronato'],
     },
     status: 'PUBLISHED',

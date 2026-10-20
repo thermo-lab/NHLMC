@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": 8475188,
     "nhlId": 8475188,
     "name": "Brayden McNabb",
     "nhlTeam": "VGK",
@@ -53,7 +53,7 @@
     }
   },
   {
-    "id": 2,
+    "id": 8475343,
     "nhlId": 8475343,
     "name": "Nic Dowd",
     "nhlTeam": "VGK",
@@ -107,7 +107,7 @@
     }
   },
   {
-    "id": 3,
+    "id": 8475913,
     "nhlId": 8475913,
     "name": "Mark Stone",
     "nhlTeam": "VGK",
@@ -161,7 +161,7 @@
     }
   },
   {
-    "id": 4,
+    "id": 8476448,
     "nhlId": 8476448,
     "name": "William Karlsson",
     "nhlTeam": "VGK",
@@ -215,7 +215,7 @@
     }
   },
   {
-    "id": 5,
+    "id": 8476881,
     "nhlId": 8476881,
     "name": "Tomas Hertl",
     "nhlTeam": "VGK",
@@ -269,7 +269,7 @@
     }
   },
   {
-    "id": 6,
+    "id": 8477447,
     "nhlId": 8477447,
     "name": "Shea Theodore",
     "nhlTeam": "VGK",
@@ -322,7 +322,7 @@
     }
   },
   {
-    "id": 7,
+    "id": 8477964,
     "nhlId": 8477964,
     "name": "Ivan Barbashev",
     "nhlTeam": "VGK",
@@ -376,7 +376,7 @@
     }
   },
   {
-    "id": 8,
+    "id": 8478109,
     "nhlId": 8478109,
     "name": "Victor Olofsson",
     "nhlTeam": "VGK",
@@ -430,7 +430,7 @@
     }
   },
   {
-    "id": 9,
+    "id": 8478396,
     "nhlId": 8478396,
     "name": "Noah Hanifin",
     "nhlTeam": "VGK",
@@ -483,7 +483,7 @@
     }
   },
   {
-    "id": 10,
+    "id": 8478397,
     "nhlId": 8478397,
     "name": "Rasmus Andersson",
     "nhlTeam": "VGK",
@@ -536,7 +536,7 @@
     }
   },
   {
-    "id": 11,
+    "id": 8478403,
     "nhlId": 8478403,
     "name": "Jack Eichel",
     "nhlTeam": "VGK",
@@ -590,7 +590,7 @@
     }
   },
   {
-    "id": 12,
+    "id": 8478450,
     "nhlId": 8478450,
     "name": "Parker Wotherspoon",
     "nhlTeam": "VGK",
@@ -643,7 +643,7 @@
     }
   },
   {
-    "id": 13,
+    "id": 8478468,
     "nhlId": 8478468,
     "name": "Jeremy Lauzon",
     "nhlTeam": "VGK",
@@ -696,7 +696,7 @@
     }
   },
   {
-    "id": 14,
+    "id": 8478483,
     "nhlId": 8478483,
     "name": "Mitch Marner",
     "nhlTeam": "VGK",
@@ -750,7 +750,7 @@
     }
   },
   {
-    "id": 15,
+    "id": 8479353,
     "nhlId": 8479353,
     "name": "Brett Howden",
     "nhlTeam": "VGK",
@@ -804,7 +804,7 @@
     }
   },
   {
-    "id": 16,
+    "id": 8479639,
     "nhlId": 8479639,
     "name": "Dylan Coghlan",
     "nhlTeam": "VGK",
@@ -857,7 +857,7 @@
     }
   },
   {
-    "id": 17,
+    "id": 8481534,
     "nhlId": 8481534,
     "name": "Raphael Lavoie",
     "nhlTeam": "VGK",
@@ -911,7 +911,7 @@
     }
   },
   {
-    "id": 18,
+    "id": 8483553,
     "nhlId": 8483553,
     "name": "Marc Gatcomb",
     "nhlTeam": "VGK",
@@ -965,7 +965,7 @@
     }
   },
   {
-    "id": 19,
+    "id": 8483890,
     "nhlId": 8483890,
     "name": "Braeden Bowman",
     "nhlTeam": "VGK",
@@ -1019,7 +1019,7 @@
     }
   },
   {
-    "id": 20,
+    "id": 8484803,
     "nhlId": 8484803,
     "name": "Trevor Connelly",
     "nhlTeam": "VGK",
@@ -1073,7 +1073,7 @@
     }
   },
   {
-    "id": 21,
+    "id": 8478499,
     "nhlId": 8478499,
     "name": "Adin Hill",
     "nhlTeam": "VGK",
@@ -1115,7 +1115,7 @@
     }
   },
   {
-    "id": 22,
+    "id": 8479394,
     "nhlId": 8479394,
     "name": "Carter Hart",
     "nhlTeam": "VGK",
@@ -1157,7 +1157,7 @@
     }
   },
   {
-    "id": 23,
+    "id": 8473533,
     "nhlId": 8473533,
     "name": "Jordan Staal",
     "nhlTeam": "CAR",
@@ -1211,7 +1211,7 @@
     }
   },
   {
-    "id": 24,
+    "id": 8475235,
     "nhlId": 8475235,
     "name": "Nicolas Deslauriers",
     "nhlTeam": "CAR",
@@ -1265,7 +1265,7 @@
     }
   },
   {
-    "id": 25,
+    "id": 8475791,
     "nhlId": 8475791,
     "name": "Taylor Hall",
     "nhlTeam": "CAR",
@@ -1319,7 +1319,7 @@
     }
   },
   {
-    "id": 26,
+    "id": 8476422,
     "nhlId": 8476422,
     "name": "Mike Reilly",
     "nhlTeam": "CAR",
@@ -1372,7 +1372,7 @@
     }
   },
   {
-    "id": 27,
+    "id": 8476873,
     "nhlId": 8476873,
     "name": "Mark Jankowski",
     "nhlTeam": "CAR",
@@ -1426,7 +1426,7 @@
     }
   },
   {
-    "id": 28,
+    "id": 8476906,
     "nhlId": 8476906,
     "name": "Shayne Gostisbehere",
     "nhlTeam": "CAR",
@@ -1479,7 +1479,7 @@
     }
   },
   {
-    "id": 29,
+    "id": 8476921,
     "nhlId": 8476921,
     "name": "Jordan Martinook",
     "nhlTeam": "CAR",
@@ -1533,7 +1533,7 @@
     }
   },
   {
-    "id": 30,
+    "id": 8476958,
     "nhlId": 8476958,
     "name": "Jaccob Slavin",
     "nhlTeam": "CAR",
@@ -1586,7 +1586,7 @@
     }
   },
   {
-    "id": 31,
+    "id": 8477478,
     "nhlId": 8477478,
     "name": "William Carrier",
     "nhlTeam": "CAR",
@@ -1640,7 +1640,7 @@
     }
   },
   {
-    "id": 32,
+    "id": 8477940,
     "nhlId": 8477940,
     "name": "Nikolaj Ehlers",
     "nhlTeam": "CAR",
@@ -1694,7 +1694,7 @@
     }
   },
   {
-    "id": 33,
+    "id": 8478427,
     "nhlId": 8478427,
     "name": "Sebastian Aho",
     "nhlTeam": "CAR",
@@ -1748,7 +1748,7 @@
     }
   },
   {
-    "id": 34,
+    "id": 8478970,
     "nhlId": 8478970,
     "name": "Jalen Chatfield",
     "nhlTeam": "CAR",
@@ -1801,7 +1801,7 @@
     }
   },
   {
-    "id": 35,
+    "id": 8480336,
     "nhlId": 8480336,
     "name": "Sean Walker",
     "nhlTeam": "CAR",
@@ -1854,7 +1854,7 @@
     }
   },
   {
-    "id": 36,
+    "id": 8480762,
     "nhlId": 8480762,
     "name": "Eric Robinson",
     "nhlTeam": "CAR",
@@ -1908,7 +1908,7 @@
     }
   },
   {
-    "id": 37,
+    "id": 8480817,
     "nhlId": 8480817,
     "name": "K'Andre Miller",
     "nhlTeam": "CAR",
@@ -1961,7 +1961,7 @@
     }
   },
   {
-    "id": 38,
+    "id": 8480829,
     "nhlId": 8480829,
     "name": "Jesperi Kotkaniemi",
     "nhlTeam": "CAR",
@@ -2015,7 +2015,7 @@
     }
   },
   {
-    "id": 39,
+    "id": 8480830,
     "nhlId": 8480830,
     "name": "Andrei Svechnikov",
     "nhlTeam": "CAR",
@@ -2069,7 +2069,7 @@
     }
   },
   {
-    "id": 40,
+    "id": 8482702,
     "nhlId": 8482702,
     "name": "Logan Stankoven",
     "nhlTeam": "CAR",
@@ -2123,7 +2123,7 @@
     }
   },
   {
-    "id": 41,
+    "id": 8482809,
     "nhlId": 8482809,
     "name": "Jackson Blake",
     "nhlTeam": "CAR",
@@ -2177,7 +2177,7 @@
     }
   },
   {
-    "id": 42,
+    "id": 8484203,
     "nhlId": 8484203,
     "name": "Bradly Nadeau",
     "nhlTeam": "CAR",
@@ -2231,7 +2231,7 @@
     }
   },
   {
-    "id": 43,
+    "id": 8484392,
     "nhlId": 8484392,
     "name": "Felix Unger Sörum",
     "nhlTeam": "CAR",
@@ -2285,7 +2285,7 @@
     }
   },
   {
-    "id": 44,
+    "id": 8484428,
     "nhlId": 8484428,
     "name": "Charles Alexis Legault",
     "nhlTeam": "CAR",
@@ -2338,7 +2338,7 @@
     }
   },
   {
-    "id": 45,
+    "id": 8481611,
     "nhlId": 8481611,
     "name": "Pyotr Kochetkov",
     "nhlTeam": "CAR",
@@ -2380,7 +2380,7 @@
     }
   },
   {
-    "id": 46,
+    "id": 8483548,
     "nhlId": 8483548,
     "name": "Brandon Bussi",
     "nhlTeam": "CAR",
@@ -2422,7 +2422,7 @@
     }
   },
   {
-    "id": 47,
+    "id": 8479976,
     "nhlId": 8479976,
     "name": "Juuso Välimäki",
     "nhlTeam": "CAR",
@@ -2474,7 +2474,7 @@
     }
   },
   {
-    "id": 48,
+    "id": 8476374,
     "nhlId": 8476374,
     "name": "Sean Kuraly",
     "nhlTeam": "BOS",
@@ -2528,7 +2528,7 @@
     }
   },
   {
-    "id": 49,
+    "id": 8476854,
     "nhlId": 8476854,
     "name": "Hampus Lindholm",
     "nhlTeam": "BOS",
@@ -2581,7 +2581,7 @@
     }
   },
   {
-    "id": 50,
+    "id": 8477365,
     "nhlId": 8477365,
     "name": "Connor Clifton",
     "nhlTeam": "BOS",
@@ -2634,7 +2634,7 @@
     }
   },
   {
-    "id": 51,
+    "id": 8477496,
     "nhlId": 8477496,
     "name": "Elias Lindholm",
     "nhlTeam": "BOS",
@@ -2688,7 +2688,7 @@
     }
   },
   {
-    "id": 52,
+    "id": 8477507,
     "nhlId": 8477507,
     "name": "Nikita Zadorov",
     "nhlTeam": "BOS",
@@ -2741,7 +2741,7 @@
     }
   },
   {
-    "id": 53,
+    "id": 8477956,
     "nhlId": 8477956,
     "name": "David Pastrnak",
     "nhlTeam": "BOS",
@@ -2795,7 +2795,7 @@
     }
   },
   {
-    "id": 54,
+    "id": 8478401,
     "nhlId": 8478401,
     "name": "Pavel Zacha",
     "nhlTeam": "BOS",
@@ -2849,7 +2849,7 @@
     }
   },
   {
-    "id": 55,
+    "id": 8478840,
     "nhlId": 8478840,
     "name": "Will Borgen",
     "nhlTeam": "BOS",
@@ -2902,7 +2902,7 @@
     }
   },
   {
-    "id": 56,
+    "id": 8479325,
     "nhlId": 8479325,
     "name": "Charlie McAvoy",
     "nhlTeam": "BOS",
@@ -2955,7 +2955,7 @@
     }
   },
   {
-    "id": 57,
+    "id": 8479661,
     "nhlId": 8479661,
     "name": "Tanner Jeannot",
     "nhlTeam": "BOS",
@@ -3009,7 +3009,7 @@
     }
   },
   {
-    "id": 58,
+    "id": 8479987,
     "nhlId": 8479987,
     "name": "Morgan Geekie",
     "nhlTeam": "BOS",
@@ -3063,7 +3063,7 @@
     }
   },
   {
-    "id": 59,
+    "id": 8479999,
     "nhlId": 8479999,
     "name": "Casey Mittelstadt",
     "nhlTeam": "BOS",
@@ -3117,7 +3117,7 @@
     }
   },
   {
-    "id": 60,
+    "id": 8480355,
     "nhlId": 8480355,
     "name": "Mark Kastelic",
     "nhlTeam": "BOS",
@@ -3171,7 +3171,7 @@
     }
   },
   {
-    "id": 61,
+    "id": 8481219,
     "nhlId": 8481219,
     "name": "Jonathan Aspirot",
     "nhlTeam": "BOS",
@@ -3224,7 +3224,7 @@
     }
   },
   {
-    "id": 62,
+    "id": 8482175,
     "nhlId": 8482175,
     "name": "JJ Peterka",
     "nhlTeam": "BOS",
@@ -3278,7 +3278,7 @@
     }
   },
   {
-    "id": 63,
+    "id": 8482177,
     "nhlId": 8482177,
     "name": "Marat Khusnutdinov",
     "nhlTeam": "BOS",
@@ -3332,7 +3332,7 @@
     }
   },
   {
-    "id": 64,
+    "id": 8482511,
     "nhlId": 8482511,
     "name": "Mason Lohrei",
     "nhlTeam": "BOS",
@@ -3385,7 +3385,7 @@
     }
   },
   {
-    "id": 65,
+    "id": 8483017,
     "nhlId": 8483017,
     "name": "Frederic Brunet",
     "nhlTeam": "BOS",
@@ -3438,7 +3438,7 @@
     }
   },
   {
-    "id": 66,
+    "id": 8483489,
     "nhlId": 8483489,
     "name": "Fraser Minten",
     "nhlTeam": "BOS",
@@ -3492,7 +3492,7 @@
     }
   },
   {
-    "id": 67,
+    "id": 8483505,
     "nhlId": 8483505,
     "name": "Matthew Poitras",
     "nhlTeam": "BOS",
@@ -3546,7 +3546,7 @@
     }
   },
   {
-    "id": 68,
+    "id": 8485395,
     "nhlId": 8485395,
     "name": "James Hagens",
     "nhlTeam": "BOS",
@@ -3600,7 +3600,7 @@
     }
   },
   {
-    "id": 69,
+    "id": 8480022,
     "nhlId": 8480022,
     "name": "Michael DiPietro",
     "nhlTeam": "BOS",
@@ -3642,7 +3642,7 @@
     }
   },
   {
-    "id": 70,
+    "id": 8480280,
     "nhlId": 8480280,
     "name": "Jeremy Swayman",
     "nhlTeam": "BOS",
@@ -3684,7 +3684,7 @@
     }
   },
   {
-    "id": 71,
+    "id": 8475218,
     "nhlId": 8475218,
     "name": "Mattias Ekholm",
     "nhlTeam": "EDM",
@@ -3737,7 +3737,7 @@
     }
   },
   {
-    "id": 72,
+    "id": 8475786,
     "nhlId": 8475786,
     "name": "Zach Hyman",
     "nhlTeam": "EDM",
@@ -3791,7 +3791,7 @@
     }
   },
   {
-    "id": 73,
+    "id": 8476473,
     "nhlId": 8476473,
     "name": "Connor Murphy",
     "nhlTeam": "EDM",
@@ -3844,7 +3844,7 @@
     }
   },
   {
-    "id": 74,
+    "id": 8477450,
     "nhlId": 8477450,
     "name": "Jason Dickinson",
     "nhlTeam": "EDM",
@@ -3898,7 +3898,7 @@
     }
   },
   {
-    "id": 75,
+    "id": 8477934,
     "nhlId": 8477934,
     "name": "Leon Draisaitl",
     "nhlTeam": "EDM",
@@ -3952,7 +3952,7 @@
     }
   },
   {
-    "id": 76,
+    "id": 8477953,
     "nhlId": 8477953,
     "name": "Kasperi Kapanen",
     "nhlTeam": "EDM",
@@ -4006,7 +4006,7 @@
     }
   },
   {
-    "id": 77,
+    "id": 8478013,
     "nhlId": 8478013,
     "name": "Jake Walman",
     "nhlTeam": "EDM",
@@ -4059,7 +4059,7 @@
     }
   },
   {
-    "id": 78,
+    "id": 8478402,
     "nhlId": 8478402,
     "name": "Connor McDavid",
     "nhlTeam": "EDM",
@@ -4113,7 +4113,7 @@
     }
   },
   {
-    "id": 79,
+    "id": 8478472,
     "nhlId": 8478472,
     "name": "Mathieu Joseph",
     "nhlTeam": "EDM",
@@ -4167,7 +4167,7 @@
     }
   },
   {
-    "id": 80,
+    "id": 8478854,
     "nhlId": 8478854,
     "name": "Ryan Shea",
     "nhlTeam": "EDM",
@@ -4220,7 +4220,7 @@
     }
   },
   {
-    "id": 81,
+    "id": 8479365,
     "nhlId": 8479365,
     "name": "Trent Frederic",
     "nhlTeam": "EDM",
@@ -4274,7 +4274,7 @@
     }
   },
   {
-    "id": 82,
+    "id": 8479368,
     "nhlId": 8479368,
     "name": "Max Jones",
     "nhlTeam": "EDM",
@@ -4328,7 +4328,7 @@
     }
   },
   {
-    "id": 83,
+    "id": 8480029,
     "nhlId": 8480029,
     "name": "Alex Formenton",
     "nhlTeam": "EDM",
@@ -4382,7 +4382,7 @@
     }
   },
   {
-    "id": 84,
+    "id": 8480803,
     "nhlId": 8480803,
     "name": "Evan Bouchard",
     "nhlTeam": "EDM",
@@ -4435,7 +4435,7 @@
     }
   },
   {
-    "id": 85,
+    "id": 8480834,
     "nhlId": 8480834,
     "name": "Ty Emberson",
     "nhlTeam": "EDM",
@@ -4488,61 +4488,7 @@
     }
   },
   {
-    "id": 86,
-    "nhlId": 8480842,
-    "name": "Filip Hallander",
-    "nhlTeam": "EDM",
-    "capHit": 950000,
-    "positions": [
-      "C",
-      "F",
-      "UTIL"
-    ],
-    "primaryPosition": "C",
-    "playerType": "skater",
-    "injuryStatus": "ACTIVE",
-    "headshotUrl": "https://assets.nhle.com/mugs/nhl/20262027/EDM/8480842.png",
-    "actualStats": {
-      "skater": {
-        "gamesPlayed": 4,
-        "goals": 0,
-        "assists": 0,
-        "points": 0,
-        "plusMinus": -1,
-        "powerPlayGoals": 0,
-        "powerPlayPoints": 0,
-        "shortHandedPoints": 0,
-        "shots": 3,
-        "hits": 4,
-        "blockedShots": 2,
-        "penaltyMinutes": 2,
-        "shootingPctg": 0,
-        "avgTimeOnIce": "11:25"
-      }
-    },
-    "projections": {
-      "rosGamesRemaining": 78,
-      "rosGoals": 0,
-      "rosAssists": 0,
-      "rosPoints": 0,
-      "rosPlusMinus": -19,
-      "rosPPP": 0,
-      "rosSOG": 59,
-      "rosHits": 78,
-      "rosBlocks": 39,
-      "rosPIM": 39,
-      "sdPlayingTimePct": 0.12,
-      "sdGoalRate": 0.18,
-      "sdAssistRate": 0.15,
-      "sdSOGRate": 0.1,
-      "sdHitRate": 0.14,
-      "sdBlockRate": 0.14,
-      "sdPIMRate": 0.2,
-      "sdPlusMinus": 10
-    }
-  },
-  {
-    "id": 87,
+    "id": 8481617,
     "nhlId": 8481617,
     "name": "Vasily Podkolzin",
     "nhlTeam": "EDM",
@@ -4596,7 +4542,7 @@
     }
   },
   {
-    "id": 88,
+    "id": 8482166,
     "nhlId": 8482166,
     "name": "Shakir Mukhamadullin",
     "nhlTeam": "EDM",
@@ -4649,7 +4595,7 @@
     }
   },
   {
-    "id": 89,
+    "id": 8482703,
     "nhlId": 8482703,
     "name": "Colton Dach",
     "nhlTeam": "EDM",
@@ -4703,7 +4649,7 @@
     }
   },
   {
-    "id": 90,
+    "id": 8483455,
     "nhlId": 8483455,
     "name": "Isaac Howard",
     "nhlTeam": "EDM",
@@ -4757,7 +4703,7 @@
     }
   },
   {
-    "id": 91,
+    "id": 8484509,
     "nhlId": 8484509,
     "name": "Josh Samanski",
     "nhlTeam": "EDM",
@@ -4811,7 +4757,7 @@
     }
   },
   {
-    "id": 92,
+    "id": 8486161,
     "nhlId": 8486161,
     "name": "Owen Michaels",
     "nhlTeam": "EDM",
@@ -4865,7 +4811,7 @@
     }
   },
   {
-    "id": 93,
+    "id": 8477465,
     "nhlId": 8477465,
     "name": "Tristan Jarry",
     "nhlTeam": "EDM",
@@ -4907,7 +4853,7 @@
     }
   },
   {
-    "id": 94,
+    "id": 8482221,
     "nhlId": 8482221,
     "name": "Devon Levi",
     "nhlTeam": "EDM",
@@ -4949,7 +4895,7 @@
     }
   },
   {
-    "id": 95,
+    "id": 8477406,
     "nhlId": 8477406,
     "name": "Mattias Janmark",
     "nhlTeam": "EDM",
@@ -5002,7 +4948,7 @@
     }
   },
   {
-    "id": 96,
+    "id": 8476454,
     "nhlId": 8476454,
     "name": "Ryan Nugent-Hopkins",
     "nhlTeam": "EDM",
@@ -5055,7 +5001,7 @@
     }
   },
   {
-    "id": 97,
+    "id": 8483512,
     "nhlId": 8483512,
     "name": "Matt Savoie",
     "nhlTeam": "EDM",
@@ -5108,7 +5054,7 @@
     }
   },
   {
-    "id": 98,
+    "id": 8480831,
     "nhlId": 8480831,
     "name": "Alec Regula",
     "nhlTeam": "EDM",
@@ -5160,7 +5106,7 @@
     }
   },
   {
-    "id": 99,
+    "id": 8475883,
     "nhlId": 8475883,
     "name": "Frederik Andersen",
     "nhlTeam": "EDM",
@@ -5202,7 +5148,7 @@
     }
   },
   {
-    "id": 100,
+    "id": 8475413,
     "nhlId": 8475413,
     "name": "Justin Dowling",
     "nhlTeam": "NYR",
@@ -5256,7 +5202,7 @@
     }
   },
   {
-    "id": 101,
+    "id": 8476459,
     "nhlId": 8476459,
     "name": "Mika Zibanejad",
     "nhlTeam": "NYR",
@@ -5310,7 +5256,7 @@
     }
   },
   {
-    "id": 102,
+    "id": 8476468,
     "nhlId": 8476468,
     "name": "J.T. Miller",
     "nhlTeam": "NYR",
@@ -5364,7 +5310,7 @@
     }
   },
   {
-    "id": 103,
+    "id": 8477416,
     "nhlId": 8477416,
     "name": "Oliver Bjorkstrand",
     "nhlTeam": "NYR",
@@ -5418,7 +5364,7 @@
     }
   },
   {
-    "id": 104,
+    "id": 8477969,
     "nhlId": 8477969,
     "name": "Marcus Pettersson",
     "nhlTeam": "NYR",
@@ -5471,7 +5417,7 @@
     }
   },
   {
-    "id": 105,
+    "id": 8478882,
     "nhlId": 8478882,
     "name": "Vladislav Gavrikov",
     "nhlTeam": "NYR",
@@ -5524,7 +5470,7 @@
     }
   },
   {
-    "id": 106,
+    "id": 8479323,
     "nhlId": 8479323,
     "name": "Adam Fox",
     "nhlTeam": "NYR",
@@ -5577,7 +5523,7 @@
     }
   },
   {
-    "id": 107,
+    "id": 8479390,
     "nhlId": 8479390,
     "name": "Taylor Raddysh",
     "nhlTeam": "NYR",
@@ -5631,7 +5577,7 @@
     }
   },
   {
-    "id": 108,
+    "id": 8480009,
     "nhlId": 8480009,
     "name": "Eeli Tolvanen",
     "nhlTeam": "NYR",
@@ -5685,7 +5631,7 @@
     }
   },
   {
-    "id": 109,
+    "id": 8480434,
     "nhlId": 8480434,
     "name": "Sean Durzi",
     "nhlTeam": "NYR",
@@ -5738,7 +5684,7 @@
     }
   },
   {
-    "id": 110,
+    "id": 8480813,
     "nhlId": 8480813,
     "name": "Joseph Veleno",
     "nhlTeam": "NYR",
@@ -5792,7 +5738,7 @@
     }
   },
   {
-    "id": 111,
+    "id": 8481604,
     "nhlId": 8481604,
     "name": "Pavel Dorofeyev",
     "nhlTeam": "NYR",
@@ -5846,7 +5792,7 @@
     }
   },
   {
-    "id": 112,
+    "id": 8481789,
     "nhlId": 8481789,
     "name": "Tye Kartye",
     "nhlTeam": "NYR",
@@ -5900,7 +5846,7 @@
     }
   },
   {
-    "id": 113,
+    "id": 8482073,
     "nhlId": 8482073,
     "name": "Braden Schneider",
     "nhlTeam": "NYR",
@@ -5953,7 +5899,7 @@
     }
   },
   {
-    "id": 114,
+    "id": 8482109,
     "nhlId": 8482109,
     "name": "Alexis Lafrenière",
     "nhlTeam": "NYR",
@@ -6007,7 +5953,7 @@
     }
   },
   {
-    "id": 115,
+    "id": 8482157,
     "nhlId": 8482157,
     "name": "Will Cuylle",
     "nhlTeam": "NYR",
@@ -6061,7 +6007,7 @@
     }
   },
   {
-    "id": 116,
+    "id": 8482460,
     "nhlId": 8482460,
     "name": "Matt Rempe",
     "nhlTeam": "NYR",
@@ -6115,7 +6061,7 @@
     }
   },
   {
-    "id": 117,
+    "id": 8482877,
     "nhlId": 8482877,
     "name": "Jaroslav Chmelar",
     "nhlTeam": "NYR",
@@ -6169,7 +6115,7 @@
     }
   },
   {
-    "id": 118,
+    "id": 8483690,
     "nhlId": 8483690,
     "name": "Noah Laba",
     "nhlTeam": "NYR",
@@ -6223,7 +6169,7 @@
     }
   },
   {
-    "id": 119,
+    "id": 8484210,
     "nhlId": 8484210,
     "name": "Gabe Perreault",
     "nhlTeam": "NYR",
@@ -6277,7 +6223,7 @@
     }
   },
   {
-    "id": 120,
+    "id": 8484786,
     "nhlId": 8484786,
     "name": "Cole Beaudoin",
     "nhlTeam": "NYR",
@@ -6331,7 +6277,7 @@
     }
   },
   {
-    "id": 121,
+    "id": 8485957,
     "nhlId": 8485957,
     "name": "Alberts Smits",
     "nhlTeam": "NYR",
@@ -6384,7 +6330,7 @@
     }
   },
   {
-    "id": 122,
+    "id": 8477484,
     "nhlId": 8477484,
     "name": "Spencer Martin",
     "nhlTeam": "NYR",
@@ -6426,7 +6372,7 @@
     }
   },
   {
-    "id": 123,
+    "id": 8478048,
     "nhlId": 8478048,
     "name": "Igor Shesterkin",
     "nhlTeam": "NYR",
@@ -6468,7 +6414,7 @@
     }
   },
   {
-    "id": 124,
+    "id": 8482193,
     "nhlId": 8482193,
     "name": "Dylan Garand",
     "nhlTeam": "NYR",
@@ -6510,7 +6456,7 @@
     }
   },
   {
-    "id": 125,
+    "id": 8483669,
     "nhlId": 8483669,
     "name": "Adam Sykora",
     "nhlTeam": "NYR",
@@ -6563,7 +6509,7 @@
     }
   },
   {
-    "id": 126,
+    "id": 8482666,
     "nhlId": 8482666,
     "name": "Scott Morrow",
     "nhlTeam": "NYR",
@@ -6615,7 +6561,7 @@
     }
   },
   {
-    "id": 127,
+    "id": 8476914,
     "nhlId": 8476914,
     "name": "Joonas Korpisalo",
     "nhlTeam": "NYR",
@@ -6657,7 +6603,7 @@
     }
   },
   {
-    "id": 128,
+    "id": 8474151,
     "nhlId": 8474151,
     "name": "Ryan McDonagh",
     "nhlTeam": "TBL",
@@ -6710,7 +6656,7 @@
     }
   },
   {
-    "id": 129,
+    "id": 8474590,
     "nhlId": 8474590,
     "name": "John Carlson",
     "nhlTeam": "TBL",
@@ -6763,7 +6709,7 @@
     }
   },
   {
-    "id": 130,
+    "id": 8475167,
     "nhlId": 8475167,
     "name": "Victor Hedman",
     "nhlTeam": "TBL",
@@ -6816,7 +6762,7 @@
     }
   },
   {
-    "id": 131,
+    "id": 8476453,
     "nhlId": 8476453,
     "name": "Nikita Kucherov",
     "nhlTeam": "TBL",
@@ -6870,7 +6816,7 @@
     }
   },
   {
-    "id": 132,
+    "id": 8476878,
     "nhlId": 8476878,
     "name": "Zemgus Girgensons",
     "nhlTeam": "TBL",
@@ -6924,7 +6870,7 @@
     }
   },
   {
-    "id": 133,
+    "id": 8477149,
     "nhlId": 8477149,
     "name": "Scott Sabourin",
     "nhlTeam": "TBL",
@@ -6978,7 +6924,7 @@
     }
   },
   {
-    "id": 134,
+    "id": 8477404,
     "nhlId": 8477404,
     "name": "Jake Guentzel",
     "nhlTeam": "TBL",
@@ -7032,7 +6978,7 @@
     }
   },
   {
-    "id": 135,
+    "id": 8478010,
     "nhlId": 8478010,
     "name": "Brayden Point",
     "nhlTeam": "TBL",
@@ -7086,7 +7032,7 @@
     }
   },
   {
-    "id": 136,
+    "id": 8478416,
     "nhlId": 8478416,
     "name": "Erik Cernak",
     "nhlTeam": "TBL",
@@ -7139,7 +7085,7 @@
     }
   },
   {
-    "id": 137,
+    "id": 8478424,
     "nhlId": 8478424,
     "name": "Jansen Harkins",
     "nhlTeam": "TBL",
@@ -7193,7 +7139,7 @@
     }
   },
   {
-    "id": 138,
+    "id": 8478519,
     "nhlId": 8478519,
     "name": "Anthony Cirelli",
     "nhlTeam": "TBL",
@@ -7247,7 +7193,7 @@
     }
   },
   {
-    "id": 139,
+    "id": 8479542,
     "nhlId": 8479542,
     "name": "Brandon Hagel",
     "nhlTeam": "TBL",
@@ -7301,7 +7247,7 @@
     }
   },
   {
-    "id": 140,
+    "id": 8479705,
     "nhlId": 8479705,
     "name": "Jeffrey Viel",
     "nhlTeam": "TBL",
@@ -7355,7 +7301,7 @@
     }
   },
   {
-    "id": 141,
+    "id": 8480426,
     "nhlId": 8480426,
     "name": "Charle-Edouard D'Astous",
     "nhlTeam": "TBL",
@@ -7408,7 +7354,7 @@
     }
   },
   {
-    "id": 142,
+    "id": 8480995,
     "nhlId": 8480995,
     "name": "Pontus Holmberg",
     "nhlTeam": "TBL",
@@ -7462,7 +7408,7 @@
     }
   },
   {
-    "id": 143,
+    "id": 8481624,
     "nhlId": 8481624,
     "name": "Ilya Mikheyev",
     "nhlTeam": "TBL",
@@ -7516,7 +7462,7 @@
     }
   },
   {
-    "id": 144,
+    "id": 8481719,
     "nhlId": 8481719,
     "name": "Max Crozier",
     "nhlTeam": "TBL",
@@ -7569,7 +7515,7 @@
     }
   },
   {
-    "id": 145,
+    "id": 8482201,
     "nhlId": 8482201,
     "name": "Gage Goncalves",
     "nhlTeam": "TBL",
@@ -7623,7 +7569,7 @@
     }
   },
   {
-    "id": 146,
+    "id": 8482655,
     "nhlId": 8482655,
     "name": "J.J. Moser",
     "nhlTeam": "TBL",
@@ -7676,7 +7622,7 @@
     }
   },
   {
-    "id": 147,
+    "id": 8482929,
     "nhlId": 8482929,
     "name": "Emil Lilleberg",
     "nhlTeam": "TBL",
@@ -7729,7 +7675,7 @@
     }
   },
   {
-    "id": 148,
+    "id": 8483447,
     "nhlId": 8483447,
     "name": "Conor Geekie",
     "nhlTeam": "TBL",
@@ -7783,7 +7729,7 @@
     }
   },
   {
-    "id": 149,
+    "id": 8483752,
     "nhlId": 8483752,
     "name": "Dominic James",
     "nhlTeam": "TBL",
@@ -7837,7 +7783,7 @@
     }
   },
   {
-    "id": 150,
+    "id": 8476883,
     "nhlId": 8476883,
     "name": "Andrei Vasilevskiy",
     "nhlTeam": "TBL",
@@ -7879,7 +7825,7 @@
     }
   },
   {
-    "id": 151,
+    "id": 8483710,
     "nhlId": 8483710,
     "name": "Dennis Hildeby",
     "nhlTeam": "TBL",
@@ -7921,7 +7867,7 @@
     }
   },
   {
-    "id": 152,
+    "id": 8476826,
     "nhlId": 8476826,
     "name": "Yanni Gourde",
     "nhlTeam": "TBL",
@@ -7974,7 +7920,7 @@
     }
   },
   {
-    "id": 153,
+    "id": 8475314,
     "nhlId": 8475314,
     "name": "Anders Lee",
     "nhlTeam": "UTA",
@@ -8028,7 +7974,7 @@
     }
   },
   {
-    "id": 154,
+    "id": 8476389,
     "nhlId": 8476389,
     "name": "Vincent Trocheck",
     "nhlTeam": "UTA",
@@ -8082,7 +8028,7 @@
     }
   },
   {
-    "id": 155,
+    "id": 8477220,
     "nhlId": 8477220,
     "name": "Nate Schmidt",
     "nhlTeam": "UTA",
@@ -8135,7 +8081,7 @@
     }
   },
   {
-    "id": 156,
+    "id": 8477346,
     "nhlId": 8477346,
     "name": "MacKenzie Weegar",
     "nhlTeam": "UTA",
@@ -8188,7 +8134,7 @@
     }
   },
   {
-    "id": 157,
+    "id": 8477951,
     "nhlId": 8477951,
     "name": "Nick Schmaltz",
     "nhlTeam": "UTA",
@@ -8242,7 +8188,7 @@
     }
   },
   {
-    "id": 158,
+    "id": 8478474,
     "nhlId": 8478474,
     "name": "Lawson Crouse",
     "nhlTeam": "UTA",
@@ -8296,7 +8242,7 @@
     }
   },
   {
-    "id": 159,
+    "id": 8478507,
     "nhlId": 8478507,
     "name": "John Marino",
     "nhlTeam": "UTA",
@@ -8349,7 +8295,7 @@
     }
   },
   {
-    "id": 160,
+    "id": 8478831,
     "nhlId": 8478831,
     "name": "Kevin Stenlund",
     "nhlTeam": "UTA",
@@ -8403,7 +8349,7 @@
     }
   },
   {
-    "id": 161,
+    "id": 8479343,
     "nhlId": 8479343,
     "name": "Clayton Keller",
     "nhlTeam": "UTA",
@@ -8457,7 +8403,7 @@
     }
   },
   {
-    "id": 162,
+    "id": 8479369,
     "nhlId": 8479369,
     "name": "Andrew Peeke",
     "nhlTeam": "UTA",
@@ -8510,7 +8456,7 @@
     }
   },
   {
-    "id": 163,
+    "id": 8479410,
     "nhlId": 8479410,
     "name": "Mikhail Sergachev",
     "nhlTeam": "UTA",
@@ -8563,7 +8509,7 @@
     }
   },
   {
-    "id": 164,
+    "id": 8479619,
     "nhlId": 8479619,
     "name": "Michael Carcone",
     "nhlTeam": "UTA",
@@ -8617,7 +8563,7 @@
     }
   },
   {
-    "id": 165,
+    "id": 8479977,
     "nhlId": 8479977,
     "name": "Kailer Yamamoto",
     "nhlTeam": "UTA",
@@ -8671,7 +8617,7 @@
     }
   },
   {
-    "id": 166,
+    "id": 8480849,
     "nhlId": 8480849,
     "name": "Barrett Hayton",
     "nhlTeam": "UTA",
@@ -8725,7 +8671,7 @@
     }
   },
   {
-    "id": 167,
+    "id": 8480855,
     "nhlId": 8480855,
     "name": "Jack McBain",
     "nhlTeam": "UTA",
@@ -8779,7 +8725,7 @@
     }
   },
   {
-    "id": 168,
+    "id": 8482699,
     "nhlId": 8482699,
     "name": "Dylan Guenther",
     "nhlTeam": "UTA",
@@ -8833,7 +8779,7 @@
     }
   },
   {
-    "id": 169,
+    "id": 8483431,
     "nhlId": 8483431,
     "name": "Logan Cooley",
     "nhlTeam": "UTA",
@@ -8887,7 +8833,7 @@
     }
   },
   {
-    "id": 170,
+    "id": 8484386,
     "nhlId": 8484386,
     "name": "Dmitri Simashev",
     "nhlTeam": "UTA",
@@ -8940,7 +8886,7 @@
     }
   },
   {
-    "id": 171,
+    "id": 8484388,
     "nhlId": 8484388,
     "name": "Daniil But",
     "nhlTeam": "UTA",
@@ -8994,7 +8940,7 @@
     }
   },
   {
-    "id": 172,
+    "id": 8478872,
     "nhlId": 8478872,
     "name": "Karel Vejmelka",
     "nhlTeam": "UTA",
@@ -9036,7 +8982,7 @@
     }
   },
   {
-    "id": 173,
+    "id": 8482657,
     "nhlId": 8482657,
     "name": "Sebastian Cossa",
     "nhlTeam": "UTA",
@@ -9078,7 +9024,7 @@
     }
   },
   {
-    "id": 174,
+    "id": 8477070,
     "nhlId": 8477070,
     "name": "Liam O'Brien",
     "nhlTeam": "UTA",
@@ -9131,7 +9077,7 @@
     }
   },
   {
-    "id": 175,
+    "id": 8480084,
     "nhlId": 8480084,
     "name": "Nick DeSimone",
     "nhlTeam": "UTA",
@@ -9183,7 +9129,7 @@
     }
   },
   {
-    "id": 176,
+    "id": 8483472,
     "nhlId": 8483472,
     "name": "Maveric Lamoureux",
     "nhlTeam": "UTA",
@@ -9235,7 +9181,7 @@
     }
   },
   {
-    "id": 177,
+    "id": 8473512,
     "nhlId": 8473512,
     "name": "Claude Giroux",
     "nhlTeam": "OTT",
@@ -9289,7 +9235,7 @@
     }
   },
   {
-    "id": 178,
+    "id": 8476393,
     "nhlId": 8476393,
     "name": "Nick Cousins",
     "nhlTeam": "OTT",
@@ -9343,7 +9289,7 @@
     }
   },
   {
-    "id": 179,
+    "id": 8477444,
     "nhlId": 8477444,
     "name": "Andre Burakovsky",
     "nhlTeam": "OTT",
@@ -9397,7 +9343,7 @@
     }
   },
   {
-    "id": 180,
+    "id": 8477998,
     "nhlId": 8477998,
     "name": "Warren Foegele",
     "nhlTeam": "OTT",
@@ -9451,7 +9397,7 @@
     }
   },
   {
-    "id": 181,
+    "id": 8478020,
     "nhlId": 8478020,
     "name": "Michael Amadio",
     "nhlTeam": "OTT",
@@ -9505,7 +9451,7 @@
     }
   },
   {
-    "id": 182,
+    "id": 8478173,
     "nhlId": 8478173,
     "name": "Hayden Hodgson",
     "nhlTeam": "OTT",
@@ -9559,7 +9505,7 @@
     }
   },
   {
-    "id": 183,
+    "id": 8478469,
     "nhlId": 8478469,
     "name": "Thomas Chabot",
     "nhlTeam": "OTT",
@@ -9612,7 +9558,7 @@
     }
   },
   {
-    "id": 184,
+    "id": 8480075,
     "nhlId": 8480075,
     "name": "Cameron Crotty",
     "nhlTeam": "OTT",
@@ -9665,7 +9611,7 @@
     }
   },
   {
-    "id": 185,
+    "id": 8480188,
     "nhlId": 8480188,
     "name": "Fabian Zetterlund",
     "nhlTeam": "OTT",
@@ -9719,7 +9665,7 @@
     }
   },
   {
-    "id": 186,
+    "id": 8480208,
     "nhlId": 8480208,
     "name": "Drake Batherson",
     "nhlTeam": "OTT",
@@ -9773,7 +9719,7 @@
     }
   },
   {
-    "id": 187,
+    "id": 8481528,
     "nhlId": 8481528,
     "name": "Dylan Cozens",
     "nhlTeam": "OTT",
@@ -9827,7 +9773,7 @@
     }
   },
   {
-    "id": 188,
+    "id": 8481596,
     "nhlId": 8481596,
     "name": "Shane Pinto",
     "nhlTeam": "OTT",
@@ -9881,7 +9827,7 @@
     }
   },
   {
-    "id": 189,
+    "id": 8481606,
     "nhlId": 8481606,
     "name": "Jordan Spence",
     "nhlTeam": "OTT",
@@ -9934,7 +9880,7 @@
     }
   },
   {
-    "id": 190,
+    "id": 8482092,
     "nhlId": 8482092,
     "name": "Ridly Greig",
     "nhlTeam": "OTT",
@@ -9988,7 +9934,7 @@
     }
   },
   {
-    "id": 191,
+    "id": 8482095,
     "nhlId": 8482095,
     "name": "Tyler Kleven",
     "nhlTeam": "OTT",
@@ -10041,7 +9987,7 @@
     }
   },
   {
-    "id": 192,
+    "id": 8482105,
     "nhlId": 8482105,
     "name": "Jake Sanderson",
     "nhlTeam": "OTT",
@@ -10094,7 +10040,7 @@
     }
   },
   {
-    "id": 193,
+    "id": 8482116,
     "nhlId": 8482116,
     "name": "Tim Stützle",
     "nhlTeam": "OTT",
@@ -10148,7 +10094,7 @@
     }
   },
   {
-    "id": 194,
+    "id": 8482245,
     "nhlId": 8482245,
     "name": "Artem Zub",
     "nhlTeam": "OTT",
@@ -10201,7 +10147,7 @@
     }
   },
   {
-    "id": 195,
+    "id": 8482667,
     "nhlId": 8482667,
     "name": "William Eklund",
     "nhlTeam": "OTT",
@@ -10255,7 +10201,7 @@
     }
   },
   {
-    "id": 196,
+    "id": 8483435,
     "nhlId": 8483435,
     "name": "Jorian Donovan",
     "nhlTeam": "OTT",
@@ -10308,7 +10254,7 @@
     }
   },
   {
-    "id": 197,
+    "id": 8483676,
     "nhlId": 8483676,
     "name": "Stephen Halliday",
     "nhlTeam": "OTT",
@@ -10362,7 +10308,7 @@
     }
   },
   {
-    "id": 198,
+    "id": 8484321,
     "nhlId": 8484321,
     "name": "Nikolas Matinpalo",
     "nhlTeam": "OTT",
@@ -10415,7 +10361,7 @@
     }
   },
   {
-    "id": 199,
+    "id": 8484409,
     "nhlId": 8484409,
     "name": "Hoyt Stanley",
     "nhlTeam": "OTT",
@@ -10468,7 +10414,7 @@
     }
   },
   {
-    "id": 200,
+    "id": 8484759,
     "nhlId": 8484759,
     "name": "Carter Yakemchuk",
     "nhlTeam": "OTT",
@@ -10521,7 +10467,7 @@
     }
   },
   {
-    "id": 201,
+    "id": 8476999,
     "nhlId": 8476999,
     "name": "Linus Ullmark",
     "nhlTeam": "OTT",
@@ -10563,7 +10509,7 @@
     }
   },
   {
-    "id": 202,
+    "id": 8481035,
     "nhlId": 8481035,
     "name": "Samuel Ersson",
     "nhlTeam": "OTT",
@@ -10605,7 +10551,7 @@
     }
   },
   {
-    "id": 203,
+    "id": 8473419,
     "nhlId": 8473419,
     "name": "Brad Marchand",
     "nhlTeam": "FLA",
@@ -10659,7 +10605,7 @@
     }
   },
   {
-    "id": 204,
+    "id": 8474189,
     "nhlId": 8474189,
     "name": "Lars Eller",
     "nhlTeam": "FLA",
@@ -10713,7 +10659,7 @@
     }
   },
   {
-    "id": 205,
+    "id": 8475179,
     "nhlId": 8475179,
     "name": "Dmitry Kulikov",
     "nhlTeam": "FLA",
@@ -10766,7 +10712,7 @@
     }
   },
   {
-    "id": 206,
+    "id": 8475462,
     "nhlId": 8475462,
     "name": "Radko Gudas",
     "nhlTeam": "FLA",
@@ -10819,7 +10765,7 @@
     }
   },
   {
-    "id": 207,
+    "id": 8477409,
     "nhlId": 8477409,
     "name": "Carter Verhaeghe",
     "nhlTeam": "FLA",
@@ -10873,7 +10819,7 @@
     }
   },
   {
-    "id": 208,
+    "id": 8477493,
     "nhlId": 8477493,
     "name": "Aleksander Barkov",
     "nhlTeam": "FLA",
@@ -10927,7 +10873,7 @@
     }
   },
   {
-    "id": 209,
+    "id": 8477495,
     "nhlId": 8477495,
     "name": "Seth Jones",
     "nhlTeam": "FLA",
@@ -10980,7 +10926,7 @@
     }
   },
   {
-    "id": 210,
+    "id": 8477903,
     "nhlId": 8477903,
     "name": "Garnet Hathaway",
     "nhlTeam": "FLA",
@@ -11034,7 +10980,7 @@
     }
   },
   {
-    "id": 211,
+    "id": 8477932,
     "nhlId": 8477932,
     "name": "Aaron Ekblad",
     "nhlTeam": "FLA",
@@ -11087,7 +11033,7 @@
     }
   },
   {
-    "id": 212,
+    "id": 8477933,
     "nhlId": 8477933,
     "name": "Sam Reinhart",
     "nhlTeam": "FLA",
@@ -11141,7 +11087,7 @@
     }
   },
   {
-    "id": 213,
+    "id": 8477935,
     "nhlId": 8477935,
     "name": "Sam Bennett",
     "nhlTeam": "FLA",
@@ -11195,7 +11141,7 @@
     }
   },
   {
-    "id": 214,
+    "id": 8478043,
     "nhlId": 8478043,
     "name": "Sam Lafferty",
     "nhlTeam": "FLA",
@@ -11249,7 +11195,7 @@
     }
   },
   {
-    "id": 215,
+    "id": 8478055,
     "nhlId": 8478055,
     "name": "Gustav Forsling",
     "nhlTeam": "FLA",
@@ -11302,7 +11248,7 @@
     }
   },
   {
-    "id": 216,
+    "id": 8478147,
     "nhlId": 8478147,
     "name": "Bokondji Imama",
     "nhlTeam": "FLA",
@@ -11356,7 +11302,7 @@
     }
   },
   {
-    "id": 217,
+    "id": 8478859,
     "nhlId": 8478859,
     "name": "Niko Mikkola",
     "nhlTeam": "FLA",
@@ -11409,7 +11355,7 @@
     }
   },
   {
-    "id": 218,
+    "id": 8479314,
     "nhlId": 8479314,
     "name": "Matthew Tkachuk",
     "nhlTeam": "FLA",
@@ -11463,7 +11409,7 @@
     }
   },
   {
-    "id": 219,
+    "id": 8480185,
     "nhlId": 8480185,
     "name": "Eetu Luostarinen",
     "nhlTeam": "FLA",
@@ -11517,7 +11463,7 @@
     }
   },
   {
-    "id": 220,
+    "id": 8480801,
     "nhlId": 8480801,
     "name": "Brady Tkachuk",
     "nhlTeam": "FLA",
@@ -11571,7 +11517,7 @@
     }
   },
   {
-    "id": 221,
+    "id": 8482113,
     "nhlId": 8482113,
     "name": "Anton Lundell",
     "nhlTeam": "FLA",
@@ -11625,7 +11571,7 @@
     }
   },
   {
-    "id": 222,
+    "id": 8483771,
     "nhlId": 8483771,
     "name": "Sandis Vilmanis",
     "nhlTeam": "FLA",
@@ -11679,7 +11625,7 @@
     }
   },
   {
-    "id": 223,
+    "id": 8484304,
     "nhlId": 8484304,
     "name": "Uvis Balinskis",
     "nhlTeam": "FLA",
@@ -11732,7 +11678,7 @@
     }
   },
   {
-    "id": 224,
+    "id": 8474593,
     "nhlId": 8474593,
     "name": "Jacob Markstrom",
     "nhlTeam": "FLA",
@@ -11774,7 +11720,7 @@
     }
   },
   {
-    "id": 225,
+    "id": 8481033,
     "nhlId": 8481033,
     "name": "Akira Schmid",
     "nhlTeam": "FLA",
@@ -11816,7 +11762,7 @@
     }
   },
   {
-    "id": 226,
+    "id": 8479981,
     "nhlId": 8479981,
     "name": "Jonah Gadjovich",
     "nhlTeam": "FLA",
@@ -11869,7 +11815,7 @@
     }
   },
   {
-    "id": 227,
+    "id": 8470613,
     "nhlId": 8470613,
     "name": "Brent Burns",
     "nhlTeam": "COL",
@@ -11922,7 +11868,7 @@
     }
   },
   {
-    "id": 228,
+    "id": 8475172,
     "nhlId": 8475172,
     "name": "Nazem Kadri",
     "nhlTeam": "COL",
@@ -11976,7 +11922,7 @@
     }
   },
   {
-    "id": 229,
+    "id": 8475754,
     "nhlId": 8475754,
     "name": "Brock Nelson",
     "nhlTeam": "COL",
@@ -12030,7 +11976,7 @@
     }
   },
   {
-    "id": 230,
+    "id": 8475768,
     "nhlId": 8475768,
     "name": "Jaden Schwartz",
     "nhlTeam": "COL",
@@ -12084,7 +12030,7 @@
     }
   },
   {
-    "id": 231,
+    "id": 8476312,
     "nhlId": 8476312,
     "name": "Josh Manson",
     "nhlTeam": "COL",
@@ -12137,7 +12083,7 @@
     }
   },
   {
-    "id": 232,
+    "id": 8476455,
     "nhlId": 8476455,
     "name": "Gabriel Landeskog",
     "nhlTeam": "COL",
@@ -12191,7 +12137,7 @@
     }
   },
   {
-    "id": 233,
+    "id": 8476967,
     "nhlId": 8476967,
     "name": "Brett Kulak",
     "nhlTeam": "COL",
@@ -12244,7 +12190,7 @@
     }
   },
   {
-    "id": 234,
+    "id": 8477476,
     "nhlId": 8477476,
     "name": "Artturi Lehkonen",
     "nhlTeam": "COL",
@@ -12298,7 +12244,7 @@
     }
   },
   {
-    "id": 235,
+    "id": 8477492,
     "nhlId": 8477492,
     "name": "Nathan MacKinnon",
     "nhlTeam": "COL",
@@ -12352,7 +12298,7 @@
     }
   },
   {
-    "id": 236,
+    "id": 8478038,
     "nhlId": 8478038,
     "name": "Devon Toews",
     "nhlTeam": "COL",
@@ -12405,7 +12351,7 @@
     }
   },
   {
-    "id": 237,
+    "id": 8478454,
     "nhlId": 8478454,
     "name": "Noah Juulsen",
     "nhlTeam": "COL",
@@ -12458,7 +12404,7 @@
     }
   },
   {
-    "id": 238,
+    "id": 8478462,
     "nhlId": 8478462,
     "name": "Nicolas Roy",
     "nhlTeam": "COL",
@@ -12512,7 +12458,7 @@
     }
   },
   {
-    "id": 239,
+    "id": 8480039,
     "nhlId": 8480039,
     "name": "Martin Necas",
     "nhlTeam": "COL",
@@ -12566,7 +12512,7 @@
     }
   },
   {
-    "id": 240,
+    "id": 8480069,
     "nhlId": 8480069,
     "name": "Cale Makar",
     "nhlTeam": "COL",
@@ -12619,7 +12565,7 @@
     }
   },
   {
-    "id": 241,
+    "id": 8480448,
     "nhlId": 8480448,
     "name": "Parker Kelly",
     "nhlTeam": "COL",
@@ -12673,7 +12619,7 @@
     }
   },
   {
-    "id": 242,
+    "id": 8482742,
     "nhlId": 8482742,
     "name": "Zachary L'Heureux",
     "nhlTeam": "COL",
@@ -12727,7 +12673,7 @@
     }
   },
   {
-    "id": 243,
+    "id": 8482768,
     "nhlId": 8482768,
     "name": "Fedor Svechkov",
     "nhlTeam": "COL",
@@ -12781,7 +12727,7 @@
     }
   },
   {
-    "id": 244,
+    "id": 8484149,
     "nhlId": 8484149,
     "name": "Gavin Brindley",
     "nhlTeam": "COL",
@@ -12835,7 +12781,7 @@
     }
   },
   {
-    "id": 245,
+    "id": 8484258,
     "nhlId": 8484258,
     "name": "Sam Malinski",
     "nhlTeam": "COL",
@@ -12888,7 +12834,7 @@
     }
   },
   {
-    "id": 246,
+    "id": 8486171,
     "nhlId": 8486171,
     "name": "T.J. Hughes",
     "nhlTeam": "COL",
@@ -12942,7 +12888,7 @@
     }
   },
   {
-    "id": 247,
+    "id": 8475809,
     "nhlId": 8475809,
     "name": "Scott Wedgewood",
     "nhlTeam": "COL",
@@ -12984,7 +12930,7 @@
     }
   },
   {
-    "id": 248,
+    "id": 8478406,
     "nhlId": 8478406,
     "name": "Mackenzie Blackwood",
     "nhlTeam": "COL",
@@ -13026,7 +12972,7 @@
     }
   },
   {
-    "id": 249,
+    "id": 8481186,
     "nhlId": 8481186,
     "name": "Logan O'Connor",
     "nhlTeam": "COL",
@@ -13079,7 +13025,7 @@
     }
   },
   {
-    "id": 250,
+    "id": 8473422,
     "nhlId": 8473422,
     "name": "Nick Foligno",
     "nhlTeam": "MIN",
@@ -13133,7 +13079,7 @@
     }
   },
   {
-    "id": 251,
+    "id": 8474567,
     "nhlId": 8474567,
     "name": "Zach Bogosian",
     "nhlTeam": "MIN",
@@ -13186,7 +13132,7 @@
     }
   },
   {
-    "id": 252,
+    "id": 8474716,
     "nhlId": 8474716,
     "name": "Jared Spurgeon",
     "nhlTeam": "MIN",
@@ -13239,7 +13185,7 @@
     }
   },
   {
-    "id": 253,
+    "id": 8475220,
     "nhlId": 8475220,
     "name": "Marcus Foligno",
     "nhlTeam": "MIN",
@@ -13293,7 +13239,7 @@
     }
   },
   {
-    "id": 254,
+    "id": 8475752,
     "nhlId": 8475752,
     "name": "Tyler Pitlick",
     "nhlTeam": "MIN",
@@ -13347,7 +13293,7 @@
     }
   },
   {
-    "id": 255,
+    "id": 8476399,
     "nhlId": 8476399,
     "name": "Blake Coleman",
     "nhlTeam": "MIN",
@@ -13401,7 +13347,7 @@
     }
   },
   {
-    "id": 256,
+    "id": 8476463,
     "nhlId": 8476463,
     "name": "Jonas Brodin",
     "nhlTeam": "MIN",
@@ -13454,7 +13400,7 @@
     }
   },
   {
-    "id": 257,
+    "id": 8476874,
     "nhlId": 8476874,
     "name": "Olli Maatta",
     "nhlTeam": "MIN",
@@ -13507,7 +13453,7 @@
     }
   },
   {
-    "id": 258,
+    "id": 8477446,
     "nhlId": 8477446,
     "name": "Michael McCarron",
     "nhlTeam": "MIN",
@@ -13561,7 +13507,7 @@
     }
   },
   {
-    "id": 259,
+    "id": 8477451,
     "nhlId": 8477451,
     "name": "Ryan Hartman",
     "nhlTeam": "MIN",
@@ -13615,7 +13561,7 @@
     }
   },
   {
-    "id": 260,
+    "id": 8478493,
     "nhlId": 8478493,
     "name": "Joel Eriksson Ek",
     "nhlTeam": "MIN",
@@ -13669,7 +13615,7 @@
     }
   },
   {
-    "id": 261,
+    "id": 8478508,
     "nhlId": 8478508,
     "name": "Yakov Trenin",
     "nhlTeam": "MIN",
@@ -13723,7 +13669,7 @@
     }
   },
   {
-    "id": 262,
+    "id": 8478864,
     "nhlId": 8478864,
     "name": "Kirill Kaprizov",
     "nhlTeam": "MIN",
@@ -13777,7 +13723,7 @@
     }
   },
   {
-    "id": 263,
+    "id": 8480800,
     "nhlId": 8480800,
     "name": "Quinn Hughes",
     "nhlTeam": "MIN",
@@ -13830,7 +13776,7 @@
     }
   },
   {
-    "id": 264,
+    "id": 8481477,
     "nhlId": 8481477,
     "name": "Nico Sturm",
     "nhlTeam": "MIN",
@@ -13884,7 +13830,7 @@
     }
   },
   {
-    "id": 265,
+    "id": 8481553,
     "nhlId": 8481553,
     "name": "Bobby Brink",
     "nhlTeam": "MIN",
@@ -13938,7 +13884,7 @@
     }
   },
   {
-    "id": 266,
+    "id": 8481557,
     "nhlId": 8481557,
     "name": "Matt Boldy",
     "nhlTeam": "MIN",
@@ -13992,7 +13938,7 @@
     }
   },
   {
-    "id": 267,
+    "id": 8482094,
     "nhlId": 8482094,
     "name": "Daemon Hunt",
     "nhlTeam": "MIN",
@@ -14045,7 +13991,7 @@
     }
   },
   {
-    "id": 268,
+    "id": 8482641,
     "nhlId": 8482641,
     "name": "Matt Kiersted",
     "nhlTeam": "MIN",
@@ -14098,7 +14044,7 @@
     }
   },
   {
-    "id": 269,
+    "id": 8483478,
     "nhlId": 8483478,
     "name": "Rieger Lorenz",
     "nhlTeam": "MIN",
@@ -14152,7 +14098,7 @@
     }
   },
   {
-    "id": 270,
+    "id": 8483525,
     "nhlId": 8483525,
     "name": "Danila Yurov",
     "nhlTeam": "MIN",
@@ -14206,7 +14152,7 @@
     }
   },
   {
-    "id": 271,
+    "id": 8483766,
     "nhlId": 8483766,
     "name": "David Spacek",
     "nhlTeam": "MIN",
@@ -14259,7 +14205,7 @@
     }
   },
   {
-    "id": 272,
+    "id": 8485702,
     "nhlId": 8485702,
     "name": "Maxim Shabanov",
     "nhlTeam": "MIN",
@@ -14313,7 +14259,7 @@
     }
   },
   {
-    "id": 273,
+    "id": 8475717,
     "nhlId": 8475717,
     "name": "Calvin Pickard",
     "nhlTeam": "MIN",
@@ -14355,7 +14301,7 @@
     }
   },
   {
-    "id": 274,
+    "id": 8482661,
     "nhlId": 8482661,
     "name": "Jesper Wallstedt",
     "nhlTeam": "MIN",
@@ -14397,7 +14343,7 @@
     }
   },
   {
-    "id": 275,
+    "id": 8483452,
     "nhlId": 8483452,
     "name": "Hunter Haight",
     "nhlTeam": "MIN",
@@ -14450,7 +14396,7 @@
     }
   },
   {
-    "id": 276,
+    "id": 8482122,
     "nhlId": 8482122,
     "name": "Brock Faber",
     "nhlTeam": "MIN",
@@ -14502,7 +14448,7 @@
     }
   },
   {
-    "id": 277,
+    "id": 8482781,
     "nhlId": 8482781,
     "name": "Carson Lambos",
     "nhlTeam": "MIN",
@@ -14554,7 +14500,7 @@
     }
   },
   {
-    "id": 278,
+    "id": 8479406,
     "nhlId": 8479406,
     "name": "Filip Gustavsson",
     "nhlTeam": "MIN",
@@ -14596,7 +14542,7 @@
     }
   },
   {
-    "id": 279,
+    "id": 8474586,
     "nhlId": 8474586,
     "name": "Jordan Eberle",
     "nhlTeam": "SEA",
@@ -14650,7 +14596,7 @@
     }
   },
   {
-    "id": 280,
+    "id": 8476457,
     "nhlId": 8476457,
     "name": "Adam Larsson",
     "nhlTeam": "SEA",
@@ -14703,7 +14649,7 @@
     }
   },
   {
-    "id": 281,
+    "id": 8476905,
     "nhlId": 8476905,
     "name": "Chandler Stephenson",
     "nhlTeam": "SEA",
@@ -14757,7 +14703,7 @@
     }
   },
   {
-    "id": 282,
+    "id": 8477919,
     "nhlId": 8477919,
     "name": "Frederick Gaudreau",
     "nhlTeam": "SEA",
@@ -14811,7 +14757,7 @@
     }
   },
   {
-    "id": 283,
+    "id": 8477955,
     "nhlId": 8477955,
     "name": "Jared McCann",
     "nhlTeam": "SEA",
@@ -14865,7 +14811,7 @@
     }
   },
   {
-    "id": 284,
+    "id": 8477986,
     "nhlId": 8477986,
     "name": "Brandon Montour",
     "nhlTeam": "SEA",
@@ -14918,7 +14864,7 @@
     }
   },
   {
-    "id": 285,
+    "id": 8478407,
     "nhlId": 8478407,
     "name": "Vince Dunn",
     "nhlTeam": "SEA",
@@ -14971,7 +14917,7 @@
     }
   },
   {
-    "id": 286,
+    "id": 8479324,
     "nhlId": 8479324,
     "name": "Ryan Lindgren",
     "nhlTeam": "SEA",
@@ -15024,7 +14970,7 @@
     }
   },
   {
-    "id": 287,
+    "id": 8479372,
     "nhlId": 8479372,
     "name": "Josh Mahura",
     "nhlTeam": "SEA",
@@ -15077,7 +15023,7 @@
     }
   },
   {
-    "id": 288,
+    "id": 8479985,
     "nhlId": 8479985,
     "name": "Cale Fleury",
     "nhlTeam": "SEA",
@@ -15130,7 +15076,7 @@
     }
   },
   {
-    "id": 289,
+    "id": 8480876,
     "nhlId": 8480876,
     "name": "Curtis Douglas",
     "nhlTeam": "SEA",
@@ -15184,7 +15130,7 @@
     }
   },
   {
-    "id": 290,
+    "id": 8481554,
     "nhlId": 8481554,
     "name": "Kaapo Kakko",
     "nhlTeam": "SEA",
@@ -15238,7 +15184,7 @@
     }
   },
   {
-    "id": 291,
+    "id": 8482259,
     "nhlId": 8482259,
     "name": "Bobby McMann",
     "nhlTeam": "SEA",
@@ -15292,7 +15238,7 @@
     }
   },
   {
-    "id": 292,
+    "id": 8482665,
     "nhlId": 8482665,
     "name": "Matty Beniers",
     "nhlTeam": "SEA",
@@ -15346,7 +15292,7 @@
     }
   },
   {
-    "id": 293,
+    "id": 8482713,
     "nhlId": 8482713,
     "name": "Mackie Samoskevich",
     "nhlTeam": "SEA",
@@ -15400,7 +15346,7 @@
     }
   },
   {
-    "id": 294,
+    "id": 8482751,
     "nhlId": 8482751,
     "name": "Ryan Winterton",
     "nhlTeam": "SEA",
@@ -15454,7 +15400,7 @@
     }
   },
   {
-    "id": 295,
+    "id": 8482858,
     "nhlId": 8482858,
     "name": "Ryker Evans",
     "nhlTeam": "SEA",
@@ -15507,7 +15453,7 @@
     }
   },
   {
-    "id": 296,
+    "id": 8482866,
     "nhlId": 8482866,
     "name": "Ville Ottavainen",
     "nhlTeam": "SEA",
@@ -15560,7 +15506,7 @@
     }
   },
   {
-    "id": 297,
+    "id": 8482874,
     "nhlId": 8482874,
     "name": "Jacob Melanson",
     "nhlTeam": "SEA",
@@ -15614,7 +15560,7 @@
     }
   },
   {
-    "id": 298,
+    "id": 8483524,
     "nhlId": 8483524,
     "name": "Shane Wright",
     "nhlTeam": "SEA",
@@ -15668,7 +15614,7 @@
     }
   },
   {
-    "id": 299,
+    "id": 8483570,
     "nhlId": 8483570,
     "name": "Ben Meyers",
     "nhlTeam": "SEA",
@@ -15722,7 +15668,7 @@
     }
   },
   {
-    "id": 300,
+    "id": 8484800,
     "nhlId": 8484800,
     "name": "Berkly Catton",
     "nhlTeam": "SEA",
@@ -15776,7 +15722,7 @@
     }
   },
   {
-    "id": 301,
+    "id": 8475831,
     "nhlId": 8475831,
     "name": "Philipp Grubauer",
     "nhlTeam": "SEA",
@@ -15818,7 +15764,7 @@
     }
   },
   {
-    "id": 302,
+    "id": 8478916,
     "nhlId": 8478916,
     "name": "Joey Daccord",
     "nhlTeam": "SEA",
@@ -15860,7 +15806,7 @@
     }
   },
   {
-    "id": 303,
+    "id": 8485383,
     "nhlId": 8485383,
     "name": "Jake O'Brien",
     "nhlTeam": "SEA",
@@ -15913,7 +15859,7 @@
     }
   },
   {
-    "id": 304,
+    "id": 8483494,
     "nhlId": 8483494,
     "name": "Ty Nelson",
     "nhlTeam": "SEA",
@@ -15965,7 +15911,7 @@
     }
   },
   {
-    "id": 305,
+    "id": 8471214,
     "nhlId": 8471214,
     "name": "Alex Ovechkin",
     "nhlTeam": "WSH",
@@ -16019,7 +15965,7 @@
     }
   },
   {
-    "id": 306,
+    "id": 8475718,
     "nhlId": 8475718,
     "name": "Justin Holl",
     "nhlTeam": "WSH",
@@ -16072,7 +16018,7 @@
     }
   },
   {
-    "id": 307,
+    "id": 8475795,
     "nhlId": 8475795,
     "name": "Dylan McIlrath",
     "nhlTeam": "WSH",
@@ -16125,7 +16071,7 @@
     }
   },
   {
-    "id": 308,
+    "id": 8476432,
     "nhlId": 8476432,
     "name": "Boone Jenner",
     "nhlTeam": "WSH",
@@ -16179,7 +16125,7 @@
     }
   },
   {
-    "id": 309,
+    "id": 8476880,
     "nhlId": 8476880,
     "name": "Tom Wilson",
     "nhlTeam": "WSH",
@@ -16233,7 +16179,7 @@
     }
   },
   {
-    "id": 310,
+    "id": 8477380,
     "nhlId": 8477380,
     "name": "Jonny Brodzinski",
     "nhlTeam": "WSH",
@@ -16287,7 +16233,7 @@
     }
   },
   {
-    "id": 311,
+    "id": 8477949,
     "nhlId": 8477949,
     "name": "Alex Tuch",
     "nhlTeam": "WSH",
@@ -16341,7 +16287,7 @@
     }
   },
   {
-    "id": 312,
+    "id": 8478440,
     "nhlId": 8478440,
     "name": "Dylan Strome",
     "nhlTeam": "WSH",
@@ -16395,7 +16341,7 @@
     }
   },
   {
-    "id": 313,
+    "id": 8478463,
     "nhlId": 8478463,
     "name": "Anthony Beauvillier",
     "nhlTeam": "WSH",
@@ -16449,7 +16395,7 @@
     }
   },
   {
-    "id": 314,
+    "id": 8478911,
     "nhlId": 8478911,
     "name": "Matt Roy",
     "nhlTeam": "WSH",
@@ -16502,7 +16448,7 @@
     }
   },
   {
-    "id": 315,
+    "id": 8479345,
     "nhlId": 8479345,
     "name": "Jakob Chychrun",
     "nhlTeam": "WSH",
@@ -16555,7 +16501,7 @@
     }
   },
   {
-    "id": 316,
+    "id": 8479385,
     "nhlId": 8479385,
     "name": "Jordan Kyrou",
     "nhlTeam": "WSH",
@@ -16609,7 +16555,7 @@
     }
   },
   {
-    "id": 317,
+    "id": 8479400,
     "nhlId": 8479400,
     "name": "Pierre-Luc Dubois",
     "nhlTeam": "WSH",
@@ -16663,7 +16609,7 @@
     }
   },
   {
-    "id": 318,
+    "id": 8479576,
     "nhlId": 8479576,
     "name": "Vincent Desharnais",
     "nhlTeam": "WSH",
@@ -16716,7 +16662,7 @@
     }
   },
   {
-    "id": 319,
+    "id": 8480043,
     "nhlId": 8480043,
     "name": "Timothy Liljegren",
     "nhlTeam": "WSH",
@@ -16769,7 +16715,7 @@
     }
   },
   {
-    "id": 320,
+    "id": 8480796,
     "nhlId": 8480796,
     "name": "Martin Fehérváry",
     "nhlTeam": "WSH",
@@ -16822,7 +16768,7 @@
     }
   },
   {
-    "id": 321,
+    "id": 8481656,
     "nhlId": 8481656,
     "name": "Aliaksei Protas",
     "nhlTeam": "WSH",
@@ -16876,7 +16822,7 @@
     }
   },
   {
-    "id": 322,
+    "id": 8482088,
     "nhlId": 8482088,
     "name": "Justin Sourdif",
     "nhlTeam": "WSH",
@@ -16930,7 +16876,7 @@
     }
   },
   {
-    "id": 323,
+    "id": 8483491,
     "nhlId": 8483491,
     "name": "Ivan Miroshnichenko",
     "nhlTeam": "WSH",
@@ -16984,7 +16930,7 @@
     }
   },
   {
-    "id": 324,
+    "id": 8483573,
     "nhlId": 8483573,
     "name": "Ethen Frank",
     "nhlTeam": "WSH",
@@ -17038,7 +16984,7 @@
     }
   },
   {
-    "id": 325,
+    "id": 8484186,
     "nhlId": 8484186,
     "name": "Ryan Leonard",
     "nhlTeam": "WSH",
@@ -17092,7 +17038,7 @@
     }
   },
   {
-    "id": 326,
+    "id": 8484873,
     "nhlId": 8484873,
     "name": "Cole Hutson",
     "nhlTeam": "WSH",
@@ -17145,7 +17091,7 @@
     }
   },
   {
-    "id": 327,
+    "id": 8484999,
     "nhlId": 8484999,
     "name": "Ilya Protas",
     "nhlTeam": "WSH",
@@ -17199,7 +17145,7 @@
     }
   },
   {
-    "id": 328,
+    "id": 8479292,
     "nhlId": 8479292,
     "name": "Charlie Lindgren",
     "nhlTeam": "WSH",
@@ -17241,7 +17187,7 @@
     }
   },
   {
-    "id": 329,
+    "id": 8480313,
     "nhlId": 8480313,
     "name": "Logan Thompson",
     "nhlTeam": "WSH",
@@ -17283,7 +17229,7 @@
     }
   },
   {
-    "id": 330,
+    "id": 8475799,
     "nhlId": 8475799,
     "name": "Nino Niederreiter",
     "nhlTeam": "WPG",
@@ -17337,7 +17283,7 @@
     }
   },
   {
-    "id": 331,
+    "id": 8476331,
     "nhlId": 8476331,
     "name": "Dylan DeMelo",
     "nhlTeam": "WPG",
@@ -17390,7 +17336,7 @@
     }
   },
   {
-    "id": 332,
+    "id": 8476392,
     "nhlId": 8476392,
     "name": "Adam Lowry",
     "nhlTeam": "WPG",
@@ -17444,7 +17390,7 @@
     }
   },
   {
-    "id": 333,
+    "id": 8476460,
     "nhlId": 8476460,
     "name": "Mark Scheifele",
     "nhlTeam": "WPG",
@@ -17498,7 +17444,7 @@
     }
   },
   {
-    "id": 334,
+    "id": 8476480,
     "nhlId": 8476480,
     "name": "Vladislav Namestnikov",
     "nhlTeam": "WPG",
@@ -17552,7 +17498,7 @@
     }
   },
   {
-    "id": 335,
+    "id": 8477504,
     "nhlId": 8477504,
     "name": "Josh Morrissey",
     "nhlTeam": "WPG",
@@ -17605,7 +17551,7 @@
     }
   },
   {
-    "id": 336,
+    "id": 8477938,
     "nhlId": 8477938,
     "name": "Haydn Fleury",
     "nhlTeam": "WPG",
@@ -17658,7 +17604,7 @@
     }
   },
   {
-    "id": 337,
+    "id": 8478398,
     "nhlId": 8478398,
     "name": "Kyle Connor",
     "nhlTeam": "WPG",
@@ -17712,7 +17658,7 @@
     }
   },
   {
-    "id": 338,
+    "id": 8479983,
     "nhlId": 8479983,
     "name": "Mario Ferraro",
     "nhlTeam": "WPG",
@@ -17765,7 +17711,7 @@
     }
   },
   {
-    "id": 339,
+    "id": 8480014,
     "nhlId": 8480014,
     "name": "Gabriel Vilardi",
     "nhlTeam": "WPG",
@@ -17819,7 +17765,7 @@
     }
   },
   {
-    "id": 340,
+    "id": 8480049,
     "nhlId": 8480049,
     "name": "Dylan Samberg",
     "nhlTeam": "WPG",
@@ -17872,7 +17818,7 @@
     }
   },
   {
-    "id": 341,
+    "id": 8480113,
     "nhlId": 8480113,
     "name": "Alex Iafallo",
     "nhlTeam": "WPG",
@@ -17926,7 +17872,7 @@
     }
   },
   {
-    "id": 342,
+    "id": 8480145,
     "nhlId": 8480145,
     "name": "Neal Pionk",
     "nhlTeam": "WPG",
@@ -17979,7 +17925,7 @@
     }
   },
   {
-    "id": 343,
+    "id": 8480289,
     "nhlId": 8480289,
     "name": "Morgan Barron",
     "nhlTeam": "WPG",
@@ -18033,7 +17979,7 @@
     }
   },
   {
-    "id": 344,
+    "id": 8481030,
     "nhlId": 8481030,
     "name": "Jack St. Ivany",
     "nhlTeam": "WPG",
@@ -18086,7 +18032,7 @@
     }
   },
   {
-    "id": 345,
+    "id": 8481043,
     "nhlId": 8481043,
     "name": "Cole Koepke",
     "nhlTeam": "WPG",
@@ -18140,7 +18086,7 @@
     }
   },
   {
-    "id": 346,
+    "id": 8482149,
     "nhlId": 8482149,
     "name": "Cole Perfetti",
     "nhlTeam": "WPG",
@@ -18194,7 +18140,7 @@
     }
   },
   {
-    "id": 347,
+    "id": 8482459,
     "nhlId": 8482459,
     "name": "Tyrel Bauer",
     "nhlTeam": "WPG",
@@ -18247,7 +18193,7 @@
     }
   },
   {
-    "id": 348,
+    "id": 8482765,
     "nhlId": 8482765,
     "name": "Isak Rosen",
     "nhlTeam": "WPG",
@@ -18301,7 +18247,7 @@
     }
   },
   {
-    "id": 349,
+    "id": 8483471,
     "nhlId": 8483471,
     "name": "Brad Lambert",
     "nhlTeam": "WPG",
@@ -18355,7 +18301,7 @@
     }
   },
   {
-    "id": 350,
+    "id": 8486025,
     "nhlId": 8486025,
     "name": "Viggo Björck",
     "nhlTeam": "WPG",
@@ -18409,7 +18355,7 @@
     }
   },
   {
-    "id": 351,
+    "id": 8479973,
     "nhlId": 8479973,
     "name": "Stuart Skinner",
     "nhlTeam": "WPG",
@@ -18451,7 +18397,7 @@
     }
   },
   {
-    "id": 352,
+    "id": 8483532,
     "nhlId": 8483532,
     "name": "Clay Stevenson",
     "nhlTeam": "WPG",
@@ -18493,7 +18439,7 @@
     }
   },
   {
-    "id": 353,
+    "id": 8476945,
     "nhlId": 8476945,
     "name": "Connor Hellebuyck",
     "nhlTeam": "WPG",
@@ -18535,7 +18481,7 @@
     }
   },
   {
-    "id": 354,
+    "id": 8475842,
     "nhlId": 8475842,
     "name": "Sam Carrick",
     "nhlTeam": "BUF",
@@ -18589,7 +18535,7 @@
     }
   },
   {
-    "id": 355,
+    "id": 8476891,
     "nhlId": 8476891,
     "name": "Matt Grzelcyk",
     "nhlTeam": "BUF",
@@ -18642,7 +18588,7 @@
     }
   },
   {
-    "id": 356,
+    "id": 8478502,
     "nhlId": 8478502,
     "name": "Dennis Gilbert",
     "nhlTeam": "BUF",
@@ -18695,7 +18641,7 @@
     }
   },
   {
-    "id": 357,
+    "id": 8479359,
     "nhlId": 8479359,
     "name": "Beck Malenstyn",
     "nhlTeam": "BUF",
@@ -18749,7 +18695,7 @@
     }
   },
   {
-    "id": 358,
+    "id": 8479420,
     "nhlId": 8479420,
     "name": "Tage Thompson",
     "nhlTeam": "BUF",
@@ -18803,7 +18749,7 @@
     }
   },
   {
-    "id": 359,
+    "id": 8479941,
     "nhlId": 8479941,
     "name": "Justin Danforth",
     "nhlTeam": "BUF",
@@ -18857,7 +18803,7 @@
     }
   },
   {
-    "id": 360,
+    "id": 8480064,
     "nhlId": 8480064,
     "name": "Josh Norris",
     "nhlTeam": "BUF",
@@ -18911,7 +18857,7 @@
     }
   },
   {
-    "id": 361,
+    "id": 8480802,
     "nhlId": 8480802,
     "name": "Ryan McLeod",
     "nhlTeam": "BUF",
@@ -18965,7 +18911,7 @@
     }
   },
   {
-    "id": 362,
+    "id": 8480807,
     "nhlId": 8480807,
     "name": "Mattias Samuelsson",
     "nhlTeam": "BUF",
@@ -19018,7 +18964,7 @@
     }
   },
   {
-    "id": 363,
+    "id": 8480839,
     "nhlId": 8480839,
     "name": "Rasmus Dahlin",
     "nhlTeam": "BUF",
@@ -19071,7 +19017,7 @@
     }
   },
   {
-    "id": 364,
+    "id": 8481522,
     "nhlId": 8481522,
     "name": "Peyton Krebs",
     "nhlTeam": "BUF",
@@ -19125,7 +19071,7 @@
     }
   },
   {
-    "id": 365,
+    "id": 8481806,
     "nhlId": 8481806,
     "name": "Louis Crevier",
     "nhlTeam": "BUF",
@@ -19178,7 +19124,7 @@
     }
   },
   {
-    "id": 366,
+    "id": 8482097,
     "nhlId": 8482097,
     "name": "Jack Quinn",
     "nhlTeam": "BUF",
@@ -19232,7 +19178,7 @@
     }
   },
   {
-    "id": 367,
+    "id": 8482659,
     "nhlId": 8482659,
     "name": "Josh Doan",
     "nhlTeam": "BUF",
@@ -19286,7 +19232,7 @@
     }
   },
   {
-    "id": 368,
+    "id": 8482671,
     "nhlId": 8482671,
     "name": "Owen Power",
     "nhlTeam": "BUF",
@@ -19339,7 +19285,7 @@
     }
   },
   {
-    "id": 369,
+    "id": 8482803,
     "nhlId": 8482803,
     "name": "Olen Zellweger",
     "nhlTeam": "BUF",
@@ -19392,7 +19338,7 @@
     }
   },
   {
-    "id": 370,
+    "id": 8482896,
     "nhlId": 8482896,
     "name": "Tyson Kozak",
     "nhlTeam": "BUF",
@@ -19446,7 +19392,7 @@
     }
   },
   {
-    "id": 371,
+    "id": 8483468,
     "nhlId": 8483468,
     "name": "Jiri Kulich",
     "nhlTeam": "BUF",
@@ -19500,7 +19446,7 @@
     }
   },
   {
-    "id": 372,
+    "id": 8483500,
     "nhlId": 8483500,
     "name": "Noah Ostlund",
     "nhlTeam": "BUF",
@@ -19554,7 +19500,7 @@
     }
   },
   {
-    "id": 373,
+    "id": 8484145,
     "nhlId": 8484145,
     "name": "Zach Benson",
     "nhlTeam": "BUF",
@@ -19608,7 +19554,7 @@
     }
   },
   {
-    "id": 374,
+    "id": 8484305,
     "nhlId": 8484305,
     "name": "Zach Metsa",
     "nhlTeam": "BUF",
@@ -19661,7 +19607,7 @@
     }
   },
   {
-    "id": 375,
+    "id": 8484797,
     "nhlId": 8484797,
     "name": "Konsta Helenius",
     "nhlTeam": "BUF",
@@ -19715,7 +19661,7 @@
     }
   },
   {
-    "id": 376,
+    "id": 8480045,
     "nhlId": 8480045,
     "name": "Ukko-Pekka Luukkonen",
     "nhlTeam": "BUF",
@@ -19757,7 +19703,7 @@
     }
   },
   {
-    "id": 377,
+    "id": 8481551,
     "nhlId": 8481551,
     "name": "Colten Ellis",
     "nhlTeam": "BUF",
@@ -19799,7 +19745,7 @@
     }
   },
   {
-    "id": 378,
+    "id": 8479982,
     "nhlId": 8479982,
     "name": "Conor Timmins",
     "nhlTeam": "BUF",
@@ -19851,7 +19797,7 @@
     }
   },
   {
-    "id": 379,
+    "id": 8479312,
     "nhlId": 8479312,
     "name": "Alex Lyon",
     "nhlTeam": "BUF",
@@ -19893,7 +19839,7 @@
     }
   },
   {
-    "id": 380,
+    "id": 8475151,
     "nhlId": 8475151,
     "name": "Kyle Palmieri",
     "nhlTeam": "NYI",
@@ -19947,7 +19893,7 @@
     }
   },
   {
-    "id": 381,
+    "id": 8475170,
     "nhlId": 8475170,
     "name": "Brayden Schenn",
     "nhlTeam": "NYI",
@@ -20001,7 +19947,7 @@
     }
   },
   {
-    "id": 382,
+    "id": 8475231,
     "nhlId": 8475231,
     "name": "Casey Cizikas",
     "nhlTeam": "NYI",
@@ -20055,7 +20001,7 @@
     }
   },
   {
-    "id": 383,
+    "id": 8476292,
     "nhlId": 8476292,
     "name": "Ondrej Palat",
     "nhlTeam": "NYI",
@@ -20109,7 +20055,7 @@
     }
   },
   {
-    "id": 384,
+    "id": 8476419,
     "nhlId": 8476419,
     "name": "Jean-Gabriel Pageau",
     "nhlTeam": "NYI",
@@ -20163,7 +20109,7 @@
     }
   },
   {
-    "id": 385,
+    "id": 8476429,
     "nhlId": 8476429,
     "name": "Scott Mayfield",
     "nhlTeam": "NYI",
@@ -20216,7 +20162,7 @@
     }
   },
   {
-    "id": 386,
+    "id": 8476917,
     "nhlId": 8476917,
     "name": "Adam Pelech",
     "nhlTeam": "NYI",
@@ -20269,7 +20215,7 @@
     }
   },
   {
-    "id": 387,
+    "id": 8477407,
     "nhlId": 8477407,
     "name": "Anthony Duclair",
     "nhlTeam": "NYI",
@@ -20323,7 +20269,7 @@
     }
   },
   {
-    "id": 388,
+    "id": 8477500,
     "nhlId": 8477500,
     "name": "Bo Horvat",
     "nhlTeam": "NYI",
@@ -20377,7 +20323,7 @@
     }
   },
   {
-    "id": 389,
+    "id": 8477506,
     "nhlId": 8477506,
     "name": "Ryan Pulock",
     "nhlTeam": "NYI",
@@ -20430,7 +20376,7 @@
     }
   },
   {
-    "id": 390,
+    "id": 8477950,
     "nhlId": 8477950,
     "name": "Tony DeAngelo",
     "nhlTeam": "NYI",
@@ -20483,7 +20429,7 @@
     }
   },
   {
-    "id": 391,
+    "id": 8479378,
     "nhlId": 8479378,
     "name": "Logan Stanley",
     "nhlTeam": "NYI",
@@ -20536,7 +20482,7 @@
     }
   },
   {
-    "id": 392,
+    "id": 8481014,
     "nhlId": 8481014,
     "name": "Alexander Romanov",
     "nhlTeam": "NYI",
@@ -20589,7 +20535,7 @@
     }
   },
   {
-    "id": 393,
+    "id": 8481601,
     "nhlId": 8481601,
     "name": "Simon Holmstrom",
     "nhlTeam": "NYI",
@@ -20643,7 +20589,7 @@
     }
   },
   {
-    "id": 394,
+    "id": 8481711,
     "nhlId": 8481711,
     "name": "Matias Maccelli",
     "nhlTeam": "NYI",
@@ -20697,7 +20643,7 @@
     }
   },
   {
-    "id": 395,
+    "id": 8482476,
     "nhlId": 8482476,
     "name": "Emil Heineman",
     "nhlTeam": "NYI",
@@ -20751,7 +20697,7 @@
     }
   },
   {
-    "id": 396,
+    "id": 8482516,
     "nhlId": 8482516,
     "name": "Matthew Kessel",
     "nhlTeam": "NYI",
@@ -20804,7 +20750,7 @@
     }
   },
   {
-    "id": 397,
+    "id": 8484221,
     "nhlId": 8484221,
     "name": "Calum Ritchie",
     "nhlTeam": "NYI",
@@ -20858,7 +20804,7 @@
     }
   },
   {
-    "id": 398,
+    "id": 8485366,
     "nhlId": 8485366,
     "name": "Matthew Schaefer",
     "nhlTeam": "NYI",
@@ -20911,7 +20857,7 @@
     }
   },
   {
-    "id": 399,
+    "id": 8485388,
     "nhlId": 8485388,
     "name": "Victor Eklund",
     "nhlTeam": "NYI",
@@ -20965,7 +20911,7 @@
     }
   },
   {
-    "id": 400,
+    "id": 8473575,
     "nhlId": 8473575,
     "name": "Semyon Varlamov",
     "nhlTeam": "NYI",
@@ -21007,7 +20953,7 @@
     }
   },
   {
-    "id": 401,
+    "id": 8478009,
     "nhlId": 8478009,
     "name": "Ilya Sorokin",
     "nhlTeam": "NYI",
@@ -21049,7 +20995,7 @@
     }
   },
   {
-    "id": 402,
+    "id": 8481237,
     "nhlId": 8481237,
     "name": "Kyle MacLean",
     "nhlTeam": "NYI",
@@ -21102,7 +21048,7 @@
     }
   },
   {
-    "id": 403,
+    "id": 8473994,
     "nhlId": 8473994,
     "name": "Jamie Benn",
     "nhlTeam": "DAL",
@@ -21156,7 +21102,7 @@
     }
   },
   {
-    "id": 404,
+    "id": 8474574,
     "nhlId": 8474574,
     "name": "Tyler Myers",
     "nhlTeam": "DAL",
@@ -21209,7 +21155,7 @@
     }
   },
   {
-    "id": 405,
+    "id": 8475794,
     "nhlId": 8475794,
     "name": "Tyler Seguin",
     "nhlTeam": "DAL",
@@ -21263,7 +21209,7 @@
     }
   },
   {
-    "id": 406,
+    "id": 8476278,
     "nhlId": 8476278,
     "name": "Colin Blackwell",
     "nhlTeam": "DAL",
@@ -21317,7 +21263,7 @@
     }
   },
   {
-    "id": 407,
+    "id": 8476889,
     "nhlId": 8476889,
     "name": "Radek Faksa",
     "nhlTeam": "DAL",
@@ -21371,7 +21317,7 @@
     }
   },
   {
-    "id": 408,
+    "id": 8476902,
     "nhlId": 8476902,
     "name": "Esa Lindell",
     "nhlTeam": "DAL",
@@ -21424,7 +21370,7 @@
     }
   },
   {
-    "id": 409,
+    "id": 8478420,
     "nhlId": 8478420,
     "name": "Mikko Rantanen",
     "nhlTeam": "DAL",
@@ -21478,7 +21424,7 @@
     }
   },
   {
-    "id": 410,
+    "id": 8478449,
     "nhlId": 8478449,
     "name": "Roope Hintz",
     "nhlTeam": "DAL",
@@ -21532,7 +21478,7 @@
     }
   },
   {
-    "id": 411,
+    "id": 8478476,
     "nhlId": 8478476,
     "name": "Kyle Capobianco",
     "nhlTeam": "DAL",
@@ -21585,7 +21531,7 @@
     }
   },
   {
-    "id": 412,
+    "id": 8479351,
     "nhlId": 8479351,
     "name": "Sam Steel",
     "nhlTeam": "DAL",
@@ -21639,7 +21585,7 @@
     }
   },
   {
-    "id": 413,
+    "id": 8480027,
     "nhlId": 8480027,
     "name": "Jason Robertson",
     "nhlTeam": "DAL",
@@ -21693,7 +21639,7 @@
     }
   },
   {
-    "id": 414,
+    "id": 8480036,
     "nhlId": 8480036,
     "name": "Miro Heiskanen",
     "nhlTeam": "DAL",
@@ -21746,7 +21692,7 @@
     }
   },
   {
-    "id": 415,
+    "id": 8480840,
     "nhlId": 8480840,
     "name": "Oskar Bäck",
     "nhlTeam": "DAL",
@@ -21800,7 +21746,7 @@
     }
   },
   {
-    "id": 416,
+    "id": 8480878,
     "nhlId": 8480878,
     "name": "Nils Lundkvist",
     "nhlTeam": "DAL",
@@ -21853,7 +21799,7 @@
     }
   },
   {
-    "id": 417,
+    "id": 8481581,
     "nhlId": 8481581,
     "name": "Thomas Harley",
     "nhlTeam": "DAL",
@@ -21906,7 +21852,7 @@
     }
   },
   {
-    "id": 418,
+    "id": 8481641,
     "nhlId": 8481641,
     "name": "Joel Kiviranta",
     "nhlTeam": "DAL",
@@ -21960,7 +21906,7 @@
     }
   },
   {
-    "id": 419,
+    "id": 8482740,
     "nhlId": 8482740,
     "name": "Wyatt Johnston",
     "nhlTeam": "DAL",
@@ -22014,7 +21960,7 @@
     }
   },
   {
-    "id": 420,
+    "id": 8483425,
     "nhlId": 8483425,
     "name": "Lian Bichsel",
     "nhlTeam": "DAL",
@@ -22067,7 +22013,7 @@
     }
   },
   {
-    "id": 421,
+    "id": 8484829,
     "nhlId": 8484829,
     "name": "Justin Hryckowian",
     "nhlTeam": "DAL",
@@ -22121,7 +22067,7 @@
     }
   },
   {
-    "id": 422,
+    "id": 8484938,
     "nhlId": 8484938,
     "name": "Arttu Hyry",
     "nhlTeam": "DAL",
@@ -22175,7 +22121,7 @@
     }
   },
   {
-    "id": 423,
+    "id": 8479193,
     "nhlId": 8479193,
     "name": "Casey DeSmith",
     "nhlTeam": "DAL",
@@ -22217,7 +22163,7 @@
     }
   },
   {
-    "id": 424,
+    "id": 8479979,
     "nhlId": 8479979,
     "name": "Jake Oettinger",
     "nhlTeam": "DAL",
@@ -22259,7 +22205,7 @@
     }
   },
   {
-    "id": 425,
+    "id": 8475168,
     "nhlId": 8475168,
     "name": "Matt Duchene",
     "nhlTeam": "DAL",
@@ -22312,7 +22258,7 @@
     }
   },
   {
-    "id": 426,
+    "id": 8474102,
     "nhlId": 8474102,
     "name": "David Perron",
     "nhlTeam": "DAL",
@@ -22365,7 +22311,7 @@
     }
   },
   {
-    "id": 427,
+    "id": 8477335,
     "nhlId": 8477335,
     "name": "Kyle Burroughs",
     "nhlTeam": "DAL",
@@ -22417,7 +22363,7 @@
     }
   },
   {
-    "id": 428,
+    "id": 8474564,
     "nhlId": 8474564,
     "name": "Steven Stamkos",
     "nhlTeam": "NSH",
@@ -22471,7 +22417,7 @@
     }
   },
   {
-    "id": 429,
+    "id": 8474600,
     "nhlId": 8474600,
     "name": "Roman Josi",
     "nhlTeam": "NSH",
@@ -22524,7 +22470,7 @@
     }
   },
   {
-    "id": 430,
+    "id": 8475158,
     "nhlId": 8475158,
     "name": "Ryan O'Reilly",
     "nhlTeam": "NSH",
@@ -22578,7 +22524,7 @@
     }
   },
   {
-    "id": 431,
+    "id": 8476539,
     "nhlId": 8476539,
     "name": "Jonathan Marchessault",
     "nhlTeam": "NSH",
@@ -22632,7 +22578,7 @@
     }
   },
   {
-    "id": 432,
+    "id": 8476869,
     "nhlId": 8476869,
     "name": "Brady Skjei",
     "nhlTeam": "NSH",
@@ -22685,7 +22631,7 @@
     }
   },
   {
-    "id": 433,
+    "id": 8476887,
     "nhlId": 8476887,
     "name": "Filip Forsberg",
     "nhlTeam": "NSH",
@@ -22739,7 +22685,7 @@
     }
   },
   {
-    "id": 434,
+    "id": 8477021,
     "nhlId": 8477021,
     "name": "Alexander Kerfoot",
     "nhlTeam": "NSH",
@@ -22793,7 +22739,7 @@
     }
   },
   {
-    "id": 435,
+    "id": 8479525,
     "nhlId": 8479525,
     "name": "Ross Colton",
     "nhlTeam": "NSH",
@@ -22847,7 +22793,7 @@
     }
   },
   {
-    "id": 436,
+    "id": 8479980,
     "nhlId": 8479980,
     "name": "Nicolas Hague",
     "nhlTeam": "NSH",
@@ -22900,7 +22846,7 @@
     }
   },
   {
-    "id": 437,
+    "id": 8480246,
     "nhlId": 8480246,
     "name": "Nick Perbix",
     "nhlTeam": "NSH",
@@ -22953,7 +22899,7 @@
     }
   },
   {
-    "id": 438,
+    "id": 8480835,
     "nhlId": 8480835,
     "name": "Jack Drury",
     "nhlTeam": "NSH",
@@ -23007,7 +22953,7 @@
     }
   },
   {
-    "id": 439,
+    "id": 8481535,
     "nhlId": 8481535,
     "name": "Nils Hoglander",
     "nhlTeam": "NSH",
@@ -23061,60 +23007,7 @@
     }
   },
   {
-    "id": 440,
-    "nhlId": 8481593,
-    "name": "Jayden Struble",
-    "nhlTeam": "NSH",
-    "capHit": 2400000,
-    "positions": [
-      "D",
-      "UTIL"
-    ],
-    "primaryPosition": "D",
-    "playerType": "skater",
-    "injuryStatus": "ACTIVE",
-    "headshotUrl": "https://assets.nhle.com/mugs/nhl/20262027/NSH/8481593.png",
-    "actualStats": {
-      "skater": {
-        "gamesPlayed": 4,
-        "goals": 0,
-        "assists": 0,
-        "points": 0,
-        "plusMinus": -2,
-        "powerPlayGoals": 0,
-        "powerPlayPoints": 0,
-        "shortHandedPoints": 0,
-        "shots": 0,
-        "hits": 6,
-        "blockedShots": 8,
-        "penaltyMinutes": 0,
-        "shootingPctg": 0.115,
-        "avgTimeOnIce": "17:26"
-      }
-    },
-    "projections": {
-      "rosGamesRemaining": 78,
-      "rosGoals": 0,
-      "rosAssists": 0,
-      "rosPoints": 0,
-      "rosPlusMinus": -39,
-      "rosPPP": 0,
-      "rosSOG": 0,
-      "rosHits": 117,
-      "rosBlocks": 156,
-      "rosPIM": 0,
-      "sdPlayingTimePct": 0.12,
-      "sdGoalRate": 0.18,
-      "sdAssistRate": 0.15,
-      "sdSOGRate": 0.1,
-      "sdHitRate": 0.14,
-      "sdBlockRate": 0.14,
-      "sdPIMRate": 0.2,
-      "sdPlusMinus": 10
-    }
-  },
-  {
-    "id": 441,
+    "id": 8481726,
     "nhlId": 8481726,
     "name": "Adam Edstrom",
     "nhlTeam": "NSH",
@@ -23168,7 +23061,7 @@
     }
   },
   {
-    "id": 442,
+    "id": 8482072,
     "nhlId": 8482072,
     "name": "Jack Ahcan",
     "nhlTeam": "NSH",
@@ -23221,7 +23114,7 @@
     }
   },
   {
-    "id": 443,
+    "id": 8482145,
     "nhlId": 8482145,
     "name": "Mavrik Bourque",
     "nhlTeam": "NSH",
@@ -23275,7 +23168,7 @@
     }
   },
   {
-    "id": 444,
+    "id": 8482482,
     "nhlId": 8482482,
     "name": "Adam Wilsby",
     "nhlTeam": "NSH",
@@ -23328,7 +23221,7 @@
     }
   },
   {
-    "id": 445,
+    "id": 8482715,
     "nhlId": 8482715,
     "name": "Ryan Ufko",
     "nhlTeam": "NSH",
@@ -23381,7 +23274,7 @@
     }
   },
   {
-    "id": 446,
+    "id": 8482806,
     "nhlId": 8482806,
     "name": "William Trudeau",
     "nhlTeam": "NSH",
@@ -23434,7 +23327,7 @@
     }
   },
   {
-    "id": 447,
+    "id": 8483513,
     "nhlId": 8483513,
     "name": "Reid Schaefer",
     "nhlTeam": "NSH",
@@ -23488,7 +23381,7 @@
     }
   },
   {
-    "id": 448,
+    "id": 8484241,
     "nhlId": 8484241,
     "name": "Matthew Wood",
     "nhlTeam": "NSH",
@@ -23542,7 +23435,7 @@
     }
   },
   {
-    "id": 449,
+    "id": 8486189,
     "nhlId": 8486189,
     "name": "Vitali Pinchuk",
     "nhlTeam": "NSH",
@@ -23596,7 +23489,7 @@
     }
   },
   {
-    "id": 450,
+    "id": 8477424,
     "nhlId": 8477424,
     "name": "Juuse Saros",
     "nhlTeam": "NSH",
@@ -23638,7 +23531,7 @@
     }
   },
   {
-    "id": 451,
+    "id": 8483575,
     "nhlId": 8483575,
     "name": "Matt Murray",
     "nhlTeam": "NSH",
@@ -23680,7 +23573,7 @@
     }
   },
   {
-    "id": 452,
+    "id": 8480950,
     "nhlId": 8480950,
     "name": "Ilya Lyubushkin",
     "nhlTeam": "NSH",
@@ -23732,7 +23625,7 @@
     }
   },
   {
-    "id": 453,
+    "id": 8481020,
     "nhlId": 8481020,
     "name": "Justus Annunen",
     "nhlTeam": "NSH",
@@ -23774,7 +23667,7 @@
     }
   },
   {
-    "id": 454,
+    "id": 8475184,
     "nhlId": 8475184,
     "name": "Chris Kreider",
     "nhlTeam": "MTL",
@@ -23828,7 +23721,7 @@
     }
   },
   {
-    "id": 455,
+    "id": 8476479,
     "nhlId": 8476479,
     "name": "Phillip Danault",
     "nhlTeam": "MTL",
@@ -23882,7 +23775,7 @@
     }
   },
   {
-    "id": 456,
+    "id": 8476875,
     "nhlId": 8476875,
     "name": "Mike Matheson",
     "nhlTeam": "MTL",
@@ -23935,7 +23828,7 @@
     }
   },
   {
-    "id": 457,
+    "id": 8476981,
     "nhlId": 8476981,
     "name": "Josh Anderson",
     "nhlTeam": "MTL",
@@ -23989,7 +23882,7 @@
     }
   },
   {
-    "id": 458,
+    "id": 8478133,
     "nhlId": 8478133,
     "name": "Jake Evans",
     "nhlTeam": "MTL",
@@ -24043,7 +23936,7 @@
     }
   },
   {
-    "id": 459,
+    "id": 8478851,
     "nhlId": 8478851,
     "name": "Alexandre Carrier",
     "nhlTeam": "MTL",
@@ -24096,7 +23989,7 @@
     }
   },
   {
-    "id": 460,
+    "id": 8480018,
     "nhlId": 8480018,
     "name": "Nick Suzuki",
     "nhlTeam": "MTL",
@@ -24150,7 +24043,7 @@
     }
   },
   {
-    "id": 461,
+    "id": 8480074,
     "nhlId": 8480074,
     "name": "Alexandre Texier",
     "nhlTeam": "MTL",
@@ -24204,7 +24097,7 @@
     }
   },
   {
-    "id": 462,
+    "id": 8480865,
     "nhlId": 8480865,
     "name": "Noah Dobson",
     "nhlTeam": "MTL",
@@ -24257,7 +24150,7 @@
     }
   },
   {
-    "id": 463,
+    "id": 8481523,
     "nhlId": 8481523,
     "name": "Kirby Dach",
     "nhlTeam": "MTL",
@@ -24311,7 +24204,7 @@
     }
   },
   {
-    "id": 464,
+    "id": 8481540,
     "nhlId": 8481540,
     "name": "Cole Caufield",
     "nhlTeam": "MTL",
@@ -24365,7 +24258,7 @@
     }
   },
   {
-    "id": 465,
+    "id": 8481593,
     "nhlId": 8481593,
     "name": "Jayden Struble",
     "nhlTeam": "MTL",
@@ -24418,7 +24311,7 @@
     }
   },
   {
-    "id": 466,
+    "id": 8481618,
     "nhlId": 8481618,
     "name": "Alex Newhook",
     "nhlTeam": "MTL",
@@ -24472,7 +24365,7 @@
     }
   },
   {
-    "id": 467,
+    "id": 8482087,
     "nhlId": 8482087,
     "name": "Kaiden Guhle",
     "nhlTeam": "MTL",
@@ -24525,7 +24418,7 @@
     }
   },
   {
-    "id": 468,
+    "id": 8482737,
     "nhlId": 8482737,
     "name": "Zachary Bolduc",
     "nhlTeam": "MTL",
@@ -24579,7 +24472,7 @@
     }
   },
   {
-    "id": 469,
+    "id": 8482775,
     "nhlId": 8482775,
     "name": "Oliver Kapanen",
     "nhlTeam": "MTL",
@@ -24633,7 +24526,7 @@
     }
   },
   {
-    "id": 470,
+    "id": 8482964,
     "nhlId": 8482964,
     "name": "Arber Xhekaj",
     "nhlTeam": "MTL",
@@ -24686,7 +24579,7 @@
     }
   },
   {
-    "id": 471,
+    "id": 8483424,
     "nhlId": 8483424,
     "name": "Owen Beck",
     "nhlTeam": "MTL",
@@ -24740,7 +24633,7 @@
     }
   },
   {
-    "id": 472,
+    "id": 8483457,
     "nhlId": 8483457,
     "name": "Lane Hutson",
     "nhlTeam": "MTL",
@@ -24793,7 +24686,7 @@
     }
   },
   {
-    "id": 473,
+    "id": 8483515,
     "nhlId": 8483515,
     "name": "Juraj Slafkovský",
     "nhlTeam": "MTL",
@@ -24847,7 +24740,7 @@
     }
   },
   {
-    "id": 474,
+    "id": 8483686,
     "nhlId": 8483686,
     "name": "Adam Engstrom",
     "nhlTeam": "MTL",
@@ -24900,7 +24793,7 @@
     }
   },
   {
-    "id": 475,
+    "id": 8484220,
     "nhlId": 8484220,
     "name": "David Reinbacher",
     "nhlTeam": "MTL",
@@ -24953,7 +24846,7 @@
     }
   },
   {
-    "id": 476,
+    "id": 8484403,
     "nhlId": 8484403,
     "name": "Florian Xhekaj",
     "nhlTeam": "MTL",
@@ -25007,7 +24900,7 @@
     }
   },
   {
-    "id": 477,
+    "id": 8484984,
     "nhlId": 8484984,
     "name": "Ivan Demidov",
     "nhlTeam": "MTL",
@@ -25061,7 +24954,7 @@
     }
   },
   {
-    "id": 478,
+    "id": 8482487,
     "nhlId": 8482487,
     "name": "Jakub Dobes",
     "nhlTeam": "MTL",
@@ -25103,7 +24996,7 @@
     }
   },
   {
-    "id": 479,
+    "id": 8484170,
     "nhlId": 8484170,
     "name": "Jacob Fowler",
     "nhlTeam": "MTL",
@@ -25145,7 +25038,7 @@
     }
   },
   {
-    "id": 480,
+    "id": 8478470,
     "nhlId": 8478470,
     "name": "Samuel Montembeault",
     "nhlTeam": "MTL",
@@ -25187,7 +25080,7 @@
     }
   },
   {
-    "id": 481,
+    "id": 8475200,
     "nhlId": 8475200,
     "name": "Dmitry Orlov",
     "nhlTeam": "SJS",
@@ -25240,7 +25133,7 @@
     }
   },
   {
-    "id": 482,
+    "id": 8475726,
     "nhlId": 8475726,
     "name": "Tyler Toffoli",
     "nhlTeam": "SJS",
@@ -25294,7 +25187,7 @@
     }
   },
   {
-    "id": 483,
+    "id": 8476624,
     "nhlId": 8476624,
     "name": "Barclay Goodrow",
     "nhlTeam": "SJS",
@@ -25348,7 +25241,7 @@
     }
   },
   {
-    "id": 484,
+    "id": 8476885,
     "nhlId": 8476885,
     "name": "Jacob Trouba",
     "nhlTeam": "SJS",
@@ -25401,7 +25294,7 @@
     }
   },
   {
-    "id": 485,
+    "id": 8477498,
     "nhlId": 8477498,
     "name": "Darnell Nurse",
     "nhlTeam": "SJS",
@@ -25454,7 +25347,7 @@
     }
   },
   {
-    "id": 486,
+    "id": 8477505,
     "nhlId": 8477505,
     "name": "Alexander Wennberg",
     "nhlTeam": "SJS",
@@ -25508,7 +25401,7 @@
     }
   },
   {
-    "id": 487,
+    "id": 8478975,
     "nhlId": 8478975,
     "name": "Mason Marchment",
     "nhlTeam": "SJS",
@@ -25562,7 +25455,7 @@
     }
   },
   {
-    "id": 488,
+    "id": 8480748,
     "nhlId": 8480748,
     "name": "Kiefer Sherwood",
     "nhlTeam": "SJS",
@@ -25616,7 +25509,7 @@
     }
   },
   {
-    "id": 489,
+    "id": 8480848,
     "nhlId": 8480848,
     "name": "Ty Dellandrea",
     "nhlTeam": "SJS",
@@ -25670,7 +25563,7 @@
     }
   },
   {
-    "id": 490,
+    "id": 8480891,
     "nhlId": 8480891,
     "name": "Michael Kesselring",
     "nhlTeam": "SJS",
@@ -25723,7 +25616,7 @@
     }
   },
   {
-    "id": 491,
+    "id": 8482700,
     "nhlId": 8482700,
     "name": "Nolan Allan",
     "nhlTeam": "SJS",
@@ -25776,7 +25669,7 @@
     }
   },
   {
-    "id": 492,
+    "id": 8482859,
     "nhlId": 8482859,
     "name": "Zack Ostapchuk",
     "nhlTeam": "SJS",
@@ -25830,7 +25723,7 @@
     }
   },
   {
-    "id": 493,
+    "id": 8484152,
     "nhlId": 8484152,
     "name": "Luca Cagnoni",
     "nhlTeam": "SJS",
@@ -25883,7 +25776,7 @@
     }
   },
   {
-    "id": 494,
+    "id": 8484227,
     "nhlId": 8484227,
     "name": "Will Smith",
     "nhlTeam": "SJS",
@@ -25937,7 +25830,7 @@
     }
   },
   {
-    "id": 495,
+    "id": 8484801,
     "nhlId": 8484801,
     "name": "Macklin Celebrini",
     "nhlTeam": "SJS",
@@ -25991,7 +25884,7 @@
     }
   },
   {
-    "id": 496,
+    "id": 8484806,
     "nhlId": 8484806,
     "name": "Sam Dickinson",
     "nhlTeam": "SJS",
@@ -26044,7 +25937,7 @@
     }
   },
   {
-    "id": 497,
+    "id": 8484911,
     "nhlId": 8484911,
     "name": "Collin Graf",
     "nhlTeam": "SJS",
@@ -26098,7 +25991,7 @@
     }
   },
   {
-    "id": 498,
+    "id": 8484994,
     "nhlId": 8484994,
     "name": "Igor Chernyshov",
     "nhlTeam": "SJS",
@@ -26152,7 +26045,7 @@
     }
   },
   {
-    "id": 499,
+    "id": 8485402,
     "nhlId": 8485402,
     "name": "Michael Misa",
     "nhlTeam": "SJS",
@@ -26206,7 +26099,7 @@
     }
   },
   {
-    "id": 500,
+    "id": 8486103,
     "nhlId": 8486103,
     "name": "Ivar Stenberg",
     "nhlTeam": "SJS",
@@ -26260,7 +26153,7 @@
     }
   },
   {
-    "id": 501,
+    "id": 8477968,
     "nhlId": 8477968,
     "name": "Alex Nedeljkovic",
     "nhlTeam": "SJS",
@@ -26302,7 +26195,7 @@
     }
   },
   {
-    "id": 502,
+    "id": 8482137,
     "nhlId": 8482137,
     "name": "Yaroslav Askarov",
     "nhlTeam": "SJS",
@@ -26344,7 +26237,7 @@
     }
   },
   {
-    "id": 503,
+    "id": 8478874,
     "nhlId": 8478874,
     "name": "Adam Gaudette",
     "nhlTeam": "SJS",
@@ -26397,7 +26290,7 @@
     }
   },
   {
-    "id": 504,
+    "id": 8473986,
     "nhlId": 8473986,
     "name": "Alex Killorn",
     "nhlTeam": "ANA",
@@ -26451,7 +26344,7 @@
     }
   },
   {
-    "id": 505,
+    "id": 8475798,
     "nhlId": 8475798,
     "name": "Mikael Granlund",
     "nhlTeam": "ANA",
@@ -26505,7 +26398,7 @@
     }
   },
   {
-    "id": 506,
+    "id": 8478366,
     "nhlId": 8478366,
     "name": "Frank Vatrano",
     "nhlTeam": "ANA",
@@ -26559,7 +26452,7 @@
     }
   },
   {
-    "id": 507,
+    "id": 8478421,
     "nhlId": 8478421,
     "name": "A.J. Greer",
     "nhlTeam": "ANA",
@@ -26613,7 +26506,7 @@
     }
   },
   {
-    "id": 508,
+    "id": 8480068,
     "nhlId": 8480068,
     "name": "Ryan Poehling",
     "nhlTeam": "ANA",
@@ -26667,7 +26560,7 @@
     }
   },
   {
-    "id": 509,
+    "id": 8481538,
     "nhlId": 8481538,
     "name": "Judd Caulfield",
     "nhlTeam": "ANA",
@@ -26721,7 +26614,7 @@
     }
   },
   {
-    "id": 510,
+    "id": 8481563,
     "nhlId": 8481563,
     "name": "Drew Helleson",
     "nhlTeam": "ANA",
@@ -26774,7 +26667,7 @@
     }
   },
   {
-    "id": 511,
+    "id": 8481605,
     "nhlId": 8481605,
     "name": "Jackson LaCombe",
     "nhlTeam": "ANA",
@@ -26827,7 +26720,7 @@
     }
   },
   {
-    "id": 512,
+    "id": 8481754,
     "nhlId": 8481754,
     "name": "Nikita Nesterenko",
     "nhlTeam": "ANA",
@@ -26881,7 +26774,7 @@
     }
   },
   {
-    "id": 513,
+    "id": 8482118,
     "nhlId": 8482118,
     "name": "Sam Colangelo",
     "nhlTeam": "ANA",
@@ -26935,7 +26828,7 @@
     }
   },
   {
-    "id": 514,
+    "id": 8482408,
     "nhlId": 8482408,
     "name": "Jeff Malott",
     "nhlTeam": "ANA",
@@ -26989,7 +26882,7 @@
     }
   },
   {
-    "id": 515,
+    "id": 8482731,
     "nhlId": 8482731,
     "name": "Tyson Hinds",
     "nhlTeam": "ANA",
@@ -27042,7 +26935,7 @@
     }
   },
   {
-    "id": 516,
+    "id": 8483445,
     "nhlId": 8483445,
     "name": "Cutter Gauthier",
     "nhlTeam": "ANA",
@@ -27096,7 +26989,7 @@
     }
   },
   {
-    "id": 517,
+    "id": 8483482,
     "nhlId": 8483482,
     "name": "Tristan Luneau",
     "nhlTeam": "ANA",
@@ -27149,7 +27042,7 @@
     }
   },
   {
-    "id": 518,
+    "id": 8483490,
     "nhlId": 8483490,
     "name": "Pavel Mintyukov",
     "nhlTeam": "ANA",
@@ -27202,7 +27095,7 @@
     }
   },
   {
-    "id": 519,
+    "id": 8483521,
     "nhlId": 8483521,
     "name": "Noah Warren",
     "nhlTeam": "ANA",
@@ -27255,7 +27148,7 @@
     }
   },
   {
-    "id": 520,
+    "id": 8484153,
     "nhlId": 8484153,
     "name": "Leo Carlsson",
     "nhlTeam": "ANA",
@@ -27309,7 +27202,7 @@
     }
   },
   {
-    "id": 521,
+    "id": 8484262,
     "nhlId": 8484262,
     "name": "Travis Mitchell",
     "nhlTeam": "ANA",
@@ -27362,7 +27255,7 @@
     }
   },
   {
-    "id": 522,
+    "id": 8484762,
     "nhlId": 8484762,
     "name": "Beckett Sennecke",
     "nhlTeam": "ANA",
@@ -27416,7 +27309,7 @@
     }
   },
   {
-    "id": 523,
+    "id": 8485400,
     "nhlId": 8485400,
     "name": "Roger McQueen",
     "nhlTeam": "ANA",
@@ -27470,7 +27363,7 @@
     }
   },
   {
-    "id": 524,
+    "id": 8485512,
     "nhlId": 8485512,
     "name": "Tim Washe",
     "nhlTeam": "ANA",
@@ -27524,7 +27417,7 @@
     }
   },
   {
-    "id": 525,
+    "id": 8486052,
     "nhlId": 8486052,
     "name": "Nikita Klepov",
     "nhlTeam": "ANA",
@@ -27578,7 +27471,7 @@
     }
   },
   {
-    "id": 526,
+    "id": 8478024,
     "nhlId": 8478024,
     "name": "Ville Husso",
     "nhlTeam": "ANA",
@@ -27620,7 +27513,7 @@
     }
   },
   {
-    "id": 527,
+    "id": 8480843,
     "nhlId": 8480843,
     "name": "Lukas Dostal",
     "nhlTeam": "ANA",
@@ -27662,7 +27555,7 @@
     }
   },
   {
-    "id": 528,
+    "id": 8475324,
     "nhlId": 8475324,
     "name": "Nick Jensen",
     "nhlTeam": "ANA",
@@ -27714,7 +27607,7 @@
     }
   },
   {
-    "id": 529,
+    "id": 8482178,
     "nhlId": 8482178,
     "name": "Ian Moore",
     "nhlTeam": "ANA",
@@ -27766,7 +27659,7 @@
     }
   },
   {
-    "id": 530,
+    "id": 8475455,
     "nhlId": 8475455,
     "name": "Brenden Dillon",
     "nhlTeam": "NJD",
@@ -27819,7 +27712,7 @@
     }
   },
   {
-    "id": 531,
+    "id": 8476462,
     "nhlId": 8476462,
     "name": "Dougie Hamilton",
     "nhlTeam": "NJD",
@@ -27872,7 +27765,7 @@
     }
   },
   {
-    "id": 532,
+    "id": 8476474,
     "nhlId": 8476474,
     "name": "Stefan Noesen",
     "nhlTeam": "NJD",
@@ -27926,7 +27819,7 @@
     }
   },
   {
-    "id": 533,
+    "id": 8477488,
     "nhlId": 8477488,
     "name": "Brett Pesce",
     "nhlTeam": "NJD",
@@ -27979,7 +27872,7 @@
     }
   },
   {
-    "id": 534,
+    "id": 8477511,
     "nhlId": 8477511,
     "name": "Anthony Mantha",
     "nhlTeam": "NJD",
@@ -28033,7 +27926,7 @@
     }
   },
   {
-    "id": 535,
+    "id": 8478399,
     "nhlId": 8478399,
     "name": "Jonas Siegenthaler",
     "nhlTeam": "NJD",
@@ -28086,7 +27979,7 @@
     }
   },
   {
-    "id": 536,
+    "id": 8478414,
     "nhlId": 8478414,
     "name": "Timo Meier",
     "nhlTeam": "NJD",
@@ -28140,7 +28033,7 @@
     }
   },
   {
-    "id": 537,
+    "id": 8478542,
     "nhlId": 8478542,
     "name": "Evan Rodrigues",
     "nhlTeam": "NJD",
@@ -28194,7 +28087,7 @@
     }
   },
   {
-    "id": 538,
+    "id": 8479407,
     "nhlId": 8479407,
     "name": "Jesper Bratt",
     "nhlTeam": "NJD",
@@ -28248,7 +28141,7 @@
     }
   },
   {
-    "id": 539,
+    "id": 8479996,
     "nhlId": 8479996,
     "name": "Cody Glass",
     "nhlTeam": "NJD",
@@ -28302,7 +28195,7 @@
     }
   },
   {
-    "id": 540,
+    "id": 8480002,
     "nhlId": 8480002,
     "name": "Nico Hischier",
     "nhlTeam": "NJD",
@@ -28356,7 +28249,7 @@
     }
   },
   {
-    "id": 541,
+    "id": 8480003,
     "nhlId": 8480003,
     "name": "Jesper Boqvist",
     "nhlTeam": "NJD",
@@ -28410,7 +28303,7 @@
     }
   },
   {
-    "id": 542,
+    "id": 8480192,
     "nhlId": 8480192,
     "name": "Johnathan Kovacevic",
     "nhlTeam": "NJD",
@@ -28463,7 +28356,7 @@
     }
   },
   {
-    "id": 543,
+    "id": 8480990,
     "nhlId": 8480990,
     "name": "Declan Chisholm",
     "nhlTeam": "NJD",
@@ -28516,7 +28409,7 @@
     }
   },
   {
-    "id": 544,
+    "id": 8481559,
     "nhlId": 8481559,
     "name": "Jack Hughes",
     "nhlTeam": "NJD",
@@ -28570,7 +28463,7 @@
     }
   },
   {
-    "id": 545,
+    "id": 8481721,
     "nhlId": 8481721,
     "name": "Arseny Gritsyuk",
     "nhlTeam": "NJD",
@@ -28624,7 +28517,7 @@
     }
   },
   {
-    "id": 546,
+    "id": 8482110,
     "nhlId": 8482110,
     "name": "Dawson Mercer",
     "nhlTeam": "NJD",
@@ -28678,7 +28571,7 @@
     }
   },
   {
-    "id": 547,
+    "id": 8482146,
     "nhlId": 8482146,
     "name": "Luke Evangelista",
     "nhlTeam": "NJD",
@@ -28732,7 +28625,7 @@
     }
   },
   {
-    "id": 548,
+    "id": 8482684,
     "nhlId": 8482684,
     "name": "Luke Hughes",
     "nhlTeam": "NJD",
@@ -28785,7 +28678,7 @@
     }
   },
   {
-    "id": 549,
+    "id": 8483695,
     "nhlId": 8483695,
     "name": "Amadeus Lombardi",
     "nhlTeam": "NJD",
@@ -28839,7 +28732,7 @@
     }
   },
   {
-    "id": 550,
+    "id": 8474596,
     "nhlId": 8474596,
     "name": "Jake Allen",
     "nhlTeam": "NJD",
@@ -28881,7 +28774,7 @@
     }
   },
   {
-    "id": 551,
+    "id": 8482076,
     "nhlId": 8482076,
     "name": "Nico Daws",
     "nhlTeam": "NJD",
@@ -28923,7 +28816,7 @@
     }
   },
   {
-    "id": 552,
+    "id": 8477015,
     "nhlId": 8477015,
     "name": "Connor Brown",
     "nhlTeam": "NJD",
@@ -28976,7 +28869,7 @@
     }
   },
   {
-    "id": 553,
+    "id": 8482465,
     "nhlId": 8482465,
     "name": "Rémi Poirier",
     "nhlTeam": "NJD",
@@ -29018,7 +28911,7 @@
     }
   },
   {
-    "id": 554,
+    "id": 8475279,
     "nhlId": 8475279,
     "name": "Ben Chiarot",
     "nhlTeam": "DET",
@@ -29071,7 +28964,7 @@
     }
   },
   {
-    "id": 555,
+    "id": 8475753,
     "nhlId": 8475753,
     "name": "Justin Faulk",
     "nhlTeam": "DET",
@@ -29124,7 +29017,7 @@
     }
   },
   {
-    "id": 556,
+    "id": 8477429,
     "nhlId": 8477429,
     "name": "Andrew Copp",
     "nhlTeam": "DET",
@@ -29178,7 +29071,7 @@
     }
   },
   {
-    "id": 557,
+    "id": 8477456,
     "nhlId": 8477456,
     "name": "J.T. Compher",
     "nhlTeam": "DET",
@@ -29232,7 +29125,7 @@
     }
   },
   {
-    "id": 558,
+    "id": 8477946,
     "nhlId": 8477946,
     "name": "Dylan Larkin",
     "nhlTeam": "DET",
@@ -29286,7 +29179,7 @@
     }
   },
   {
-    "id": 559,
+    "id": 8477971,
     "nhlId": 8477971,
     "name": "Andreas Englund",
     "nhlTeam": "DET",
@@ -29339,7 +29232,7 @@
     }
   },
   {
-    "id": 560,
+    "id": 8478042,
     "nhlId": 8478042,
     "name": "Viktor Arvidsson",
     "nhlTeam": "DET",
@@ -29393,7 +29286,7 @@
     }
   },
   {
-    "id": 561,
+    "id": 8478434,
     "nhlId": 8478434,
     "name": "Keegan Kolesar",
     "nhlTeam": "DET",
@@ -29447,7 +29340,7 @@
     }
   },
   {
-    "id": 562,
+    "id": 8478891,
     "nhlId": 8478891,
     "name": "Mason Appleton",
     "nhlTeam": "DET",
@@ -29501,7 +29394,7 @@
     }
   },
   {
-    "id": 563,
+    "id": 8479337,
     "nhlId": 8479337,
     "name": "Alex DeBrincat",
     "nhlTeam": "DET",
@@ -29555,7 +29448,7 @@
     }
   },
   {
-    "id": 564,
+    "id": 8479992,
     "nhlId": 8479992,
     "name": "Michael Rasmussen",
     "nhlTeam": "DET",
@@ -29609,7 +29502,7 @@
     }
   },
   {
-    "id": 565,
+    "id": 8480326,
     "nhlId": 8480326,
     "name": "Sheldon Dries",
     "nhlTeam": "DET",
@@ -29663,7 +29556,7 @@
     }
   },
   {
-    "id": 566,
+    "id": 8481542,
     "nhlId": 8481542,
     "name": "Moritz Seider",
     "nhlTeam": "DET",
@@ -29716,7 +29609,7 @@
     }
   },
   {
-    "id": 567,
+    "id": 8481607,
     "nhlId": 8481607,
     "name": "Albert Johansson",
     "nhlTeam": "DET",
@@ -29769,7 +29662,7 @@
     }
   },
   {
-    "id": 568,
+    "id": 8482078,
     "nhlId": 8482078,
     "name": "Lucas Raymond",
     "nhlTeam": "DET",
@@ -29823,7 +29716,7 @@
     }
   },
   {
-    "id": 569,
+    "id": 8482171,
     "nhlId": 8482171,
     "name": "William Wallinder",
     "nhlTeam": "DET",
@@ -29876,7 +29769,7 @@
     }
   },
   {
-    "id": 570,
+    "id": 8482802,
     "nhlId": 8482802,
     "name": "Carter Mazur",
     "nhlTeam": "DET",
@@ -29930,7 +29823,7 @@
     }
   },
   {
-    "id": 571,
+    "id": 8483464,
     "nhlId": 8483464,
     "name": "Marco Kasper",
     "nhlTeam": "DET",
@@ -29984,7 +29877,7 @@
     }
   },
   {
-    "id": 572,
+    "id": 8483679,
     "nhlId": 8483679,
     "name": "Anton Johansson",
     "nhlTeam": "DET",
@@ -30037,7 +29930,7 @@
     }
   },
   {
-    "id": 573,
+    "id": 8484160,
     "nhlId": 8484160,
     "name": "Nate Danielson",
     "nhlTeam": "DET",
@@ -30091,7 +29984,7 @@
     }
   },
   {
-    "id": 574,
+    "id": 8484223,
     "nhlId": 8484223,
     "name": "Axel Sandin-Pellikka",
     "nhlTeam": "DET",
@@ -30144,7 +30037,7 @@
     }
   },
   {
-    "id": 575,
+    "id": 8484471,
     "nhlId": 8484471,
     "name": "Emmitt Finnie",
     "nhlTeam": "DET",
@@ -30198,7 +30091,7 @@
     }
   },
   {
-    "id": 576,
+    "id": 8484794,
     "nhlId": 8484794,
     "name": "Michael Brandsegg-Nygård",
     "nhlTeam": "DET",
@@ -30252,7 +30145,7 @@
     }
   },
   {
-    "id": 577,
+    "id": 8476434,
     "nhlId": 8476434,
     "name": "John Gibson",
     "nhlTeam": "DET",
@@ -30294,7 +30187,7 @@
     }
   },
   {
-    "id": 578,
+    "id": 8480193,
     "nhlId": 8480193,
     "name": "Daniil Tarasov",
     "nhlTeam": "DET",
@@ -30336,7 +30229,7 @@
     }
   },
   {
-    "id": 579,
+    "id": 8480879,
     "nhlId": 8480879,
     "name": "Jacob Bernard-Docker",
     "nhlTeam": "DET",
@@ -30388,7 +30281,7 @@
     }
   },
   {
-    "id": 580,
+    "id": 8475166,
     "nhlId": 8475166,
     "name": "John Tavares",
     "nhlTeam": "TOR",
@@ -30442,7 +30335,7 @@
     }
   },
   {
-    "id": 581,
+    "id": 8475171,
     "nhlId": 8475171,
     "name": "Oliver Ekman-Larsson",
     "nhlTeam": "TOR",
@@ -30495,7 +30388,7 @@
     }
   },
   {
-    "id": 582,
+    "id": 8475690,
     "nhlId": 8475690,
     "name": "Chris Tanev",
     "nhlTeam": "TOR",
@@ -30548,7 +30441,7 @@
     }
   },
   {
-    "id": 583,
+    "id": 8476853,
     "nhlId": 8476853,
     "name": "Morgan Rielly",
     "nhlTeam": "TOR",
@@ -30601,7 +30494,7 @@
     }
   },
   {
-    "id": 584,
+    "id": 8476925,
     "nhlId": 8476925,
     "name": "Colton Sissons",
     "nhlTeam": "TOR",
@@ -30655,7 +30548,7 @@
     }
   },
   {
-    "id": 585,
+    "id": 8476927,
     "nhlId": 8476927,
     "name": "Teddy Blueger",
     "nhlTeam": "TOR",
@@ -30709,7 +30602,7 @@
     }
   },
   {
-    "id": 586,
+    "id": 8476931,
     "nhlId": 8476931,
     "name": "Jake McCabe",
     "nhlTeam": "TOR",
@@ -30762,7 +30655,7 @@
     }
   },
   {
-    "id": 587,
+    "id": 8477426,
     "nhlId": 8477426,
     "name": "Nick Paul",
     "nhlTeam": "TOR",
@@ -30816,7 +30709,7 @@
     }
   },
   {
-    "id": 588,
+    "id": 8477939,
     "nhlId": 8477939,
     "name": "William Nylander",
     "nhlTeam": "TOR",
@@ -30870,7 +30763,7 @@
     }
   },
   {
-    "id": 589,
+    "id": 8478178,
     "nhlId": 8478178,
     "name": "Darren Raddysh",
     "nhlTeam": "TOR",
@@ -30923,7 +30816,7 @@
     }
   },
   {
-    "id": 590,
+    "id": 8478458,
     "nhlId": 8478458,
     "name": "Jack Roslovic",
     "nhlTeam": "TOR",
@@ -30977,7 +30870,7 @@
     }
   },
   {
-    "id": 591,
+    "id": 8479318,
     "nhlId": 8479318,
     "name": "Auston Matthews",
     "nhlTeam": "TOR",
@@ -31031,7 +30924,7 @@
     }
   },
   {
-    "id": 592,
+    "id": 8479442,
     "nhlId": 8479442,
     "name": "Troy Stecher",
     "nhlTeam": "TOR",
@@ -31084,7 +30977,7 @@
     }
   },
   {
-    "id": 593,
+    "id": 8479520,
     "nhlId": 8479520,
     "name": "Brandon Duhaime",
     "nhlTeam": "TOR",
@@ -31138,7 +31031,7 @@
     }
   },
   {
-    "id": 594,
+    "id": 8479772,
     "nhlId": 8479772,
     "name": "Zack MacEwen",
     "nhlTeam": "TOR",
@@ -31192,7 +31085,7 @@
     }
   },
   {
-    "id": 595,
+    "id": 8480870,
     "nhlId": 8480870,
     "name": "Bo Groulx",
     "nhlTeam": "TOR",
@@ -31246,7 +31139,7 @@
     }
   },
   {
-    "id": 596,
+    "id": 8480893,
     "nhlId": 8480893,
     "name": "Kirill Marchenko",
     "nhlTeam": "TOR",
@@ -31300,7 +31193,7 @@
     }
   },
   {
-    "id": 597,
+    "id": 8483546,
     "nhlId": 8483546,
     "name": "Marshall Rifai",
     "nhlTeam": "TOR",
@@ -31353,7 +31246,7 @@
     }
   },
   {
-    "id": 598,
+    "id": 8483565,
     "nhlId": 8483565,
     "name": "Nick Blankenburg",
     "nhlTeam": "TOR",
@@ -31406,7 +31299,7 @@
     }
   },
   {
-    "id": 599,
+    "id": 8484158,
     "nhlId": 8484158,
     "name": "Easton Cowan",
     "nhlTeam": "TOR",
@@ -31460,7 +31353,7 @@
     }
   },
   {
-    "id": 600,
+    "id": 8486067,
     "nhlId": 8486067,
     "name": "Gavin McKenna",
     "nhlTeam": "TOR",
@@ -31514,7 +31407,7 @@
     }
   },
   {
-    "id": 601,
+    "id": 8475683,
     "nhlId": 8475683,
     "name": "Sergei Bobrovsky",
     "nhlTeam": "TOR",
@@ -31556,7 +31449,7 @@
     }
   },
   {
-    "id": 602,
+    "id": 8476932,
     "nhlId": 8476932,
     "name": "Anthony Stolarz",
     "nhlTeam": "TOR",
@@ -31598,7 +31491,7 @@
     }
   },
   {
-    "id": 603,
+    "id": 8477425,
     "nhlId": 8477425,
     "name": "Miles Wood",
     "nhlTeam": "TOR",
@@ -31651,7 +31544,7 @@
     }
   },
   {
-    "id": 604,
+    "id": 8475764,
     "nhlId": 8475764,
     "name": "Cam Fowler",
     "nhlTeam": "STL",
@@ -31704,7 +31597,7 @@
     }
   },
   {
-    "id": 605,
+    "id": 8476892,
     "nhlId": 8476892,
     "name": "Colton Parayko",
     "nhlTeam": "STL",
@@ -31757,7 +31650,7 @@
     }
   },
   {
-    "id": 606,
+    "id": 8477402,
     "nhlId": 8477402,
     "name": "Pavel Buchnevich",
     "nhlTeam": "STL",
@@ -31811,7 +31704,7 @@
     }
   },
   {
-    "id": 607,
+    "id": 8477527,
     "nhlId": 8477527,
     "name": "Ross Johnston",
     "nhlTeam": "STL",
@@ -31865,7 +31758,7 @@
     }
   },
   {
-    "id": 608,
+    "id": 8478443,
     "nhlId": 8478443,
     "name": "Brandon Carlo",
     "nhlTeam": "STL",
@@ -31918,7 +31811,7 @@
     }
   },
   {
-    "id": 609,
+    "id": 8479346,
     "nhlId": 8479346,
     "name": "Dillon Dube",
     "nhlTeam": "STL",
@@ -31972,7 +31865,7 @@
     }
   },
   {
-    "id": 610,
+    "id": 8480023,
     "nhlId": 8480023,
     "name": "Robert Thomas",
     "nhlTeam": "STL",
@@ -32026,7 +31919,7 @@
     }
   },
   {
-    "id": 611,
+    "id": 8480281,
     "nhlId": 8480281,
     "name": "Alexey Toropchenko",
     "nhlTeam": "STL",
@@ -32080,7 +31973,7 @@
     }
   },
   {
-    "id": 612,
+    "id": 8480459,
     "nhlId": 8480459,
     "name": "Pius Suter",
     "nhlTeam": "STL",
@@ -32134,7 +32027,7 @@
     }
   },
   {
-    "id": 613,
+    "id": 8481013,
     "nhlId": 8481013,
     "name": "Jonatan Berggren",
     "nhlTeam": "STL",
@@ -32188,7 +32081,7 @@
     }
   },
   {
-    "id": 614,
+    "id": 8481580,
     "nhlId": 8481580,
     "name": "Connor McMichael",
     "nhlTeam": "STL",
@@ -32242,7 +32135,7 @@
     }
   },
   {
-    "id": 615,
+    "id": 8481598,
     "nhlId": 8481598,
     "name": "Philip Broberg",
     "nhlTeam": "STL",
@@ -32295,7 +32188,7 @@
     }
   },
   {
-    "id": 616,
+    "id": 8482077,
     "nhlId": 8482077,
     "name": "Dylan Holloway",
     "nhlTeam": "STL",
@@ -32349,7 +32242,7 @@
     }
   },
   {
-    "id": 617,
+    "id": 8482089,
     "nhlId": 8482089,
     "name": "Jake Neighbours",
     "nhlTeam": "STL",
@@ -32403,7 +32296,7 @@
     }
   },
   {
-    "id": 618,
+    "id": 8482111,
     "nhlId": 8482111,
     "name": "Justin Barron",
     "nhlTeam": "STL",
@@ -32456,7 +32349,7 @@
     }
   },
   {
-    "id": 619,
+    "id": 8482121,
     "nhlId": 8482121,
     "name": "Dylan Peterson",
     "nhlTeam": "STL",
@@ -32510,7 +32403,7 @@
     }
   },
   {
-    "id": 620,
+    "id": 8482745,
     "nhlId": 8482745,
     "name": "Mason McTavish",
     "nhlTeam": "STL",
@@ -32564,7 +32457,7 @@
     }
   },
   {
-    "id": 621,
+    "id": 8482784,
     "nhlId": 8482784,
     "name": "Zach Dean",
     "nhlTeam": "STL",
@@ -32618,7 +32511,7 @@
     }
   },
   {
-    "id": 622,
+    "id": 8483516,
     "nhlId": 8483516,
     "name": "Jimmy Snuggerud",
     "nhlTeam": "STL",
@@ -32672,7 +32565,7 @@
     }
   },
   {
-    "id": 623,
+    "id": 8484164,
     "nhlId": 8484164,
     "name": "Dalibor Dvorsky",
     "nhlTeam": "STL",
@@ -32726,7 +32619,7 @@
     }
   },
   {
-    "id": 624,
+    "id": 8484188,
     "nhlId": 8484188,
     "name": "Theo Lindstein",
     "nhlTeam": "STL",
@@ -32779,7 +32672,7 @@
     }
   },
   {
-    "id": 625,
+    "id": 8484790,
     "nhlId": 8484790,
     "name": "Adam Jiricek",
     "nhlTeam": "STL",
@@ -32832,7 +32725,7 @@
     }
   },
   {
-    "id": 626,
+    "id": 8476412,
     "nhlId": 8476412,
     "name": "Jordan Binnington",
     "nhlTeam": "STL",
@@ -32874,7 +32767,7 @@
     }
   },
   {
-    "id": 627,
+    "id": 8480981,
     "nhlId": 8480981,
     "name": "Joel Hofer",
     "nhlTeam": "STL",
@@ -32916,7 +32809,7 @@
     }
   },
   {
-    "id": 628,
+    "id": 8483463,
     "nhlId": 8483463,
     "name": "Aleksanteri Kaskimaki",
     "nhlTeam": "STL",
@@ -32969,7 +32862,7 @@
     }
   },
   {
-    "id": 629,
+    "id": 8482733,
     "nhlId": 8482733,
     "name": "Logan Mailloux",
     "nhlTeam": "STL",
@@ -33021,7 +32914,7 @@
     }
   },
   {
-    "id": 630,
+    "id": 8481006,
     "nhlId": 8481006,
     "name": "Tyler Tucker",
     "nhlTeam": "STL",
@@ -33073,7 +32966,7 @@
     }
   },
   {
-    "id": 631,
+    "id": 8471215,
     "nhlId": 8471215,
     "name": "Evgeni Malkin",
     "nhlTeam": "PIT",
@@ -33127,7 +33020,7 @@
     }
   },
   {
-    "id": 632,
+    "id": 8471675,
     "nhlId": 8471675,
     "name": "Sidney Crosby",
     "nhlTeam": "PIT",
@@ -33181,7 +33074,7 @@
     }
   },
   {
-    "id": 633,
+    "id": 8471724,
     "nhlId": 8471724,
     "name": "Kris Letang",
     "nhlTeam": "PIT",
@@ -33234,7 +33127,7 @@
     }
   },
   {
-    "id": 634,
+    "id": 8474578,
     "nhlId": 8474578,
     "name": "Erik Karlsson",
     "nhlTeam": "PIT",
@@ -33287,7 +33180,7 @@
     }
   },
   {
-    "id": 635,
+    "id": 8475810,
     "nhlId": 8475810,
     "name": "Bryan Rust",
     "nhlTeam": "PIT",
@@ -33341,7 +33234,7 @@
     }
   },
   {
-    "id": 636,
+    "id": 8476483,
     "nhlId": 8476483,
     "name": "Rickard Rakell",
     "nhlTeam": "PIT",
@@ -33395,7 +33288,7 @@
     }
   },
   {
-    "id": 637,
+    "id": 8477845,
     "nhlId": 8477845,
     "name": "Trevor van Riemsdyk",
     "nhlTeam": "PIT",
@@ -33448,7 +33341,7 @@
     }
   },
   {
-    "id": 638,
+    "id": 8478438,
     "nhlId": 8478438,
     "name": "Tommy Novak",
     "nhlTeam": "PIT",
@@ -33502,7 +33395,7 @@
     }
   },
   {
-    "id": 639,
+    "id": 8479398,
     "nhlId": 8479398,
     "name": "Samuel Girard",
     "nhlTeam": "PIT",
@@ -33555,7 +33448,7 @@
     }
   },
   {
-    "id": 640,
+    "id": 8480842,
     "nhlId": 8480842,
     "name": "Filip Hallander",
     "nhlTeam": "PIT",
@@ -33609,7 +33502,7 @@
     }
   },
   {
-    "id": 641,
+    "id": 8480980,
     "nhlId": 8480980,
     "name": "Connor Dewar",
     "nhlTeam": "PIT",
@@ -33663,7 +33556,7 @@
     }
   },
   {
-    "id": 642,
+    "id": 8481056,
     "nhlId": 8481056,
     "name": "Spencer Stastney",
     "nhlTeam": "PIT",
@@ -33716,7 +33609,7 @@
     }
   },
   {
-    "id": 643,
+    "id": 8481481,
     "nhlId": 8481481,
     "name": "Blake Lizotte",
     "nhlTeam": "PIT",
@@ -33770,7 +33663,7 @@
     }
   },
   {
-    "id": 644,
+    "id": 8481527,
     "nhlId": 8481527,
     "name": "Kaedan Korczak",
     "nhlTeam": "PIT",
@@ -33823,7 +33716,7 @@
     }
   },
   {
-    "id": 645,
+    "id": 8481582,
     "nhlId": 8481582,
     "name": "Nick Robertson",
     "nhlTeam": "PIT",
@@ -33877,7 +33770,7 @@
     }
   },
   {
-    "id": 646,
+    "id": 8481725,
     "nhlId": 8481725,
     "name": "Elmer Soderblom",
     "nhlTeam": "PIT",
@@ -33931,7 +33824,7 @@
     }
   },
   {
-    "id": 647,
+    "id": 8482148,
     "nhlId": 8482148,
     "name": "Hendrix Lapierre",
     "nhlTeam": "PIT",
@@ -33985,7 +33878,7 @@
     }
   },
   {
-    "id": 648,
+    "id": 8482475,
     "nhlId": 8482475,
     "name": "Egor Chinakhov",
     "nhlTeam": "PIT",
@@ -34039,7 +33932,7 @@
     }
   },
   {
-    "id": 649,
+    "id": 8482758,
     "nhlId": 8482758,
     "name": "Ville Koivunen",
     "nhlTeam": "PIT",
@@ -34093,7 +33986,7 @@
     }
   },
   {
-    "id": 650,
+    "id": 8483398,
     "nhlId": 8483398,
     "name": "Declan Carlile",
     "nhlTeam": "PIT",
@@ -34146,7 +34039,7 @@
     }
   },
   {
-    "id": 651,
+    "id": 8483808,
     "nhlId": 8483808,
     "name": "Andrei Kuzmenko",
     "nhlTeam": "PIT",
@@ -34200,7 +34093,7 @@
     }
   },
   {
-    "id": 652,
+    "id": 8485414,
     "nhlId": 8485414,
     "name": "Ben Kindel",
     "nhlTeam": "PIT",
@@ -34254,7 +34147,7 @@
     }
   },
   {
-    "id": 653,
+    "id": 8481668,
     "nhlId": 8481668,
     "name": "Arturs Silovs",
     "nhlTeam": "PIT",
@@ -34296,7 +34189,7 @@
     }
   },
   {
-    "id": 654,
+    "id": 8483703,
     "nhlId": 8483703,
     "name": "Sergei Murashov",
     "nhlTeam": "PIT",
@@ -34338,7 +34231,7 @@
     }
   },
   {
-    "id": 655,
+    "id": 8479638,
     "nhlId": 8479638,
     "name": "Justin Brazeau",
     "nhlTeam": "PIT",
@@ -34391,7 +34284,7 @@
     }
   },
   {
-    "id": 656,
+    "id": 8475745,
     "nhlId": 8475745,
     "name": "Charlie Coyle",
     "nhlTeam": "CBJ",
@@ -34445,7 +34338,7 @@
     }
   },
   {
-    "id": 657,
+    "id": 8475790,
     "nhlId": 8475790,
     "name": "Erik Gudbranson",
     "nhlTeam": "CBJ",
@@ -34498,7 +34391,7 @@
     }
   },
   {
-    "id": 658,
+    "id": 8476923,
     "nhlId": 8476923,
     "name": "Damon Severson",
     "nhlTeam": "CBJ",
@@ -34551,7 +34444,7 @@
     }
   },
   {
-    "id": 659,
+    "id": 8477369,
     "nhlId": 8477369,
     "name": "Carson Soucy",
     "nhlTeam": "CBJ",
@@ -34604,7 +34497,7 @@
     }
   },
   {
-    "id": 660,
+    "id": 8477497,
     "nhlId": 8477497,
     "name": "Sean Monahan",
     "nhlTeam": "CBJ",
@@ -34658,7 +34551,7 @@
     }
   },
   {
-    "id": 661,
+    "id": 8477501,
     "nhlId": 8477501,
     "name": "Valeri Nichushkin",
     "nhlTeam": "CBJ",
@@ -34712,7 +34605,7 @@
     }
   },
   {
-    "id": 662,
+    "id": 8478046,
     "nhlId": 8478046,
     "name": "Danton Heinen",
     "nhlTeam": "CBJ",
@@ -34766,7 +34659,7 @@
     }
   },
   {
-    "id": 663,
+    "id": 8478460,
     "nhlId": 8478460,
     "name": "Zach Werenski",
     "nhlTeam": "CBJ",
@@ -34819,7 +34712,7 @@
     }
   },
   {
-    "id": 664,
+    "id": 8478856,
     "nhlId": 8478856,
     "name": "Conor Garland",
     "nhlTeam": "CBJ",
@@ -34873,7 +34766,7 @@
     }
   },
   {
-    "id": 665,
+    "id": 8479066,
     "nhlId": 8479066,
     "name": "Ryan Lomberg",
     "nhlTeam": "CBJ",
@@ -34927,7 +34820,7 @@
     }
   },
   {
-    "id": 666,
+    "id": 8479671,
     "nhlId": 8479671,
     "name": "Mathieu Olivier",
     "nhlTeam": "CBJ",
@@ -34981,7 +34874,7 @@
     }
   },
   {
-    "id": 667,
+    "id": 8481161,
     "nhlId": 8481161,
     "name": "Jake Christiansen",
     "nhlTeam": "CBJ",
@@ -35034,7 +34927,7 @@
     }
   },
   {
-    "id": 668,
+    "id": 8481716,
     "nhlId": 8481716,
     "name": "Dmitri Voronkov",
     "nhlTeam": "CBJ",
@@ -35088,7 +34981,7 @@
     }
   },
   {
-    "id": 669,
+    "id": 8482126,
     "nhlId": 8482126,
     "name": "Emil Andrae",
     "nhlTeam": "CBJ",
@@ -35141,7 +35034,7 @@
     }
   },
   {
-    "id": 670,
+    "id": 8482660,
     "nhlId": 8482660,
     "name": "Kent Johnson",
     "nhlTeam": "CBJ",
@@ -35195,7 +35088,7 @@
     }
   },
   {
-    "id": 671,
+    "id": 8482705,
     "nhlId": 8482705,
     "name": "Cole Sillinger",
     "nhlTeam": "CBJ",
@@ -35249,7 +35142,7 @@
     }
   },
   {
-    "id": 672,
+    "id": 8482720,
     "nhlId": 8482720,
     "name": "Matthew Knies",
     "nhlTeam": "CBJ",
@@ -35303,7 +35196,7 @@
     }
   },
   {
-    "id": 673,
+    "id": 8483432,
     "nhlId": 8483432,
     "name": "Luca Del Bel Belluz",
     "nhlTeam": "CBJ",
@@ -35357,7 +35250,7 @@
     }
   },
   {
-    "id": 674,
+    "id": 8483485,
     "nhlId": 8483485,
     "name": "Denton Mateychuk",
     "nhlTeam": "CBJ",
@@ -35410,7 +35303,7 @@
     }
   },
   {
-    "id": 675,
+    "id": 8484166,
     "nhlId": 8484166,
     "name": "Adam Fantilli",
     "nhlTeam": "CBJ",
@@ -35464,7 +35357,7 @@
     }
   },
   {
-    "id": 676,
+    "id": 8475660,
     "nhlId": 8475660,
     "name": "Cam Talbot",
     "nhlTeam": "CBJ",
@@ -35506,7 +35399,7 @@
     }
   },
   {
-    "id": 677,
+    "id": 8482982,
     "nhlId": 8482982,
     "name": "Jet Greaves",
     "nhlTeam": "CBJ",
@@ -35548,7 +35441,7 @@
     }
   },
   {
-    "id": 678,
+    "id": 8479371,
     "nhlId": 8479371,
     "name": "Dante Fabbro",
     "nhlTeam": "CBJ",
@@ -35600,7 +35493,7 @@
     }
   },
   {
-    "id": 679,
+    "id": 8478500,
     "nhlId": 8478500,
     "name": "Ivan Provorov",
     "nhlTeam": "CBJ",
@@ -35652,7 +35545,7 @@
     }
   },
   {
-    "id": 680,
+    "id": 8474013,
     "nhlId": 8474013,
     "name": "Ian Cole",
     "nhlTeam": "CHI",
@@ -35705,7 +35598,7 @@
     }
   },
   {
-    "id": 681,
+    "id": 8474141,
     "nhlId": 8474141,
     "name": "Patrick Kane",
     "nhlTeam": "CHI",
@@ -35759,7 +35652,7 @@
     }
   },
   {
-    "id": 682,
+    "id": 8476882,
     "nhlId": 8476882,
     "name": "Teuvo Teravainen",
     "nhlTeam": "CHI",
@@ -35813,7 +35706,7 @@
     }
   },
   {
-    "id": 683,
+    "id": 8476952,
     "nhlId": 8476952,
     "name": "Dominic Toninato",
     "nhlTeam": "CHI",
@@ -35867,7 +35760,7 @@
     }
   },
   {
-    "id": 684,
+    "id": 8477479,
     "nhlId": 8477479,
     "name": "Tyler Bertuzzi",
     "nhlTeam": "CHI",
@@ -35921,7 +35814,7 @@
     }
   },
   {
-    "id": 685,
+    "id": 8477987,
     "nhlId": 8477987,
     "name": "Ryan Donato",
     "nhlTeam": "CHI",
@@ -35975,7 +35868,7 @@
     }
   },
   {
-    "id": 686,
+    "id": 8478233,
     "nhlId": 8478233,
     "name": "Andrew Mangiapane",
     "nhlTeam": "CHI",
@@ -36029,7 +35922,7 @@
     }
   },
   {
-    "id": 687,
+    "id": 8478413,
     "nhlId": 8478413,
     "name": "Jordan Greenway",
     "nhlTeam": "CHI",
@@ -36083,7 +35976,7 @@
     }
   },
   {
-    "id": 688,
+    "id": 8481524,
     "nhlId": 8481524,
     "name": "Bowen Byram",
     "nhlTeam": "CHI",
@@ -36136,7 +36029,7 @@
     }
   },
   {
-    "id": 689,
+    "id": 8481568,
     "nhlId": 8481568,
     "name": "Alex Vlasic",
     "nhlTeam": "CHI",
@@ -36189,7 +36082,7 @@
     }
   },
   {
-    "id": 690,
+    "id": 8482062,
     "nhlId": 8482062,
     "name": "Cole Smith",
     "nhlTeam": "CHI",
@@ -36243,7 +36136,7 @@
     }
   },
   {
-    "id": 691,
+    "id": 8482176,
     "nhlId": 8482176,
     "name": "Wyatt Kaiser",
     "nhlTeam": "CHI",
@@ -36296,7 +36189,7 @@
     }
   },
   {
-    "id": 692,
+    "id": 8482807,
     "nhlId": 8482807,
     "name": "Ethan Del Mastro",
     "nhlTeam": "CHI",
@@ -36349,7 +36242,7 @@
     }
   },
   {
-    "id": 693,
+    "id": 8483450,
     "nhlId": 8483450,
     "name": "Ryan Greene",
     "nhlTeam": "CHI",
@@ -36403,7 +36296,7 @@
     }
   },
   {
-    "id": 694,
+    "id": 8483466,
     "nhlId": 8483466,
     "name": "Kevin Korchinski",
     "nhlTeam": "CHI",
@@ -36456,7 +36349,7 @@
     }
   },
   {
-    "id": 695,
+    "id": 8483493,
     "nhlId": 8483493,
     "name": "Frank Nazar",
     "nhlTeam": "CHI",
@@ -36510,7 +36403,7 @@
     }
   },
   {
-    "id": 696,
+    "id": 8483506,
     "nhlId": 8483506,
     "name": "Sam Rinzel",
     "nhlTeam": "CHI",
@@ -36563,7 +36456,7 @@
     }
   },
   {
-    "id": 697,
+    "id": 8484144,
     "nhlId": 8484144,
     "name": "Connor Bedard",
     "nhlTeam": "CHI",
@@ -36617,7 +36510,7 @@
     }
   },
   {
-    "id": 698,
+    "id": 8484185,
     "nhlId": 8484185,
     "name": "Nick Lardis",
     "nhlTeam": "CHI",
@@ -36671,7 +36564,7 @@
     }
   },
   {
-    "id": 699,
+    "id": 8484197,
     "nhlId": 8484197,
     "name": "Oliver Moore",
     "nhlTeam": "CHI",
@@ -36725,7 +36618,7 @@
     }
   },
   {
-    "id": 700,
+    "id": 8484390,
     "nhlId": 8484390,
     "name": "Roman Kantserov",
     "nhlTeam": "CHI",
@@ -36779,7 +36672,7 @@
     }
   },
   {
-    "id": 701,
+    "id": 8484783,
     "nhlId": 8484783,
     "name": "Artyom Levshunov",
     "nhlTeam": "CHI",
@@ -36832,7 +36725,7 @@
     }
   },
   {
-    "id": 702,
+    "id": 8485391,
     "nhlId": 8485391,
     "name": "Anton Frondell",
     "nhlTeam": "CHI",
@@ -36886,7 +36779,7 @@
     }
   },
   {
-    "id": 703,
+    "id": 8481519,
     "nhlId": 8481519,
     "name": "Spencer Knight",
     "nhlTeam": "CHI",
@@ -36928,7 +36821,7 @@
     }
   },
   {
-    "id": 704,
+    "id": 8482821,
     "nhlId": 8482821,
     "name": "Arvid Soderblom",
     "nhlTeam": "CHI",
@@ -36970,7 +36863,7 @@
     }
   },
   {
-    "id": 705,
+    "id": 8474568,
     "nhlId": 8474568,
     "name": "Luke Schenn",
     "nhlTeam": "VAN",
@@ -37023,7 +36916,7 @@
     }
   },
   {
-    "id": 706,
+    "id": 8475848,
     "nhlId": 8475848,
     "name": "Brendan Gallagher",
     "nhlTeam": "VAN",
@@ -37077,7 +36970,7 @@
     }
   },
   {
-    "id": 707,
+    "id": 8476467,
     "nhlId": 8476467,
     "name": "Jamie Oleksiak",
     "nhlTeam": "VAN",
@@ -37130,7 +37023,7 @@
     }
   },
   {
-    "id": 708,
+    "id": 8478444,
     "nhlId": 8478444,
     "name": "Brock Boeser",
     "nhlTeam": "VAN",
@@ -37184,7 +37077,7 @@
     }
   },
   {
-    "id": 709,
+    "id": 8478465,
     "nhlId": 8478465,
     "name": "Guillaume Brisebois",
     "nhlTeam": "VAN",
@@ -37237,7 +37130,7 @@
     }
   },
   {
-    "id": 710,
+    "id": 8478498,
     "nhlId": 8478498,
     "name": "Jake DeBrusk",
     "nhlTeam": "VAN",
@@ -37291,7 +37184,7 @@
     }
   },
   {
-    "id": 711,
+    "id": 8479425,
     "nhlId": 8479425,
     "name": "Filip Hronek",
     "nhlTeam": "VAN",
@@ -37344,7 +37237,7 @@
     }
   },
   {
-    "id": 712,
+    "id": 8480012,
     "nhlId": 8480012,
     "name": "Elias Pettersson",
     "nhlTeam": "VAN",
@@ -37398,7 +37291,7 @@
     }
   },
   {
-    "id": 713,
+    "id": 8480078,
     "nhlId": 8480078,
     "name": "Filip Chytil",
     "nhlTeam": "VAN",
@@ -37452,7 +37345,7 @@
     }
   },
   {
-    "id": 714,
+    "id": 8481024,
     "nhlId": 8481024,
     "name": "Linus Karlsson",
     "nhlTeam": "VAN",
@@ -37506,7 +37399,7 @@
     }
   },
   {
-    "id": 715,
+    "id": 8481032,
     "nhlId": 8481032,
     "name": "Paul Cotter",
     "nhlTeam": "VAN",
@@ -37560,7 +37453,7 @@
     }
   },
   {
-    "id": 716,
+    "id": 8482055,
     "nhlId": 8482055,
     "name": "Drew O'Connor",
     "nhlTeam": "VAN",
@@ -37614,7 +37507,7 @@
     }
   },
   {
-    "id": 717,
+    "id": 8482079,
     "nhlId": 8482079,
     "name": "Marco Rossi",
     "nhlTeam": "VAN",
@@ -37668,7 +37561,7 @@
     }
   },
   {
-    "id": 718,
+    "id": 8482691,
     "nhlId": 8482691,
     "name": "Aatu Räty",
     "nhlTeam": "VAN",
@@ -37722,7 +37615,7 @@
     }
   },
   {
-    "id": 719,
+    "id": 8483395,
     "nhlId": 8483395,
     "name": "Arshdeep Bains",
     "nhlTeam": "VAN",
@@ -37776,7 +37669,7 @@
     }
   },
   {
-    "id": 720,
+    "id": 8483476,
     "nhlId": 8483476,
     "name": "Jonathan Lekkerimäki",
     "nhlTeam": "VAN",
@@ -37830,7 +37723,7 @@
     }
   },
   {
-    "id": 721,
+    "id": 8483499,
     "nhlId": 8483499,
     "name": "Liam Ohgren",
     "nhlTeam": "VAN",
@@ -37884,7 +37777,7 @@
     }
   },
   {
-    "id": 722,
+    "id": 8483678,
     "nhlId": 8483678,
     "name": "Elias Pettersson",
     "nhlTeam": "VAN",
@@ -37937,7 +37830,7 @@
     }
   },
   {
-    "id": 723,
+    "id": 8483768,
     "nhlId": 8483768,
     "name": "Victor Mancini",
     "nhlTeam": "VAN",
@@ -37990,7 +37883,7 @@
     }
   },
   {
-    "id": 724,
+    "id": 8484136,
     "nhlId": 8484136,
     "name": "Max Sasson",
     "nhlTeam": "VAN",
@@ -38044,7 +37937,7 @@
     }
   },
   {
-    "id": 725,
+    "id": 8484240,
     "nhlId": 8484240,
     "name": "Tom Willander",
     "nhlTeam": "VAN",
@@ -38097,7 +37990,7 @@
     }
   },
   {
-    "id": 726,
+    "id": 8484798,
     "nhlId": 8484798,
     "name": "Zeev Buium",
     "nhlTeam": "VAN",
@@ -38150,7 +38043,7 @@
     }
   },
   {
-    "id": 727,
+    "id": 8480947,
     "nhlId": 8480947,
     "name": "Kevin Lankinen",
     "nhlTeam": "VAN",
@@ -38192,7 +38085,7 @@
     }
   },
   {
-    "id": 728,
+    "id": 8482447,
     "nhlId": 8482447,
     "name": "Leevi Meriläinen",
     "nhlTeam": "VAN",
@@ -38234,7 +38127,7 @@
     }
   },
   {
-    "id": 729,
+    "id": 8477967,
     "nhlId": 8477967,
     "name": "Thatcher Demko",
     "nhlTeam": "VAN",
@@ -38276,7 +38169,7 @@
     }
   },
   {
-    "id": 730,
+    "id": 8475253,
     "nhlId": 8475253,
     "name": "Garrett Wilson",
     "nhlTeam": "PHI",
@@ -38330,7 +38223,7 @@
     }
   },
   {
-    "id": 731,
+    "id": 8476372,
     "nhlId": 8476372,
     "name": "Nick Seeler",
     "nhlTeam": "PHI",
@@ -38383,7 +38276,7 @@
     }
   },
   {
-    "id": 732,
+    "id": 8476461,
     "nhlId": 8476461,
     "name": "Sean Couturier",
     "nhlTeam": "PHI",
@@ -38437,7 +38330,7 @@
     }
   },
   {
-    "id": 733,
+    "id": 8477499,
     "nhlId": 8477499,
     "name": "Rasmus Ristolainen",
     "nhlTeam": "PHI",
@@ -38490,7 +38383,7 @@
     }
   },
   {
-    "id": 734,
+    "id": 8477948,
     "nhlId": 8477948,
     "name": "Travis Sanheim",
     "nhlTeam": "PHI",
@@ -38543,7 +38436,7 @@
     }
   },
   {
-    "id": 735,
+    "id": 8477989,
     "nhlId": 8477989,
     "name": "Christian Dvorak",
     "nhlTeam": "PHI",
@@ -38597,7 +38490,7 @@
     }
   },
   {
-    "id": 736,
+    "id": 8478047,
     "nhlId": 8478047,
     "name": "Michael Bunting",
     "nhlTeam": "PHI",
@@ -38651,7 +38544,7 @@
     }
   },
   {
-    "id": 737,
+    "id": 8478439,
     "nhlId": 8478439,
     "name": "Travis Konecny",
     "nhlTeam": "PHI",
@@ -38705,7 +38598,7 @@
     }
   },
   {
-    "id": 738,
+    "id": 8478569,
     "nhlId": 8478569,
     "name": "Noel Acciari",
     "nhlTeam": "PHI",
@@ -38759,7 +38652,7 @@
     }
   },
   {
-    "id": 739,
+    "id": 8479336,
     "nhlId": 8479336,
     "name": "Carl Grundstrom",
     "nhlTeam": "PHI",
@@ -38813,7 +38706,7 @@
     }
   },
   {
-    "id": 740,
+    "id": 8480015,
     "nhlId": 8480015,
     "name": "Owen Tippett",
     "nhlTeam": "PHI",
@@ -38867,7 +38760,7 @@
     }
   },
   {
-    "id": 741,
+    "id": 8480021,
     "nhlId": 8480021,
     "name": "Jack Studnicka",
     "nhlTeam": "PHI",
@@ -38921,7 +38814,7 @@
     }
   },
   {
-    "id": 742,
+    "id": 8480220,
     "nhlId": 8480220,
     "name": "Noah Cates",
     "nhlTeam": "PHI",
@@ -38975,7 +38868,7 @@
     }
   },
   {
-    "id": 743,
+    "id": 8481122,
     "nhlId": 8481122,
     "name": "Simon Benoit",
     "nhlTeam": "PHI",
@@ -39028,7 +38921,7 @@
     }
   },
   {
-    "id": 744,
+    "id": 8481533,
     "nhlId": 8481533,
     "name": "Trevor Zegras",
     "nhlTeam": "PHI",
@@ -39082,7 +38975,7 @@
     }
   },
   {
-    "id": 745,
+    "id": 8481546,
     "nhlId": 8481546,
     "name": "Cam York",
     "nhlTeam": "PHI",
@@ -39135,7 +39028,7 @@
     }
   },
   {
-    "id": 746,
+    "id": 8482142,
     "nhlId": 8482142,
     "name": "Jamie Drysdale",
     "nhlTeam": "PHI",
@@ -39188,7 +39081,7 @@
     }
   },
   {
-    "id": 747,
+    "id": 8482159,
     "nhlId": 8482159,
     "name": "Tyson Foerster",
     "nhlTeam": "PHI",
@@ -39242,7 +39135,7 @@
     }
   },
   {
-    "id": 748,
+    "id": 8482169,
     "nhlId": 8482169,
     "name": "Helge Grans",
     "nhlTeam": "PHI",
@@ -39295,7 +39188,7 @@
     }
   },
   {
-    "id": 749,
+    "id": 8483460,
     "nhlId": 8483460,
     "name": "David Jiricek",
     "nhlTeam": "PHI",
@@ -39348,7 +39241,7 @@
     }
   },
   {
-    "id": 750,
+    "id": 8483731,
     "nhlId": 8483731,
     "name": "Alex Bump",
     "nhlTeam": "PHI",
@@ -39402,7 +39295,7 @@
     }
   },
   {
-    "id": 751,
+    "id": 8484142,
     "nhlId": 8484142,
     "name": "Denver Barkey",
     "nhlTeam": "PHI",
@@ -39456,7 +39349,7 @@
     }
   },
   {
-    "id": 752,
+    "id": 8484148,
     "nhlId": 8484148,
     "name": "Oliver Bonk",
     "nhlTeam": "PHI",
@@ -39509,7 +39402,7 @@
     }
   },
   {
-    "id": 753,
+    "id": 8484387,
     "nhlId": 8484387,
     "name": "Matvei Michkov",
     "nhlTeam": "PHI",
@@ -39563,7 +39456,7 @@
     }
   },
   {
-    "id": 754,
+    "id": 8485406,
     "nhlId": 8485406,
     "name": "Porter Martone",
     "nhlTeam": "PHI",
@@ -39617,7 +39510,7 @@
     }
   },
   {
-    "id": 755,
+    "id": 8478435,
     "nhlId": 8478435,
     "name": "Dan Vladar",
     "nhlTeam": "PHI",
@@ -39659,7 +39552,7 @@
     }
   },
   {
-    "id": 756,
+    "id": 8479361,
     "nhlId": 8479361,
     "name": "Joseph Woll",
     "nhlTeam": "PHI",
@@ -39701,7 +39594,7 @@
     }
   },
   {
-    "id": 757,
+    "id": 8483733,
     "nhlId": 8483733,
     "name": "Nikita Grebenkin",
     "nhlTeam": "PHI",
@@ -39754,7 +39647,7 @@
     }
   },
   {
-    "id": 758,
+    "id": 8470621,
     "nhlId": 8470621,
     "name": "Corey Perry",
     "nhlTeam": "LAK",
@@ -39808,7 +39701,7 @@
     }
   },
   {
-    "id": 759,
+    "id": 8474563,
     "nhlId": 8474563,
     "name": "Drew Doughty",
     "nhlTeam": "LAK",
@@ -39861,7 +39754,7 @@
     }
   },
   {
-    "id": 760,
+    "id": 8475208,
     "nhlId": 8475208,
     "name": "Brian Dumoulin",
     "nhlTeam": "LAK",
@@ -39914,7 +39807,7 @@
     }
   },
   {
-    "id": 761,
+    "id": 8475287,
     "nhlId": 8475287,
     "name": "Erik Haula",
     "nhlTeam": "LAK",
@@ -39968,7 +39861,7 @@
     }
   },
   {
-    "id": 762,
+    "id": 8475692,
     "nhlId": 8475692,
     "name": "Mats Zuccarello",
     "nhlTeam": "LAK",
@@ -40022,7 +39915,7 @@
     }
   },
   {
-    "id": 763,
+    "id": 8476441,
     "nhlId": 8476441,
     "name": "Joel Edmundson",
     "nhlTeam": "LAK",
@@ -40075,7 +39968,7 @@
     }
   },
   {
-    "id": 764,
+    "id": 8476469,
     "nhlId": 8476469,
     "name": "Joel Armia",
     "nhlTeam": "LAK",
@@ -40129,7 +40022,7 @@
     }
   },
   {
-    "id": 765,
+    "id": 8476872,
     "nhlId": 8476872,
     "name": "Scott Laughton",
     "nhlTeam": "LAK",
@@ -40183,7 +40076,7 @@
     }
   },
   {
-    "id": 766,
+    "id": 8476879,
     "nhlId": 8476879,
     "name": "Cody Ceci",
     "nhlTeam": "LAK",
@@ -40236,7 +40129,7 @@
     }
   },
   {
-    "id": 767,
+    "id": 8476979,
     "nhlId": 8476979,
     "name": "Erik Gustafsson",
     "nhlTeam": "LAK",
@@ -40289,7 +40182,7 @@
     }
   },
   {
-    "id": 768,
+    "id": 8477960,
     "nhlId": 8477960,
     "name": "Adrian Kempe",
     "nhlTeam": "LAK",
@@ -40343,7 +40236,7 @@
     }
   },
   {
-    "id": 769,
+    "id": 8478550,
     "nhlId": 8478550,
     "name": "Artemi Panarin",
     "nhlTeam": "LAK",
@@ -40397,7 +40290,7 @@
     }
   },
   {
-    "id": 770,
+    "id": 8479675,
     "nhlId": 8479675,
     "name": "Trevor Moore",
     "nhlTeam": "LAK",
@@ -40451,7 +40344,7 @@
     }
   },
   {
-    "id": 771,
+    "id": 8479998,
     "nhlId": 8479998,
     "name": "Mikey Anderson",
     "nhlTeam": "LAK",
@@ -40504,7 +40397,7 @@
     }
   },
   {
-    "id": 772,
+    "id": 8481532,
     "nhlId": 8481532,
     "name": "Alex Turcotte",
     "nhlTeam": "LAK",
@@ -40558,7 +40451,7 @@
     }
   },
   {
-    "id": 773,
+    "id": 8481732,
     "nhlId": 8481732,
     "name": "Andre Lee",
     "nhlTeam": "LAK",
@@ -40612,7 +40505,7 @@
     }
   },
   {
-    "id": 774,
+    "id": 8482124,
     "nhlId": 8482124,
     "name": "Quinton Byfield",
     "nhlTeam": "LAK",
@@ -40666,7 +40559,7 @@
     }
   },
   {
-    "id": 775,
+    "id": 8482155,
     "nhlId": 8482155,
     "name": "Alex Laferriere",
     "nhlTeam": "LAK",
@@ -40720,7 +40613,7 @@
     }
   },
   {
-    "id": 776,
+    "id": 8482726,
     "nhlId": 8482726,
     "name": "Samuel Helenius",
     "nhlTeam": "LAK",
@@ -40774,7 +40667,7 @@
     }
   },
   {
-    "id": 777,
+    "id": 8482730,
     "nhlId": 8482730,
     "name": "Brandt Clarke",
     "nhlTeam": "LAK",
@@ -40827,7 +40720,7 @@
     }
   },
   {
-    "id": 778,
+    "id": 8483756,
     "nhlId": 8483756,
     "name": "Jared Wright",
     "nhlTeam": "LAK",
@@ -40881,7 +40774,7 @@
     }
   },
   {
-    "id": 779,
+    "id": 8475311,
     "nhlId": 8475311,
     "name": "Darcy Kuemper",
     "nhlTeam": "LAK",
@@ -40923,7 +40816,7 @@
     }
   },
   {
-    "id": 780,
+    "id": 8476341,
     "nhlId": 8476341,
     "name": "Anton Forsberg",
     "nhlTeam": "LAK",
@@ -40965,7 +40858,7 @@
     }
   },
   {
-    "id": 781,
+    "id": 8477942,
     "nhlId": 8477942,
     "name": "Kevin Fiala",
     "nhlTeam": "LAK",
@@ -41018,7 +40911,7 @@
     }
   },
   {
-    "id": 782,
+    "id": 8483406,
     "nhlId": 8483406,
     "name": "Taylor Ward",
     "nhlTeam": "LAK",
@@ -41071,7 +40964,7 @@
     }
   },
   {
-    "id": 783,
+    "id": 8474150,
     "nhlId": 8474150,
     "name": "Mikael Backlund",
     "nhlTeam": "CGY",
@@ -41125,7 +41018,7 @@
     }
   },
   {
-    "id": 784,
+    "id": 8476458,
     "nhlId": 8476458,
     "name": "Ryan Strome",
     "nhlTeam": "CGY",
@@ -41179,7 +41072,7 @@
     }
   },
   {
-    "id": 785,
+    "id": 8477810,
     "nhlId": 8477810,
     "name": "Joel Hanley",
     "nhlTeam": "CGY",
@@ -41232,7 +41125,7 @@
     }
   },
   {
-    "id": 786,
+    "id": 8478136,
     "nhlId": 8478136,
     "name": "Jake Middleton",
     "nhlTeam": "CGY",
@@ -41285,7 +41178,7 @@
     }
   },
   {
-    "id": 787,
+    "id": 8480028,
     "nhlId": 8480028,
     "name": "Morgan Frost",
     "nhlTeam": "CGY",
@@ -41339,7 +41232,7 @@
     }
   },
   {
-    "id": 788,
+    "id": 8480727,
     "nhlId": 8480727,
     "name": "Zach Whitecloud",
     "nhlTeam": "CGY",
@@ -41392,7 +41285,7 @@
     }
   },
   {
-    "id": 789,
+    "id": 8480797,
     "nhlId": 8480797,
     "name": "Joel Farabee",
     "nhlTeam": "CGY",
@@ -41446,7 +41339,7 @@
     }
   },
   {
-    "id": 790,
+    "id": 8480860,
     "nhlId": 8480860,
     "name": "Kevin Bahl",
     "nhlTeam": "CGY",
@@ -41499,7 +41392,7 @@
     }
   },
   {
-    "id": 791,
+    "id": 8481028,
     "nhlId": 8481028,
     "name": "Martin Pospisil",
     "nhlTeam": "CGY",
@@ -41553,7 +41446,7 @@
     }
   },
   {
-    "id": 792,
+    "id": 8481068,
     "nhlId": 8481068,
     "name": "Yegor Sharangovich",
     "nhlTeam": "CGY",
@@ -41607,7 +41500,7 @@
     }
   },
   {
-    "id": 793,
+    "id": 8482074,
     "nhlId": 8482074,
     "name": "Connor Zary",
     "nhlTeam": "CGY",
@@ -41661,7 +41554,7 @@
     }
   },
   {
-    "id": 794,
+    "id": 8482165,
     "nhlId": 8482165,
     "name": "Yan Kuznetsov",
     "nhlTeam": "CGY",
@@ -41714,7 +41607,7 @@
     }
   },
   {
-    "id": 795,
+    "id": 8482679,
     "nhlId": 8482679,
     "name": "Matt Coronato",
     "nhlTeam": "CGY",
@@ -41768,7 +41661,7 @@
     }
   },
   {
-    "id": 796,
+    "id": 8482747,
     "nhlId": 8482747,
     "name": "Brennan Othmann",
     "nhlTeam": "CGY",
@@ -41822,7 +41715,7 @@
     }
   },
   {
-    "id": 797,
+    "id": 8483495,
     "nhlId": 8483495,
     "name": "Simon Nemec",
     "nhlTeam": "CGY",
@@ -41875,7 +41768,7 @@
     }
   },
   {
-    "id": 798,
+    "id": 8483609,
     "nhlId": 8483609,
     "name": "Adam Klapka",
     "nhlTeam": "CGY",
@@ -41929,7 +41822,7 @@
     }
   },
   {
-    "id": 799,
+    "id": 8484154,
     "nhlId": 8484154,
     "name": "Jonathan Castagna",
     "nhlTeam": "CGY",
@@ -41983,7 +41876,7 @@
     }
   },
   {
-    "id": 800,
+    "id": 8484180,
     "nhlId": 8484180,
     "name": "Samuel Honzek",
     "nhlTeam": "CGY",
@@ -42037,7 +41930,7 @@
     }
   },
   {
-    "id": 801,
+    "id": 8484234,
     "nhlId": 8484234,
     "name": "Aydar Suniev",
     "nhlTeam": "CGY",
@@ -42091,7 +41984,7 @@
     }
   },
   {
-    "id": 802,
+    "id": 8484768,
     "nhlId": 8484768,
     "name": "Zayne Parekh",
     "nhlTeam": "CGY",
@@ -42144,7 +42037,7 @@
     }
   },
   {
-    "id": 803,
+    "id": 8484860,
     "nhlId": 8484860,
     "name": "Matvei Gridin",
     "nhlTeam": "CGY",
@@ -42198,7 +42091,7 @@
     }
   },
   {
-    "id": 804,
+    "id": 8484958,
     "nhlId": 8484958,
     "name": "Maxim Tsyplakov",
     "nhlTeam": "CGY",
@@ -42252,7 +42145,7 @@
     }
   },
   {
-    "id": 805,
+    "id": 8481692,
     "nhlId": 8481692,
     "name": "Dustin Wolf",
     "nhlTeam": "CGY",
@@ -42294,7 +42187,7 @@
     }
   },
   {
-    "id": 806,
+    "id": 8482445,
     "nhlId": 8482445,
     "name": "Devin Cooley",
     "nhlTeam": "CGY",
@@ -42336,7 +42229,7 @@
     }
   },
   {
-    "id": 807,
+    "id": 8476456,
     "nhlId": 8476456,
     "name": "Jonathan Huberdeau",
     "nhlTeam": "CGY",

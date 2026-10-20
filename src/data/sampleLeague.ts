@@ -10,71 +10,71 @@ const getPlayerId = (query: string, fallback: number): number => {
 };
 
 // Edmonton Ice Kings
-const pMcDavid = getPlayerId('McDavid', 78);
-const pDraisaitl = getPlayerId('Draisaitl', 75);
-const pHyman = getPlayerId('Hyman', 72);
-const pBouchard = getPlayerId('Bouchard', 84);
-const pSkinner = getPlayerId('Stuart Skinner', 351);
+const pMcDavid = getPlayerId('McDavid', 8478402);
+const pDraisaitl = getPlayerId('Draisaitl', 8477934);
+const pHyman = getPlayerId('Hyman', 8475786);
+const pBouchard = getPlayerId('Bouchard', 8480803);
+const pSkinner = getPlayerId('Stuart Skinner', 8479973);
 
 // Mile High Snipers
-const pMacKinnon = getPlayerId('MacKinnon', 235);
-const pRantanen = getPlayerId('Rantanen', 409);
-const pMakar = getPlayerId('Makar', 240);
+const pMacKinnon = getPlayerId('MacKinnon', 8477492);
+const pRantanen = getPlayerId('Rantanen', 8478420);
+const pMakar = getPlayerId('Makar', 8480069);
 
 // Bay Street Blueliners
-const pMatthews = getPlayerId('Matthews', 591);
-const pNylander = getPlayerId('Nylander', 588);
-const pMarner = getPlayerId('Marner', 14);
+const pMatthews = getPlayerId('Matthews', 8479318);
+const pNylander = getPlayerId('Nylander', 8477939);
+const pMarner = getPlayerId('Marner', 8478483);
 
 // Broadway Blueshirts
-const pPanarin = getPlayerId('Panarin', 769);
-const pFox = getPlayerId('Fox', 106);
-const pShesterkin = getPlayerId('Shesterkin', 123);
+const pPanarin = getPlayerId('Panarin', 8478550);
+const pFox = getPlayerId('Fox', 8479323);
+const pShesterkin = getPlayerId('Shesterkin', 8478048);
 
 // Sunshine State Rink Rats
-const pBarkov = getPlayerId('Barkov', 208);
-const pTkachuk = getPlayerId('Matthew Tkachuk', 218);
-const pReinhart = getPlayerId('Reinhart', 212);
-const pBobrovsky = getPlayerId('Bobrovsky', 601);
+const pBarkov = getPlayerId('Barkov', 8477493);
+const pTkachuk = getPlayerId('Matthew Tkachuk', 8479314);
+const pReinhart = getPlayerId('Reinhart', 8477933);
+const pBobrovsky = getPlayerId('Bobrovsky', 8475683);
 
 // Tampa Bay Bolts
-const pKucherov = getPlayerId('Kucherov', 131);
-const pPoint = getPlayerId('Brayden Point', 135);
-const pHedman = getPlayerId('Hedman', 130);
-const pVasilevskiy = getPlayerId('Vasilevskiy', 150);
+const pKucherov = getPlayerId('Kucherov', 8476453);
+const pPoint = getPlayerId('Brayden Point', 8478010);
+const pHedman = getPlayerId('Hedman', 8475167);
+const pVasilevskiy = getPlayerId('Vasilevskiy', 8476883);
 
 // Boston Bruins Legacy
-const pPastrnak = getPlayerId('Pastrnak', 53);
-const pMcAvoy = getPlayerId('McAvoy', 56);
-const pSwayman = getPlayerId('Swayman', 70);
+const pPastrnak = getPlayerId('Pastrnak', 8477956);
+const pMcAvoy = getPlayerId('McAvoy', 8479325);
+const pSwayman = getPlayerId('Swayman', 8480280);
 
 // North Star Jets
-const pConnor = getPlayerId('Kyle Connor', 337);
-const pMorrissey = getPlayerId('Morrissey', 335);
-const pHellebuyck = getPlayerId('Hellebuyck', 353);
+const pConnor = getPlayerId('Kyle Connor', 8478398);
+const pMorrissey = getPlayerId('Morrissey', 8477504);
+const pHellebuyck = getPlayerId('Hellebuyck', 8476945);
 
 // Lone Star Outlaws
-const pHintz = getPlayerId('Hintz', 410);
-const pRobertson = getPlayerId('Jason Robertson', 413);
-const pHeiskanen = getPlayerId('Heiskanen', 414);
-const pOettinger = getPlayerId('Oettinger', 424);
+const pHintz = getPlayerId('Hintz', 8478449);
+const pRobertson = getPlayerId('Jason Robertson', 8480027);
+const pHeiskanen = getPlayerId('Heiskanen', 8480036);
+const pOettinger = getPlayerId('Oettinger', 8479979);
 
 // Smashville Predators
-const pForsberg = getPlayerId('Filip Forsberg', 433);
-const pStamkos = getPlayerId('Stamkos', 428);
-const pJosi = getPlayerId('Josi', 429);
-const pSaros = getPlayerId('Saros', 450);
+const pForsberg = getPlayerId('Filip Forsberg', 8476887);
+const pStamkos = getPlayerId('Stamkos', 8474564);
+const pJosi = getPlayerId('Josi', 8474600);
+const pSaros = getPlayerId('Saros', 8477424);
 
 // Pacific Canucks
-const pMiller = getPlayerId('J.T. Miller', 102);
-const pQHughes = getPlayerId('Quinn Hughes', 263);
-const pDemko = getPlayerId('Demko', 729);
+const pMiller = getPlayerId('J.T. Miller', 8476468);
+const pQHughes = getPlayerId('Quinn Hughes', 8480800);
+const pDemko = getPlayerId('Demko', 8477967);
 
 // Motor City Wings
-const pJHughes = getPlayerId('Jack Hughes', 544);
-const pBTkachuk = getPlayerId('Brady Tkachuk', 220);
-const pDahlin = getPlayerId('Dahlin', 363);
-const pSeider = getPlayerId('Seider', 566);
+const pJHughes = getPlayerId('Jack Hughes', 8481559);
+const pBTkachuk = getPlayerId('Brady Tkachuk', 8480801);
+const pDahlin = getPlayerId('Dahlin', 8480839);
+const pSeider = getPlayerId('Seider', 8481542);
 
 export const DEFAULT_LEAGUE: FantasyLeague = {
   id: 'league-stanley-dynasty',

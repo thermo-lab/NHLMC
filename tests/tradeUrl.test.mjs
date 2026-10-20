@@ -4,10 +4,10 @@ import { encodeTradeToUrl, decodeTradeFromUrl, buildShareableTradeUrl } from '..
 
 // Sample mock data with official NHL API IDs
 const mockPlayers = [
-  { id: 353, nhlId: 8476945, name: 'Connor Hellebuyck', nhlTeam: 'WPG', capHit: 8500000 },
-  { id: 342, nhlId: 8480145, name: 'Neal Pionk', nhlTeam: 'WPG', capHit: 6500000 },
-  { id: 358, nhlId: 8479420, name: 'Tage Thompson', nhlTeam: 'BUF', capHit: 7142857 },
-  { id: 62, nhlId: 8482175, name: 'JJ Peterka', nhlTeam: 'BUF', capHit: 3500000 },
+  { id: 8476945, nhlId: 8476945, name: 'Connor Hellebuyck', nhlTeam: 'WPG', capHit: 8500000 },
+  { id: 8480145, nhlId: 8480145, name: 'Neal Pionk', nhlTeam: 'WPG', capHit: 6500000 },
+  { id: 8479420, nhlId: 8479420, name: 'Tage Thompson', nhlTeam: 'BUF', capHit: 7142857 },
+  { id: 8482175, nhlId: 8482175, name: 'JJ Peterka', nhlTeam: 'BUF', capHit: 3500000 },
 ];
 
 const mockProspects = [
@@ -56,8 +56,8 @@ test('URL Engine: Decodes durable URL back to exact trade state', () => {
   assert.ok(decoded !== null, 'Decoded state should not be null');
   assert.strictEqual(decoded.teamAId, 'WPG');
   assert.strictEqual(decoded.teamBId, 'BUF');
-  assert.deepStrictEqual(decoded.teamAPlayerIds, [353, 342], 'Resolves Hellebuyck and Pionk by NHL ID');
-  assert.deepStrictEqual(decoded.teamBPlayerIds, [358, 62], 'Resolves Thompson and Peterka by NHL ID');
+  assert.deepStrictEqual(decoded.teamAPlayerIds, [8476945, 8480145], 'Resolves Hellebuyck and Pionk by NHL ID');
+  assert.deepStrictEqual(decoded.teamBPlayerIds, [8479420, 8482175], 'Resolves Thompson and Peterka by NHL ID');
   assert.deepStrictEqual(decoded.teamBProspectIds, ['buf-radim-mrtka'], 'Resolves Radim Mrtka');
   assert.strictEqual(decoded.teamBDraftPicks.length, 1);
   assert.strictEqual(decoded.teamBDraftPicks[0].year, 2027);
@@ -65,7 +65,7 @@ test('URL Engine: Decodes durable URL back to exact trade state', () => {
   assert.strictEqual(decoded.teamBDraftPicks[0].protection, 'TOP_10_PROTECTED');
   assert.strictEqual(decoded.retainSalary, true);
   assert.strictEqual(decoded.retentionPct, 25);
-  assert.strictEqual(decoded.playerRetentions[353], 25, 'Maps retention to player ID');
+  assert.strictEqual(decoded.playerRetentions[8476945], 25, 'Maps retention to player ID');
   assert.strictEqual(decoded.isAutoSimulate, true);
 });
 
@@ -127,8 +127,8 @@ test('URL Engine: Encodes and decodes custom pick protections and multi-player s
   assert.strictEqual(decoded.teamBDraftPicks[0].protection, 'TOP_10_PROTECTED');
   assert.strictEqual(decoded.teamBDraftPicks[0].tradeValueScore, 76);
 
-  assert.strictEqual(decoded.playerRetentions[353], 50, '50% retention on Hellebuyck');
-  assert.strictEqual(decoded.playerRetentions[358], 25, '25% retention on Thompson');
+  assert.strictEqual(decoded.playerRetentions[8476945], 50, '50% retention on Hellebuyck');
+  assert.strictEqual(decoded.playerRetentions[8479420], 25, '25% retention on Thompson');
 });
 
 test('Anti-Exploitation: Sanitizes rogue teams, out-of-bounds numbers, and XSS attempts', () => {
