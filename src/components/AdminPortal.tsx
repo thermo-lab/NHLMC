@@ -12,6 +12,10 @@ import {
   AlertCircle,
   HelpCircle,
   RefreshCw,
+  Flame,
+  Save,
+  RotateCcw,
+  Trophy,
 } from 'lucide-react';
 import { FeaturedTradeProposal } from '../types/featured';
 import { fetchFeaturedTrades, saveFeaturedTrade, deleteFeaturedTrade } from '../services/featuredApi';
@@ -19,6 +23,9 @@ import { decodeTradeFromUrl } from '../utils/tradeUrl';
 import { Player } from '../types/player';
 import { NHLProspect } from '../types/prospect';
 import { NHL_FRANCHISES } from '../data/nhlFranchises';
+import { PlayerSpotlight, SpotlightTradeOption } from '../types/spotlight';
+import { INITIAL_PLAYER_SPOTLIGHT } from '../data/playerSpotlights';
+import { fetchActiveSpotlight, saveSpotlightToD1 } from '../services/spotlightApi';
 
 interface AdminPortalProps {
   players: Player[];
@@ -34,9 +41,14 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   const [adminKey, setAdminKey] = useState<string>(
     typeof window !== 'undefined' ? localStorage.getItem('nhlmc_admin_key') || '' : ''
   );
+  const [activeAdminSubTab, setActiveAdminSubTab] = useState<'spotlight' | 'featured'>('spotlight');
   const [featuredList, setFeaturedList] = useState<FeaturedTradeProposal[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  // Player Spotlight State
+  const [spotlightConfig, setSpotlightConfig] = useState<PlayerSpotlight>(INITIAL_PLAYER_SPOTLIGHT);
+  const [isSavingSpotlight, setIsSavingSpotlight] = useState<boolean>(false);
 
   // Quick Composer / Importer State
   const [importUrlOrParams, setImportUrlOrParams] = useState('');
@@ -58,9 +70,65 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     setIsLoading(false);
   };
 
+  const loadSpotlight = async () => {
+    const data = await fetchActiveSpotlight();
+    if (data) setSpotlightConfig(data);
+  };
+
   useEffect(() => {
     loadTrades();
+    loadSpotlight();
   }, []);
+
+  const handleSaveSpotlight = async () => {
+    setIsSavingSpotlight(true);
+    setStatusMessage(null);
+    const res = await saveSpotlightToD1(spotlightConfig, adminKey);
+    setIsSavingSpotlight(false);
+    if (res.success) {
+      setStatusMessage({ type: 'success', text: '✓ Homepage Player Spotlight successfully saved and published to Cloudflare D1!' });
+    } else {
+      setStatusMessage({ type: 'error', text: `Failed to save spotlight to D1: ${res.error}` });
+    }
+  };
+
+  const handleResetSpotlight = () => {
+    setSpotlightConfig(INITIAL_PLAYER_SPOTLIGHT);
+    setStatusMessage({ type: 'success', text: 'Reset spotlight to default Hellebuyck configuration. Click "Save Spotlight to D1" to persist.' });
+  };
+
+  const handleUpdateOption = (index: number, field: keyof SpotlightTradeOption, value: any) => {
+    setSpotlightConfig((prev) => {
+      const nextOptions = [...prev.options];
+      nextOptions[index] = { ...nextOptions[index], [field]: value };
+      return { ...prev, options: nextOptions };
+    });
+  };
+
+  const handleAddOption = () => {
+    const newOpt: SpotlightTradeOption = {
+      id: `opt-${Date.now()}`,
+      destinationTeamId: 'TOR',
+      destinationTeamName: 'Toronto Maple Leafs',
+      title: 'Contender Blockbuster',
+      subtitle: 'Playoff Netminding Solution',
+      pitch: 'Toronto acquires Hellebuyck to solve their playoff goaltending needs.',
+      tradeUrlParams: 'v=1&tA=WPG&tB=TOR&pA=8476945&dpB=tor-2028-rd1',
+      wpgReceives: ['2028 1st Round Pick (TOR)', 'Top Prospect'],
+      wpgSurrenders: ['Connor Hellebuyck ($8.50M AAV)'],
+      capFitSummary: 'Toronto manages cap space with LTIR or retention.',
+      projectedCupDeltaWinnipeg: '+0.5%',
+      projectedCupDeltaDestination: '+6.0%',
+    };
+    setSpotlightConfig((prev) => ({ ...prev, options: [...prev.options, newOpt] }));
+  };
+
+  const handleDeleteOption = (index: number) => {
+    setSpotlightConfig((prev) => ({
+      ...prev,
+      options: prev.options.filter((_, i) => i !== index),
+    }));
+  };
 
   const handleAdminKeyChange = (val: string) => {
     setAdminKey(val);
@@ -251,7 +319,359 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
         </div>
       )}
 
-      {/* Two Column Layout: Importer & Composer / Existing Proposals */}
+      {/* Sub-Tab Switcher */}
+      <div className="flex items-center gap-2 border-b border-slate-800 pb-2">
+        <button
+          onClick={() => setActiveAdminSubTab('spotlight')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            activeAdminSubTab === 'spotlight'
+              ? 'bg-sky-500/20 text-sky-400 border border-sky-500/40 shadow-lg shadow-sky-500/10'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/60 border border-transparent'
+          }`}
+        >
+          <Flame className="w-4 h-4 text-amber-400" />
+          <span>Homepage Player Spotlight Manager</span>
+        </button>
+
+        <button
+          onClick={() => setActiveAdminSubTab('featured')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            activeAdminSubTab === 'featured'
+              ? 'bg-sky-500/20 text-sky-400 border border-sky-500/40 shadow-lg shadow-sky-500/10'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/60 border border-transparent'
+          }`}
+        >
+          <Sparkles className="w-4 h-4 text-purple-400" />
+          <span>Curated Blockbuster Proposals ({featuredList.length})</span>
+        </button>
+      </div>
+
+      {/* ================= SPOTLIGHT MANAGER ================= */}
+      {activeAdminSubTab === 'spotlight' && (
+        <div className="space-y-6">
+          {/* Action Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
+            <div>
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <Flame className="w-4 h-4 text-amber-400" />
+                <span>Player Spotlight Hero Configuration</span>
+              </h3>
+              <p className="text-xs text-slate-400">
+                Configure the top homepage hero card, storyline, and destination trade options stored in Cloudflare D1.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleResetSpotlight}
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1.5 cursor-pointer"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Reset to Default</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleSaveSpotlight}
+                disabled={isSavingSpotlight}
+                className="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-black text-xs shadow-lg shadow-sky-600/30 flex items-center gap-2 transition cursor-pointer disabled:opacity-50"
+              >
+                <Save className="w-4 h-4" />
+                <span>{isSavingSpotlight ? 'Saving to D1...' : 'Save Spotlight to D1'}</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Left: Player Bio & Storyline (5 Columns) */}
+            <div className="lg:col-span-5 bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4 text-xs">
+              <h4 className="font-bold text-sky-400 text-sm border-b border-slate-800 pb-2">
+                1. Spotlighted Superstar Profile
+              </h4>
+
+              <div className="flex items-center gap-3">
+                <div className="w-16 h-16 rounded-xl bg-slate-950 border border-slate-700 p-1 shrink-0 overflow-hidden">
+                  <img
+                    src={spotlightConfig.headshotUrl}
+                    alt={spotlightConfig.playerName}
+                    className="w-full h-full object-cover object-top"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src =
+                        'https://assets.nhle.com/mugs/nhl/latest/8476945.png';
+                    }}
+                  />
+                </div>
+                <div className="flex-1 space-y-1">
+                  <label className="block text-slate-400 font-medium text-[11px]">Player Name</label>
+                  <input
+                    type="text"
+                    value={spotlightConfig.playerName}
+                    onChange={(e) => setSpotlightConfig({ ...spotlightConfig, playerName: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1 text-slate-100 font-bold focus:outline-none focus:border-sky-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-400 font-medium text-[11px] mb-1">Current Team ID</label>
+                  <input
+                    type="text"
+                    value={spotlightConfig.currentTeamId}
+                    onChange={(e) => setSpotlightConfig({ ...spotlightConfig, currentTeamId: e.target.value.toUpperCase() })}
+                    className="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1 text-slate-100 font-mono focus:outline-none focus:border-sky-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-400 font-medium text-[11px] mb-1">Position</label>
+                  <input
+                    type="text"
+                    value={spotlightConfig.position}
+                    onChange={(e) => setSpotlightConfig({ ...spotlightConfig, position: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1 text-slate-100 focus:outline-none focus:border-sky-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-400 font-medium text-[11px] mb-1">Cap Hit ($)</label>
+                  <input
+                    type="number"
+                    value={spotlightConfig.capHit}
+                    onChange={(e) => setSpotlightConfig({ ...spotlightConfig, capHit: Number(e.target.value) })}
+                    className="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1 text-slate-100 font-mono focus:outline-none focus:border-sky-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-400 font-medium text-[11px] mb-1">Jersey Number</label>
+                  <input
+                    type="text"
+                    value={spotlightConfig.jerseyNumber}
+                    onChange={(e) => setSpotlightConfig({ ...spotlightConfig, jerseyNumber: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1 text-slate-100 focus:outline-none focus:border-sky-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-400 font-medium text-[11px] mb-1">Contract Term & Details</label>
+                <input
+                  type="text"
+                  value={spotlightConfig.contractDetails}
+                  onChange={(e) => setSpotlightConfig({ ...spotlightConfig, contractDetails: e.target.value })}
+                  className="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1 text-slate-100 focus:outline-none focus:border-sky-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-400 font-medium text-[11px] mb-1">Headshot URL</label>
+                <input
+                  type="text"
+                  value={spotlightConfig.headshotUrl}
+                  onChange={(e) => setSpotlightConfig({ ...spotlightConfig, headshotUrl: e.target.value })}
+                  className="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1 text-slate-100 font-mono text-[11px] focus:outline-none focus:border-sky-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-400 font-medium text-[11px] mb-1">Headline</label>
+                <input
+                  type="text"
+                  value={spotlightConfig.headline}
+                  onChange={(e) => setSpotlightConfig({ ...spotlightConfig, headline: e.target.value })}
+                  className="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1 text-slate-100 font-bold focus:outline-none focus:border-sky-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-400 font-medium text-[11px] mb-1">Editorial Storyline</label>
+                <textarea
+                  rows={4}
+                  value={spotlightConfig.editorialStoryline}
+                  onChange={(e) => setSpotlightConfig({ ...spotlightConfig, editorialStoryline: e.target.value })}
+                  className="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1.5 text-slate-100 leading-relaxed focus:outline-none focus:border-sky-500"
+                />
+              </div>
+
+              <div className="flex items-center gap-2 pt-2">
+                <input
+                  type="checkbox"
+                  id="spotlightActiveCheckbox"
+                  checked={spotlightConfig.isActive}
+                  onChange={(e) => setSpotlightConfig({ ...spotlightConfig, isActive: e.target.checked })}
+                  className="rounded bg-slate-950 border-slate-700 text-sky-500 focus:ring-0"
+                />
+                <label htmlFor="spotlightActiveCheckbox" className="text-slate-300 font-semibold cursor-pointer">
+                  Hero Spotlight Enabled on Homepage
+                </label>
+              </div>
+            </div>
+
+            {/* Right: Destination Scenarios List (7 Columns) */}
+            <div className="lg:col-span-7 bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4 text-xs">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <h4 className="font-bold text-sky-400 text-sm">
+                  2. Destination Scenarios ({spotlightConfig.options.length})
+                </h4>
+                <button
+                  type="button"
+                  onClick={handleAddOption}
+                  className="px-2.5 py-1 rounded bg-sky-600 hover:bg-sky-500 text-white font-bold text-[11px] flex items-center gap-1 transition cursor-pointer"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Add Landing Spot</span>
+                </button>
+              </div>
+
+              <div className="space-y-4 max-h-[750px] overflow-y-auto pr-1">
+                {spotlightConfig.options.map((opt, idx) => (
+                  <div
+                    key={opt.id || idx}
+                    className="p-4 bg-slate-950/80 border border-slate-800 rounded-xl space-y-3"
+                  >
+                    <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
+                      <span className="font-bold text-sky-300 flex items-center gap-1.5">
+                        <span className="px-1.5 py-0.5 rounded bg-sky-950 border border-sky-800 font-mono text-[10px]">
+                          #{idx + 1}
+                        </span>
+                        <span>{opt.destinationTeamName} ({opt.destinationTeamId})</span>
+                      </span>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => onLoadTradeIntoMachine(opt.tradeUrlParams)}
+                          className="text-sky-400 hover:text-sky-300 font-semibold flex items-center gap-1 text-[11px]"
+                        >
+                          <span>Test Sim</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteOption(idx)}
+                          className="text-slate-500 hover:text-rose-400 p-1"
+                          title="Delete Scenario"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="block text-slate-400 text-[10px] mb-0.5">Dest Team Abbrev</label>
+                        <input
+                          type="text"
+                          value={opt.destinationTeamId}
+                          onChange={(e) => handleUpdateOption(idx, 'destinationTeamId', e.target.value.toUpperCase())}
+                          className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-100 font-mono text-xs"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-slate-400 text-[10px] mb-0.5">Full Team Name</label>
+                        <input
+                          type="text"
+                          value={opt.destinationTeamName}
+                          onChange={(e) => handleUpdateOption(idx, 'destinationTeamName', e.target.value)}
+                          className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-100 text-xs"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="block text-slate-400 text-[10px] mb-0.5">Title</label>
+                        <input
+                          type="text"
+                          value={opt.title}
+                          onChange={(e) => handleUpdateOption(idx, 'title', e.target.value)}
+                          className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-100 font-semibold text-xs"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-slate-400 text-[10px] mb-0.5">Subtitle</label>
+                        <input
+                          type="text"
+                          value={opt.subtitle}
+                          onChange={(e) => handleUpdateOption(idx, 'subtitle', e.target.value)}
+                          className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-100 text-xs"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-slate-400 text-[10px] mb-0.5">Pitch / Narrative</label>
+                      <textarea
+                        rows={2}
+                        value={opt.pitch}
+                        onChange={(e) => handleUpdateOption(idx, 'pitch', e.target.value)}
+                        className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-100 text-xs"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="block text-slate-400 text-[10px] mb-0.5">Winnipeg Receives (newline separated)</label>
+                        <textarea
+                          rows={3}
+                          value={opt.wpgReceives.join('\n')}
+                          onChange={(e) =>
+                            handleUpdateOption(
+                              idx,
+                              'wpgReceives',
+                              e.target.value.split('\n').filter((x) => x.trim().length > 0)
+                            )
+                          }
+                          className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-100 text-[11px] font-mono"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-slate-400 text-[10px] mb-0.5">Winnipeg Surrenders (newline separated)</label>
+                        <textarea
+                          rows={3}
+                          value={opt.wpgSurrenders.join('\n')}
+                          onChange={(e) =>
+                            handleUpdateOption(
+                              idx,
+                              'wpgSurrenders',
+                              e.target.value.split('\n').filter((x) => x.trim().length > 0)
+                            )
+                          }
+                          className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-100 text-[11px] font-mono"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-slate-400 text-[10px] mb-0.5">Cap Space Impact</label>
+                      <input
+                        type="text"
+                        value={opt.capFitSummary}
+                        onChange={(e) => handleUpdateOption(idx, 'capFitSummary', e.target.value)}
+                        className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-100 text-xs"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-slate-400 text-[10px] mb-0.5">Trade URL Parameters</label>
+                      <input
+                        type="text"
+                        value={opt.tradeUrlParams}
+                        onChange={(e) => handleUpdateOption(idx, 'tradeUrlParams', e.target.value)}
+                        className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-sky-300 font-mono text-[11px]"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= FEATURED PROPOSALS COMPOSER ================= */}
+      {activeAdminSubTab === 'featured' && (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left: Compose / Import Proposal */}
         <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
@@ -456,6 +876,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 };

@@ -3,6 +3,7 @@ import rawPlayers from '../../src/data/nhlPlayers.json';
 import { INITIAL_PROSPECTS } from '../../src/data/nhlProspects';
 import { HISTORICAL_TRADES } from '../../src/data/historicalTrades';
 import { INITIAL_FEATURED_TRADES } from '../../src/data/featuredTrades';
+import { INITIAL_PLAYER_SPOTLIGHT } from '../../src/data/playerSpotlights';
 
 interface Env {
   DB: D1Database;
@@ -113,6 +114,26 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         status TEXT DEFAULT 'PUBLISHED',
         display_order INTEGER DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );`,
+      `CREATE TABLE IF NOT EXISTS player_spotlights (
+        id TEXT PRIMARY KEY,
+        player_id INTEGER NOT NULL,
+        player_name TEXT NOT NULL,
+        current_team_id TEXT NOT NULL,
+        current_team_name TEXT NOT NULL,
+        position TEXT NOT NULL,
+        jersey_number TEXT,
+        age INTEGER,
+        cap_hit INTEGER,
+        contract_details TEXT,
+        accolades JSON,
+        headshot_url TEXT,
+        badge_text TEXT,
+        headline TEXT NOT NULL,
+        editorial_storyline TEXT NOT NULL,
+        options JSON NOT NULL,
+        is_active INTEGER DEFAULT 1,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );`,
       `CREATE TABLE IF NOT EXISTS sync_log (
@@ -275,8 +296,44 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       );
     }
 
+    // 7. Prepare Player Spotlight Statement
+    const spotlightStmts: D1PreparedStatement[] = [
+      db.prepare(`
+        INSERT INTO player_spotlights (
+          id, player_id, player_name, current_team_id, current_team_name,
+          position, jersey_number, age, cap_hit, contract_details,
+          accolades, headshot_url, badge_text, headline,
+          editorial_storyline, options, is_active, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(id) DO UPDATE SET
+          player_name=excluded.player_name,
+          headline=excluded.headline,
+          editorial_storyline=excluded.editorial_storyline,
+          options=excluded.options;
+      `).bind(
+        INITIAL_PLAYER_SPOTLIGHT.id,
+        INITIAL_PLAYER_SPOTLIGHT.playerId,
+        INITIAL_PLAYER_SPOTLIGHT.playerName,
+        INITIAL_PLAYER_SPOTLIGHT.currentTeamId,
+        INITIAL_PLAYER_SPOTLIGHT.currentTeamName,
+        INITIAL_PLAYER_SPOTLIGHT.position,
+        INITIAL_PLAYER_SPOTLIGHT.jerseyNumber,
+        INITIAL_PLAYER_SPOTLIGHT.age,
+        INITIAL_PLAYER_SPOTLIGHT.capHit,
+        INITIAL_PLAYER_SPOTLIGHT.contractDetails,
+        JSON.stringify(INITIAL_PLAYER_SPOTLIGHT.accolades),
+        INITIAL_PLAYER_SPOTLIGHT.headshotUrl,
+        INITIAL_PLAYER_SPOTLIGHT.badgeText,
+        INITIAL_PLAYER_SPOTLIGHT.headline,
+        INITIAL_PLAYER_SPOTLIGHT.editorialStoryline,
+        JSON.stringify(INITIAL_PLAYER_SPOTLIGHT.options),
+        INITIAL_PLAYER_SPOTLIGHT.isActive ? 1 : 0,
+        new Date().toISOString()
+      )
+    ];
+
     // Execute in batches of 50 to stay within D1 batch limits
-    const allStmts = [...franchiseStmts, ...playersStmts, ...prospectStmts, ...historyStmts, ...featuredStmts];
+    const allStmts = [...franchiseStmts, ...playersStmts, ...prospectStmts, ...historyStmts, ...featuredStmts, ...spotlightStmts];
     const BATCH_SIZE = 50;
     for (let i = 0; i < allStmts.length; i += BATCH_SIZE) {
       const batch = allStmts.slice(i, i + BATCH_SIZE);

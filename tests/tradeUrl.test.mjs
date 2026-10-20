@@ -144,3 +144,19 @@ test('Anti-Exploitation: Sanitizes rogue teams, out-of-bounds numbers, and XSS a
   // Retention is clamped to max 50%
   assert.strictEqual(decoded.retentionPct, 50);
 });
+
+test('Player Spotlight: Validates Hellebuyck options and ensures all URL query strings decode cleanly', async () => {
+  const { INITIAL_PLAYER_SPOTLIGHT } = await import('../src/data/playerSpotlights.ts');
+  assert.strictEqual(INITIAL_PLAYER_SPOTLIGHT.playerName, 'Connor Hellebuyck');
+  assert.strictEqual(INITIAL_PLAYER_SPOTLIGHT.currentTeamId, 'WPG');
+  assert.strictEqual(INITIAL_PLAYER_SPOTLIGHT.options.length, 4, 'Must feature exactly 4 landing spot options');
+
+  for (const opt of INITIAL_PLAYER_SPOTLIGHT.options) {
+    assert.ok(opt.destinationTeamId, `Option has destination team: ${opt.destinationTeamId}`);
+    assert.ok(opt.tradeUrlParams, `Option has tradeUrlParams: ${opt.title}`);
+    const decoded = decodeTradeFromUrl(opt.tradeUrlParams, mockPlayers, mockProspects);
+    assert.ok(decoded !== null, `Option ${opt.id} must decode cleanly`);
+    assert.strictEqual(decoded.teamAId, 'WPG');
+    assert.strictEqual(decoded.teamBId, opt.destinationTeamId);
+  }
+});

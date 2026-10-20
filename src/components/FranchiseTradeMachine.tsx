@@ -28,10 +28,14 @@ import { NHLProspect, DraftPick, ProspectPotential } from '../types/prospect';
 import { INITIAL_PROSPECTS, generateDefaultDraftPicks } from '../data/nhlProspects';
 import { evaluateFranchiseTrade } from '../engine/franchiseSimulation';
 import { FeaturedTradesTray } from './FeaturedTradesTray';
+import { PlayerSpotlightHero } from './PlayerSpotlightHero';
 import { ShareTradeModal } from './ShareTradeModal';
 import { decodeTradeFromUrl, encodeTradeToUrl } from '../utils/tradeUrl';
 import { fetchFeaturedTrades } from '../services/featuredApi';
+import { fetchActiveSpotlight } from '../services/spotlightApi';
 import { FeaturedTradeProposal } from '../types/featured';
+import { PlayerSpotlight } from '../types/spotlight';
+import { INITIAL_PLAYER_SPOTLIGHT } from '../data/playerSpotlights';
 
 interface FranchiseTradeMachineProps {
   franchises: NHLTeam[];
@@ -79,6 +83,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
   // Featured Proposals & Share State
   const [featuredProposals, setFeaturedProposals] = useState<FeaturedTradeProposal[]>([]);
   const [activeFeaturedProposalId, setActiveFeaturedProposalId] = useState<string | null>(null);
+  const [spotlight, setSpotlight] = useState<PlayerSpotlight>(INITIAL_PLAYER_SPOTLIGHT);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [quickCopiedToast, setQuickCopiedToast] = useState(false);
 
@@ -226,10 +231,13 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     }, 60);
   };
 
-  // Load initial featured proposals
+  // Load initial featured proposals and active player spotlight
   React.useEffect(() => {
     fetchFeaturedTrades().then((data) => {
       if (data && data.length > 0) setFeaturedProposals(data);
+    });
+    fetchActiveSpotlight().then((sp) => {
+      if (sp) setSpotlight(sp);
     });
   }, []);
 
@@ -349,6 +357,16 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
 
   const handleSelectFeaturedProposal = (proposal: FeaturedTradeProposal) => {
     loadTradeFromQuery(proposal.tradeUrlParams, proposal.id);
+  };
+
+  const handleSelectSpotlightOption = (option: { tradeUrlParams: string }) => {
+    loadTradeFromQuery(option.tradeUrlParams);
+    if (typeof document !== 'undefined') {
+      const el = document.getElementById('trade-builder-section');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   };
 
   const currentTradePayload = {
@@ -521,6 +539,15 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* Homepage Player Spotlight Hero */}
+      {spotlight && spotlight.isActive && (
+        <PlayerSpotlightHero
+          spotlight={spotlight}
+          onSelectOption={handleSelectSpotlightOption}
+          activeDestinationTeamId={teamBId}
+        />
+      )}
+
       {/* Top Banner */}
       <div className="bg-rink-card border border-rink-border rounded-xl p-5 shadow-lg relative overflow-hidden">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -560,7 +587,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
       />
 
       {/* Dual Team Trade Builder */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div id="trade-builder-section" className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* ================= TEAM A ================= */}
         <div className="bg-rink-card border border-rink-border rounded-xl p-5 shadow-lg flex flex-col justify-between space-y-4">
           <div>
