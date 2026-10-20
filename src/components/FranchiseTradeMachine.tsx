@@ -1362,9 +1362,14 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
             (evaluation.futureCapital.teamAAssetsAcquired.length > 0 ||
               evaluation.futureCapital.teamBAssetsAcquired.length > 0) && (
               <div className="bg-gradient-to-r from-purple-950/40 via-slate-900 to-amber-950/40 border border-purple-800/40 rounded-xl p-5 shadow-lg space-y-4">
-                <div className="flex items-center space-x-2 text-purple-300 font-bold text-sm border-b border-purple-800/30 pb-2.5">
-                  <Sparkles className="w-4 h-4 text-amber-400" />
-                  <span>Future Franchise Capital & Pipeline Balance</span>
+                <div className="flex flex-wrap items-center justify-between gap-1 text-purple-300 border-b border-purple-800/30 pb-2.5">
+                  <div className="flex items-center space-x-2 font-bold text-sm">
+                    <Sparkles className="w-4 h-4 text-amber-400" />
+                    <span>Future Franchise Capital & Pipeline Balance</span>
+                  </div>
+                  <span className="text-[10px] text-purple-400/80 font-normal">
+                    Draft pick &amp; prospect asset equity (distinct from regular season standings)
+                  </span>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
@@ -1372,9 +1377,18 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                   <div className="bg-black/30 p-3.5 rounded-lg border border-purple-900/40 space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-white">{teamA.name} Acquired Futures:</span>
-                      <span className="font-mono text-[10px] text-purple-300">
-                        Net Score: {evaluation.futureCapital.teamANetCapitalScore > 0 ? '+' : ''}
-                        {evaluation.futureCapital.teamANetCapitalScore} pts
+                      <span
+                        title="Net trade equity rating of future draft picks and prospects exchanged"
+                        className={`font-mono text-[10px] font-semibold px-2 py-0.5 rounded border ${
+                          evaluation.futureCapital.teamANetCapitalScore > 0
+                            ? 'text-emerald-300 bg-emerald-950/40 border-emerald-700/50'
+                            : evaluation.futureCapital.teamANetCapitalScore < 0
+                            ? 'text-rose-300 bg-rose-950/40 border-rose-700/50'
+                            : 'text-purple-300 bg-purple-950/30 border-purple-800/30'
+                        }`}
+                      >
+                        Futures Value: {evaluation.futureCapital.teamANetCapitalScore > 0 ? '+' : ''}
+                        {evaluation.futureCapital.teamANetCapitalScore}
                       </span>
                     </div>
                     {evaluation.futureCapital.teamAAssetsAcquired.length === 0 ? (
@@ -1395,9 +1409,18 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                   <div className="bg-black/30 p-3.5 rounded-lg border border-purple-900/40 space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-white">{teamB.name} Acquired Futures:</span>
-                      <span className="font-mono text-[10px] text-purple-300">
-                        Net Score: {evaluation.futureCapital.teamBNetCapitalScore > 0 ? '+' : ''}
-                        {evaluation.futureCapital.teamBNetCapitalScore} pts
+                      <span
+                        title="Net trade equity rating of future draft picks and prospects exchanged"
+                        className={`font-mono text-[10px] font-semibold px-2 py-0.5 rounded border ${
+                          evaluation.futureCapital.teamBNetCapitalScore > 0
+                            ? 'text-emerald-300 bg-emerald-950/40 border-emerald-700/50'
+                            : evaluation.futureCapital.teamBNetCapitalScore < 0
+                            ? 'text-rose-300 bg-rose-950/40 border-rose-700/50'
+                            : 'text-purple-300 bg-purple-950/30 border-purple-800/30'
+                        }`}
+                      >
+                        Futures Value: {evaluation.futureCapital.teamBNetCapitalScore > 0 ? '+' : ''}
+                        {evaluation.futureCapital.teamBNetCapitalScore}
                       </span>
                     </div>
                     {evaluation.futureCapital.teamBAssetsAcquired.length === 0 ? (
