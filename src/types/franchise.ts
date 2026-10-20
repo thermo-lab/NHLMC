@@ -45,7 +45,7 @@ export interface NHLTeam {
 
 export interface DraftPickAsset {
   id: string;
-  year: number; // e.g. 2025, 2026, 2027
+  year: number; // e.g. 2027, 2028, 2029
   round: 1 | 2 | 3;
   originalTeam: string;
   isProtected?: boolean; // e.g. "Top-10 Lottery Protected"

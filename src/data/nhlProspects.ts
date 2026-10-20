@@ -3904,10 +3904,11 @@ export const INITIAL_PROSPECTS: NHLProspect[] = [
 ];
 
 /**
- * Generate default future draft picks (2025, 2026, 2027) for any franchise
+ * Generate default future draft picks (2027, 2028, 2029) for any franchise.
+ * 2025 and 2026 entry drafts are completed.
  */
 export function generateDefaultDraftPicks(teamAbbrev: string): DraftPick[] {
-  const years = [2025, 2026, 2027];
+  const years = [2027, 2028, 2029];
   const rounds: (1 | 2 | 3)[] = [1, 2, 3];
   const picks: DraftPick[] = [];
 

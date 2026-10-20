@@ -133,8 +133,8 @@ test('Franchise Engine: Evaluates prospects and draft picks trade featuring Radi
     teamBPlayerIds: [],
     teamADraftPicks: [
       {
-        id: 'edm-2025-rd1',
-        year: 2025,
+        id: 'edm-2027-rd1',
+        year: 2027,
         round: 1,
         originalTeam: 'EDM',
         isProtected: true,

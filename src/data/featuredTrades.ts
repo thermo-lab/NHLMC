@@ -28,10 +28,10 @@ export const INITIAL_FEATURED_TRADES: FeaturedTradeProposal[] = [
   {
     id: 'edm-bos-draisaitl-swayman-rumor',
     title: 'Edmonton & Boston Blockbuster Speculation',
-    headline: 'Leon Draisaitl to Boston for Jeremy Swayman, Fabian Lysell & 2026 1st',
+    headline: 'Leon Draisaitl to Boston for Jeremy Swayman, Fabian Lysell & 2027 1st',
     description:
       'Boston acquires a marquee #1 center to succeed Patrice Bergeron, while Edmonton solves their netminding question mark for the next decade with Jeremy Swayman plus future draft capital.',
-    tradeUrlParams: 'v=1&tA=EDM&tB=BOS&pA=8477934&pB=8480280&prB=bos-fabian-lysell&dpB=bos-2026-rd1',
+    tradeUrlParams: 'v=1&tA=EDM&tB=BOS&pA=8477934&pB=8480280&prB=bos-fabian-lysell&dpB=bos-2027-rd1',
     teamAId: 'EDM',
     teamBId: 'BOS',
     teamAAssets: {
@@ -41,7 +41,7 @@ export const INITIAL_FEATURED_TRADES: FeaturedTradeProposal[] = [
     teamBAssets: {
       playerNames: ['Jeremy Swayman ($8.25M)'],
       prospectNames: ['Fabian Lysell (BOS, RW)'],
-      draftPicks: ['2026 Round 1 (BOS)'],
+      draftPicks: ['2027 Round 1 (BOS)'],
       playerIds: [70],
       prospectIds: ['bos-fabian-lysell'],
     },
@@ -52,10 +52,10 @@ export const INITIAL_FEATURED_TRADES: FeaturedTradeProposal[] = [
   {
     id: 'tor-cgy-nylander-huberdeau-shakeup',
     title: 'Maple Leafs & Flames Superstar Shakeup',
-    headline: 'William Nylander to Calgary for Jonathan Huberdeau, Matt Coronato & 2026 1st',
+    headline: 'William Nylander to Calgary for Jonathan Huberdeau, Matt Coronato & 2027 1st',
     description:
       'Calgary brings dynamic offensive engine William Nylander to Alberta, while Toronto retools their wing depth with playmaking veteran Jonathan Huberdeau, Matt Coronato, and future 1st round draft capital.',
-    tradeUrlParams: 'v=1&tA=TOR&tB=CGY&pA=8477939&pB=8476456,8482679&prB=cgy-matt-coronato&dpB=cgy-2026-rd1',
+    tradeUrlParams: 'v=1&tA=TOR&tB=CGY&pA=8477939&pB=8476456,8482679&prB=cgy-matt-coronato&dpB=cgy-2027-rd1',
     teamAId: 'TOR',
     teamBId: 'CGY',
     teamAAssets: {
@@ -65,7 +65,7 @@ export const INITIAL_FEATURED_TRADES: FeaturedTradeProposal[] = [
     teamBAssets: {
       playerNames: ['Jonathan Huberdeau ($10.5M)', 'Matt Coronato ($3.5M)'],
       prospectNames: ['Matt Coronato (CGY, RW)'],
-      draftPicks: ['2026 Round 1 (CGY)'],
+      draftPicks: ['2027 Round 1 (CGY)'],
       playerIds: [807, 795],
       prospectIds: ['cgy-matt-coronato'],
     },

@@ -44,7 +44,7 @@ export const PlayerBrowser: React.FC<PlayerBrowserProps> = ({
   const [newProspectHeight, setNewProspectHeight] = useState("6'6\"");
   const [newProspectWeight, setNewProspectWeight] = useState(218);
   const [newProspectShoots, setNewProspectShoots] = useState<'R' | 'L'>('R');
-  const [newProspectDraftInfo, setNewProspectDraftInfo] = useState('2025 Round 1, #9 Overall (BUF)');
+  const [newProspectDraftInfo, setNewProspectDraftInfo] = useState('2026 Round 1, #9 Overall (BUF)');
   const [newProspectCurrentTeam, setNewProspectCurrentTeam] = useState('Rochester Americans (AHL) / Seattle (WHL)');
   const [newProspectPotential, setNewProspectPotential] = useState<ProspectPotential>('ELITE');
   const [newProspectNotes, setNewProspectNotes] = useState('');
@@ -136,7 +136,7 @@ export const PlayerBrowser: React.FC<PlayerBrowserProps> = ({
       shootsCatches: newProspectShoots,
       currentTeam: newProspectCurrentTeam.trim() || 'AHL / Junior',
       draftInfo: newProspectDraftInfo.trim() || 'Undrafted / Free Agent',
-      draftYear: 2025,
+      draftYear: 2026,
       draftRound: 1,
       potential: newProspectPotential,
       potentialDescription: newProspectNotes.trim() || 'High-ceiling developmental prospect',
@@ -673,7 +673,7 @@ export const PlayerBrowser: React.FC<PlayerBrowserProps> = ({
                     type="text"
                     value={newProspectDraftInfo}
                     onChange={(e) => setNewProspectDraftInfo(e.target.value)}
-                    placeholder="2025 Round 1, #9 Overall"
+                    placeholder="2026 Round 1, #9 Overall"
                     className="w-full bg-rink-surface border border-rink-border rounded-lg px-3 py-2 text-white font-bold focus:outline-none focus:border-brand-500"
                   />
                 </div>

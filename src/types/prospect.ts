@@ -29,8 +29,8 @@ export interface NHLProspect {
 }
 
 export interface DraftPick {
-  id: string; // e.g. "buf-2025-rd1"
-  year: number; // 2025, 2026, 2027, 2028
+  id: string; // e.g. "buf-2027-rd1"
+  year: number; // 2027, 2028, 2029, 2030
   round: 1 | 2 | 3;
   owningTeamId: string; // "BUF"
   originalTeamId: string; // "BUF"

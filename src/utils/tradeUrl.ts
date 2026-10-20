@@ -215,7 +215,7 @@ export function decodeTradeFromUrl(
         const altMatch = token.match(/^(\d{4})-([1-3])-([a-z]{3})$/i);
 
         let team = defaultTeam;
-        let year = 2026;
+        let year = 2027;
         let round: 1 | 2 | 3 = 1;
 
         if (standardMatch) {
@@ -230,8 +230,8 @@ export function decodeTradeFromUrl(
           continue;
         }
 
-        // Clamp year to reasonable future window (2025..2029)
-        if (year < 2025 || year > 2029) continue;
+        // Allow historical and reasonable future window (2025..2035)
+        if (year < 2025 || year > 2035) continue;
         if (!VALID_FRANCHISE_IDS.has(team)) team = defaultTeam;
 
         const baseValue = round === 1 ? 80 : round === 2 ? 48 : 28;
