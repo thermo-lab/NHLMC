@@ -1,0 +1,397 @@
+/**
+ * High-performance edge PNG generator for NHLMC OpenGraph / Twitter Cards.
+ * Zero external dependencies — pure standards-compliant Web API (CompressionStream).
+ * Runs seamlessly on Cloudflare Pages Functions, Node.js 18+, and edge runtimes.
+ */
+
+export interface TradeCardData {
+  title: string;
+  teamAName: string;
+  teamAAbbrev?: string;
+  teamAAssets: string[];
+  teamAMetrics?: string;
+  teamBName: string;
+  teamBAbbrev?: string;
+  teamBAssets: string[];
+  teamBMetrics?: string;
+  verdict?: string;
+}
+
+// Complete 8x8 font bitmap for ASCII 32-126 (95 glyphs)
+const FONT_DATA = [
+  0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, // 32 ' '
+  0x18,0x3C,0x3C,0x18,0x18,0x00,0x18,0x00, // 33 '!'
+  0x66,0x66,0x24,0x00,0x00,0x00,0x00,0x00, // 34 '"'
+  0x6C,0x6C,0xFE,0x6C,0xFE,0x6C,0x6C,0x00, // 35 '#'
+  0x18,0x7E,0xC0,0x7C,0x06,0x7E,0x18,0x00, // 36 '$'
+  0x00,0xC6,0xCC,0x18,0x30,0x66,0xC6,0x00, // 37 '%'
+  0x38,0x6C,0x38,0x76,0xDC,0xCC,0x76,0x00, // 38 '&'
+  0x18,0x18,0x30,0x00,0x00,0x00,0x00,0x00, // 39 '\''
+  0x0C,0x18,0x30,0x30,0x30,0x18,0x0C,0x00, // 40 '('
+  0x30,0x18,0x0C,0x0C,0x0C,0x18,0x30,0x00, // 41 ')'
+  0x00,0x66,0x3C,0xFF,0x3C,0x66,0x00,0x00, // 42 '*'
+  0x00,0x18,0x18,0x7E,0x18,0x18,0x00,0x00, // 43 '+'
+  0x00,0x00,0x00,0x00,0x00,0x18,0x18,0x30, // 44 ','
+  0x00,0x00,0x00,0x7E,0x00,0x00,0x00,0x00, // 45 '-'
+  0x00,0x00,0x00,0x00,0x00,0x18,0x18,0x00, // 46 '.'
+  0x06,0x0C,0x18,0x30,0x60,0xC0,0x80,0x00, // 47 '/'
+  0x7C,0xC6,0xCE,0xD6,0xE6,0xC6,0x7C,0x00, // 48 '0'
+  0x18,0x38,0x18,0x18,0x18,0x18,0x7E,0x00, // 49 '1'
+  0x7C,0xC6,0x06,0x1C,0x30,0x60,0xFE,0x00, // 50 '2'
+  0x7C,0xC6,0x06,0x3C,0x06,0xC6,0x7C,0x00, // 51 '3'
+  0x1C,0x3C,0x6C,0xCC,0xFE,0x0C,0x1E,0x00, // 52 '4'
+  0xFE,0xC0,0xFC,0x06,0x06,0xC6,0x7C,0x00, // 53 '5'
+  0x7C,0xC6,0xC0,0xFC,0xC6,0xC6,0x7C,0x00, // 54 '6'
+  0xFE,0xC6,0x0C,0x18,0x30,0x30,0x30,0x00, // 55 '7'
+  0x7C,0xC6,0xC6,0x7C,0xC6,0xC6,0x7C,0x00, // 56 '8'
+  0x7C,0xC6,0xC6,0x7E,0x06,0xC6,0x7C,0x00, // 57 '9'
+  0x00,0x18,0x18,0x00,0x18,0x18,0x00,0x00, // 58 ':'
+  0x00,0x18,0x18,0x00,0x18,0x18,0x30,0x00, // 59 ';'
+  0x0C,0x18,0x30,0x60,0x30,0x18,0x0C,0x00, // 60 '<'
+  0x00,0x00,0x7E,0x00,0x7E,0x00,0x00,0x00, // 61 '='
+  0x30,0x18,0x0C,0x06,0x0C,0x18,0x30,0x00, // 62 '>'
+  0x7C,0xC6,0x0C,0x18,0x18,0x00,0x18,0x00, // 63 '?'
+  0x7C,0xC6,0xDE,0xDE,0xDC,0xC0,0x7C,0x00, // 64 '@'
+  0x38,0x6C,0xC6,0xFE,0xC6,0xC6,0xC6,0x00, // 65 'A'
+  0xFC,0x66,0x66,0x7C,0x66,0x66,0xFC,0x00, // 66 'B'
+  0x3C,0x66,0xC0,0xC0,0xC0,0x66,0x3C,0x00, // 67 'C'
+  0xF8,0x6C,0x66,0x66,0x66,0x6C,0xF8,0x00, // 68 'D'
+  0xFE,0x62,0x68,0x78,0x68,0x62,0xFE,0x00, // 69 'E'
+  0xFE,0x62,0x68,0x78,0x68,0x60,0xF0,0x00, // 70 'F'
+  0x3C,0x66,0xC0,0xC0,0xCE,0x66,0x3E,0x00, // 71 'G'
+  0xC6,0xC6,0xC6,0xFE,0xC6,0xC6,0xC6,0x00, // 72 'H'
+  0x3C,0x18,0x18,0x18,0x18,0x18,0x3C,0x00, // 73 'I'
+  0x1E,0x0C,0x0C,0x0C,0xCC,0xCC,0x78,0x00, // 74 'J'
+  0xE6,0x66,0x6C,0x78,0x6C,0x66,0xE6,0x00, // 75 'K'
+  0xF0,0x60,0x60,0x60,0x62,0x66,0xFE,0x00, // 76 'L'
+  0xC6,0xEE,0xFE,0xFE,0xD6,0xC6,0xC6,0x00, // 77 'M'
+  0xC6,0xE6,0xF6,0xDE,0xCE,0xC6,0xC6,0x00, // 78 'N'
+  0x7C,0xC6,0xC6,0xC6,0xC6,0xC6,0x7C,0x00, // 79 'O'
+  0xFC,0x66,0x66,0x7C,0x60,0x60,0xF0,0x00, // 80 'P'
+  0x7C,0xC6,0xC6,0xC6,0xD6,0xDE,0x7C,0x06, // 81 'Q'
+  0xFC,0x66,0x66,0x7C,0x6C,0x66,0xE6,0x00, // 82 'R'
+  0x7C,0xC6,0x60,0x38,0x0C,0xC6,0x7C,0x00, // 83 'S'
+  0x7E,0x7E,0x18,0x18,0x18,0x18,0x3C,0x00, // 84 'T'
+  0xC6,0xC6,0xC6,0xC6,0xC6,0xC6,0x7C,0x00, // 85 'U'
+  0xC6,0xC6,0xC6,0xC6,0x6C,0x38,0x10,0x00, // 86 'V'
+  0xC6,0xC6,0xD6,0xFE,0xFE,0xEE,0xC6,0x00, // 87 'W'
+  0xC6,0xC6,0x6C,0x38,0x6C,0xC6,0xC6,0x00, // 88 'X'
+  0x66,0x66,0x66,0x3C,0x18,0x18,0x3C,0x00, // 89 'Y'
+  0xFE,0xC6,0x8C,0x18,0x32,0x66,0xFE,0x00, // 90 'Z'
+  0x3C,0x30,0x30,0x30,0x30,0x30,0x3C,0x00, // 91 '['
+  0xC0,0x60,0x30,0x18,0x0C,0x06,0x02,0x00, // 92 '\'
+  0x3C,0x0C,0x0C,0x0C,0x0C,0x0C,0x3C,0x00, // 93 ']'
+  0x10,0x38,0x6C,0xC6,0x00,0x00,0x00,0x00, // 94 '^'
+  0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xFF, // 95 '_'
+  0x30,0x18,0x0C,0x00,0x00,0x00,0x00,0x00, // 96 '`'
+  0x00,0x00,0x78,0x0C,0x7C,0xCC,0x76,0x00, // 97 'a'
+  0xE0,0x60,0x7C,0x66,0x66,0x66,0xDC,0x00, // 98 'b'
+  0x00,0x00,0x78,0xCC,0xC0,0xCC,0x78,0x00, // 99 'c'
+  0x1C,0x0C,0x7C,0xCC,0xCC,0xCC,0x76,0x00, // 100 'd'
+  0x00,0x00,0x78,0xCC,0xFC,0xC0,0x78,0x00, // 101 'e'
+  0x38,0x6C,0x60,0xF0,0x60,0x60,0xF0,0x00, // 102 'f'
+  0x00,0x00,0x76,0xCC,0xCC,0x7C,0x0C,0xF8, // 103 'g'
+  0xE0,0x60,0x6C,0x76,0x66,0x66,0xE6,0x00, // 104 'h'
+  0x18,0x00,0x38,0x18,0x18,0x18,0x3C,0x00, // 105 'i'
+  0x0C,0x00,0x1C,0x0C,0x0C,0xCC,0xCC,0x78, // 106 'j'
+  0xE0,0x60,0x66,0x6C,0x78,0x6C,0xE6,0x00, // 107 'k'
+  0x38,0x18,0x18,0x18,0x18,0x18,0x3C,0x00, // 108 'l'
+  0x00,0x00,0xEC,0xFE,0xD6,0xD6,0xD6,0x00, // 109 'm'
+  0x00,0x00,0xDC,0x66,0x66,0x66,0x66,0x00, // 110 'n'
+  0x00,0x00,0x78,0xCC,0xCC,0xCC,0x78,0x00, // 111 'o'
+  0x00,0x00,0xDC,0x66,0x66,0x7C,0x60,0xF0, // 112 'p'
+  0x00,0x00,0x76,0xCC,0xCC,0x7C,0x0C,0x1E, // 113 'q'
+  0x00,0x00,0xDC,0x76,0x60,0x60,0xF0,0x00, // 114 'r'
+  0x00,0x00,0x7C,0xC0,0x78,0x0C,0xF8,0x00, // 115 's'
+  0x10,0x30,0x7C,0x30,0x30,0x34,0x18,0x00, // 116 't'
+  0x00,0x00,0xCC,0xCC,0xCC,0xCC,0x76,0x00, // 117 'u'
+  0x00,0x00,0xC6,0xC6,0xC6,0x6C,0x38,0x00, // 118 'v'
+  0x00,0x00,0xC6,0xD6,0xFE,0xFE,0x6C,0x00, // 119 'w'
+  0x00,0x00,0xC6,0x6C,0x38,0x6C,0xC6,0x00, // 120 'x'
+  0x00,0x00,0xC6,0xC6,0xCE,0x76,0x06,0x7C, // 121 'y'
+  0x00,0x00,0xFE,0x9C,0x38,0x70,0xFE,0x00, // 122 'z'
+  0x0E,0x18,0x18,0x70,0x18,0x18,0x0E,0x00, // 123 '{'
+  0x18,0x18,0x18,0x00,0x18,0x18,0x18,0x00, // 124 '|'
+  0x70,0x18,0x18,0x0E,0x18,0x18,0x70,0x00, // 125 '}'
+  0x76,0xDC,0x00,0x00,0x00,0x00,0x00,0x00  // 126 '~'
+];
+
+const crcTable = new Uint32Array(256);
+for (let i = 0; i < 256; i++) {
+  let c = i;
+  for (let k = 0; k < 8; k++) c = ((c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
+  crcTable[i] = c;
+}
+
+function crc32(buf: Uint8Array, offset: number, len: number): number {
+  let crc = 0xFFFFFFFF;
+  for (let i = 0; i < len; i++) crc = crcTable[(crc ^ buf[offset + i]) & 0xFF] ^ (crc >>> 8);
+  return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+
+function writeUint32(buf: Uint8Array, offset: number, val: number): void {
+  buf[offset] = (val >>> 24) & 0xFF;
+  buf[offset + 1] = (val >>> 16) & 0xFF;
+  buf[offset + 2] = (val >>> 8) & 0xFF;
+  buf[offset + 3] = val & 0xFF;
+}
+
+export async function encodePNG(width: number, height: number, rgbaBuffer: Uint8Array): Promise<Uint8Array> {
+  const lineBytes = width * 4;
+  const rawBytes = new Uint8Array(height * (1 + lineBytes));
+  let srcOffset = 0;
+  let dstOffset = 0;
+  for (let y = 0; y < height; y++) {
+    rawBytes[dstOffset++] = 0;
+    rawBytes.set(rgbaBuffer.subarray(srcOffset, srcOffset + lineBytes), dstOffset);
+    srcOffset += lineBytes;
+    dstOffset += lineBytes;
+  }
+
+  const cs = new CompressionStream('deflate');
+  const writer = cs.writable.getWriter();
+  writer.write(rawBytes);
+  writer.close();
+  const compressed = await new Response(cs.readable).arrayBuffer();
+  const idatData = new Uint8Array(compressed);
+
+  const sig = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
+
+  const ihdrChunk = new Uint8Array(25);
+  writeUint32(ihdrChunk, 0, 13);
+  ihdrChunk.set([73, 72, 68, 82], 4);
+  writeUint32(ihdrChunk, 8, width);
+  writeUint32(ihdrChunk, 12, height);
+  ihdrChunk[16] = 8;
+  ihdrChunk[17] = 6; // RGBA
+  ihdrChunk[18] = 0; ihdrChunk[19] = 0; ihdrChunk[20] = 0;
+  writeUint32(ihdrChunk, 21, crc32(ihdrChunk, 4, 17));
+
+  const idatChunk = new Uint8Array(12 + idatData.length);
+  writeUint32(idatChunk, 0, idatData.length);
+  idatChunk.set([73, 68, 65, 84], 4);
+  idatChunk.set(idatData, 8);
+  writeUint32(idatChunk, 8 + idatData.length, crc32(idatChunk, 4, idatData.length + 4));
+
+  const iendChunk = new Uint8Array(12);
+  writeUint32(iendChunk, 0, 0);
+  iendChunk.set([73, 69, 78, 68], 4);
+  writeUint32(iendChunk, 8, crc32(iendChunk, 4, 4));
+
+  const totalLen = sig.length + ihdrChunk.length + idatChunk.length + iendChunk.length;
+  const png = new Uint8Array(totalLen);
+  let p = 0;
+  png.set(sig, p); p += sig.length;
+  png.set(ihdrChunk, p); p += ihdrChunk.length;
+  png.set(idatChunk, p); p += idatChunk.length;
+  png.set(iendChunk, p); p += iendChunk.length;
+  return png;
+}
+
+function fillRect(
+  rgba: Uint8Array,
+  width: number,
+  height: number,
+  rx: number,
+  ry: number,
+  rw: number,
+  rh: number,
+  r: number,
+  g: number,
+  b: number,
+  a = 255
+): void {
+  const x0 = Math.max(0, Math.floor(rx));
+  const y0 = Math.max(0, Math.floor(ry));
+  const x1 = Math.min(width, Math.ceil(rx + rw));
+  const y1 = Math.min(height, Math.ceil(ry + rh));
+  const alpha = a / 255;
+  const invA = 1 - alpha;
+
+  for (let y = y0; y < y1; y++) {
+    const rowOffset = y * width * 4;
+    for (let x = x0; x < x1; x++) {
+      const idx = rowOffset + x * 4;
+      if (a === 255) {
+        rgba[idx] = r;
+        rgba[idx + 1] = g;
+        rgba[idx + 2] = b;
+        rgba[idx + 3] = 255;
+      } else {
+        rgba[idx] = Math.round(r * alpha + rgba[idx] * invA);
+        rgba[idx + 1] = Math.round(g * alpha + rgba[idx + 1] * invA);
+        rgba[idx + 2] = Math.round(b * alpha + rgba[idx + 2] * invA);
+        rgba[idx + 3] = 255;
+      }
+    }
+  }
+}
+
+function drawRoundedCard(
+  rgba: Uint8Array,
+  width: number,
+  height: number,
+  rx: number,
+  ry: number,
+  rw: number,
+  rh: number,
+  r: number,
+  g: number,
+  b: number,
+  a = 255
+): void {
+  fillRect(rgba, width, height, rx + 10, ry, rw - 20, rh, r, g, b, a);
+  fillRect(rgba, width, height, rx, ry + 10, rw, rh - 20, r, g, b, a);
+  fillRect(rgba, width, height, rx + 3, ry + 3, 7, 7, r, g, b, a);
+  fillRect(rgba, width, height, rx + rw - 10, ry + 3, 7, 7, r, g, b, a);
+  fillRect(rgba, width, height, rx + 3, ry + rh - 10, 7, 7, r, g, b, a);
+  fillRect(rgba, width, height, rx + rw - 10, ry + rh - 10, 7, 7, r, g, b, a);
+}
+
+function drawText(
+  rgba: Uint8Array,
+  width: number,
+  height: number,
+  str: string,
+  startX: number,
+  startY: number,
+  scale: number,
+  r: number,
+  g: number,
+  b: number
+): void {
+  let cx = startX;
+  const len = str.length;
+  for (let i = 0; i < len; i++) {
+    const code = str.charCodeAt(i);
+    if (code === 10) {
+      startY += 10 * scale;
+      cx = startX;
+      continue;
+    }
+    const idx = (code >= 32 && code <= 126) ? (code - 32) * 8 : 0;
+    for (let row = 0; row < 8; row++) {
+      const byte = FONT_DATA[idx + row];
+      for (let col = 0; col < 8; col++) {
+        if ((byte >> (7 - col)) & 1) {
+          fillRect(rgba, width, height, cx + col * scale, startY + row * scale, scale, scale, r, g, b);
+        }
+      }
+    }
+    cx += 8 * scale;
+  }
+}
+
+function drawTextRight(
+  rgba: Uint8Array,
+  width: number,
+  height: number,
+  str: string,
+  rightX: number,
+  startY: number,
+  scale: number,
+  r: number,
+  g: number,
+  b: number
+): void {
+  const textW = str.length * 8 * scale;
+  drawText(rgba, width, height, str, rightX - textW, startY, scale, r, g, b);
+}
+
+export async function renderTradeCardPng(data: TradeCardData): Promise<Uint8Array> {
+  const width = 1200;
+  const height = 630;
+  const rgba = new Uint8Array(width * height * 4);
+
+  // 1. Dark ice rink gradient (#070B14 to #0E172A)
+  for (let y = 0; y < height; y++) {
+    const t = y / height;
+    const r = Math.round(7 * (1 - t) + 14 * t);
+    const g = Math.round(11 * (1 - t) + 23 * t);
+    const b = Math.round(20 * (1 - t) + 42 * t);
+    const rowOffset = y * width * 4;
+    for (let x = 0; x < width; x++) {
+      const idx = rowOffset + x * 4;
+      rgba[idx] = r;
+      rgba[idx + 1] = g;
+      rgba[idx + 2] = b;
+      rgba[idx + 3] = 255;
+    }
+  }
+
+  // Cyan brand top bar
+  fillRect(rgba, width, height, 0, 0, width, 5, 56, 189, 248);
+
+  // 2. Top Header Bar
+  drawText(rgba, width, height, 'NHLMC', 50, 36, 3, 56, 189, 248);
+  drawText(rgba, width, height, '•  TRADE RETROSPECTIVE', 160, 42, 2, 148, 163, 184);
+  drawTextRight(rgba, width, height, '82-GAME SIMULATION  •  $88.0M CAP', 1150, 42, 2, 56, 189, 248);
+
+  // 3. Trade Title Banner
+  const title = (data.title || 'NHL BLOCKBUSTER TRADE PROPOSAL').toUpperCase();
+  drawText(rgba, width, height, title.substring(0, 42), 50, 84, 3, 255, 255, 255);
+
+  // 4. Team A Container (Left)
+  const leftX = 50;
+  const cardW = 515;
+  const cardH = 430;
+  drawRoundedCard(rgba, width, height, leftX, 130, cardW, cardH, 15, 23, 42, 245);
+  fillRect(rgba, width, height, leftX, 130, cardW, 4, 56, 189, 248);
+  fillRect(rgba, width, height, leftX, 130, 4, cardH, 56, 189, 248);
+
+  // Team A Badge & Heading
+  drawText(rgba, width, height, (data.teamAName || 'TEAM A').toUpperCase().substring(0, 20), leftX + 24, 156, 3, 255, 255, 255);
+  drawText(rgba, width, height, `ACQUIRES (${(data.teamAAssets || []).length} ASSETS):`, leftX + 24, 204, 2, 56, 189, 248);
+
+  // Team A Assets List
+  let aY = 240;
+  for (const asset of (data.teamAAssets || []).slice(0, 4)) {
+    fillRect(rgba, width, height, leftX + 24, aY + 4, 8, 8, 56, 189, 248);
+    drawText(rgba, width, height, asset.toUpperCase().substring(0, 26), leftX + 42, aY, 2, 241, 245, 249);
+    aY += 34;
+  }
+
+  // Team A Metrics pill
+  drawRoundedCard(rgba, width, height, leftX + 20, 480, cardW - 40, 56, 30, 41, 59, 240);
+  fillRect(rgba, width, height, leftX + 20, 480, 4, 56, 52, 211, 153);
+  drawText(rgba, width, height, (data.teamAMetrics || '+3.4 PTS  |  +4.1% CUP ODDS').toUpperCase().substring(0, 26), leftX + 36, 498, 2, 52, 211, 153);
+
+  // 5. Team B Container (Right)
+  const rightX = 635;
+  drawRoundedCard(rgba, width, height, rightX, 130, cardW, cardH, 15, 23, 42, 245);
+  fillRect(rgba, width, height, rightX, 130, cardW, 4, 251, 191, 36);
+  fillRect(rgba, width, height, rightX + cardW - 4, 130, 4, cardH, 251, 191, 36);
+
+  // Team B Badge & Heading
+  drawText(rgba, width, height, (data.teamBName || 'TEAM B').toUpperCase().substring(0, 20), rightX + 24, 156, 3, 255, 255, 255);
+  drawText(rgba, width, height, `ACQUIRES (${(data.teamBAssets || []).length} ASSETS):`, rightX + 24, 210, 2, 251, 191, 36);
+
+  // Team B Assets List
+  let bY = 240;
+  for (const asset of (data.teamBAssets || []).slice(0, 4)) {
+    fillRect(rgba, width, height, rightX + 24, bY + 4, 8, 8, 251, 191, 36);
+    drawText(rgba, width, height, asset.toUpperCase().substring(0, 26), rightX + 42, bY, 2, 241, 245, 249);
+    bY += 34;
+  }
+
+  // Team B Metrics pill
+  drawRoundedCard(rgba, width, height, rightX + 20, 480, cardW - 40, 56, 30, 41, 59, 240);
+  fillRect(rgba, width, height, rightX + 20, 480, 4, 56, 56, 189, 248);
+  drawText(rgba, width, height, (data.teamBMetrics || '-1.2 PTS  |  +$6.5M CAP ROOM').toUpperCase().substring(0, 26), rightX + 36, 498, 2, 56, 189, 248);
+
+  // 6. Center Divider & Exchange Badge (drawn on top of both cards)
+  fillRect(rgba, width, height, width / 2 - 1, 135, 2, 420, 51, 65, 85);
+
+  const verdict = (data.verdict || 'FAIR TRADE').toUpperCase();
+  const vTextW = verdict.length * 16;
+  const vW = vTextW + 36;
+  const vX = Math.round(width / 2 - vW / 2);
+  drawRoundedCard(rgba, width, height, vX, 320, vW, 46, 245, 158, 11, 255);
+  drawText(rgba, width, height, verdict, vX + 18, 335, 2, 10, 10, 10);
+
+  // 7. Footer
+  drawText(rgba, width, height, 'MONTE CARLO TRADE SIMULATOR', 50, 584, 2, 100, 116, 139);
+  drawTextRight(rgba, width, height, 'HTTPS://NHLMC.PAGES.DEV', 1150, 584, 2, 56, 189, 248);
+
+  return await encodePNG(width, height, rgba);
+}

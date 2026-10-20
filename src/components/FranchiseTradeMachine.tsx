@@ -1628,6 +1628,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
         teamBDraftPicks={teamBDraftPicks}
         retainSalary={retainSalary}
         retentionPct={retentionPct}
+        evaluation={evaluation}
         onFeatureSaved={() => {
           fetchFeaturedTrades().then((data) => {
             if (data && data.length > 0) setFeaturedProposals(data);

@@ -19,6 +19,10 @@ import {
   Filter,
   CheckCircle2,
   Layers,
+  Share2,
+  Copy,
+  Check,
+  ExternalLink,
 } from 'lucide-react';
 import { HistoricalTrade } from '../types/historicalTrade';
 import { HISTORICAL_TRADES, loadAllHistoricalTrades } from '../data/historicalTrades';
@@ -26,7 +30,14 @@ import { HISTORICAL_TRADES, loadAllHistoricalTrades } from '../data/historicalTr
 export const HistoricalTradeAnalyzer: React.FC = () => {
   const [allTrades, setAllTrades] = useState<HistoricalTrade[]>(HISTORICAL_TRADES);
   const [isLoadingAll, setIsLoadingAll] = useState<boolean>(true);
-  const [selectedTradeId, setSelectedTradeId] = useState<string>(HISTORICAL_TRADES[0].id);
+  const [selectedTradeId, setSelectedTradeId] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const urlTrade = new URLSearchParams(window.location.search).get('trade');
+      if (urlTrade) return urlTrade;
+    }
+    return HISTORICAL_TRADES[0].id;
+  });
+  const [copiedTradeId, setCopiedTradeId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'SNAPSHOT' | 'RETROSPECTIVE'>('SNAPSHOT');
   const [activeCategory, setActiveCategory] = useState<'ALL' | 'MARQUEE'>('ALL');
   const [eraFilter, setEraFilter] = useState<string>('ALL');
@@ -457,10 +468,58 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
             </div>
           </div>
 
-          <h2 className="text-2xl font-black text-white">{selectedTrade.title}</h2>
-          <p className="text-slate-300 text-sm mt-2 leading-relaxed">
-            {selectedTrade.headline}
-          </p>
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+            <div className="flex-1">
+              <h2 className="text-2xl font-black text-white">{selectedTrade.title}</h2>
+              <p className="text-slate-300 text-sm mt-2 leading-relaxed">
+                {selectedTrade.headline}
+              </p>
+            </div>
+            <div className="flex items-center gap-2 shrink-0 pt-1">
+              <button
+                onClick={async () => {
+                  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://nhlmc.pages.dev';
+                  const url = `${origin}/?tab=historical&trade=${selectedTrade.id}`;
+                  try {
+                    await navigator.clipboard.writeText(url);
+                    setCopiedTradeId(selectedTrade.id);
+                    setTimeout(() => setCopiedTradeId(null), 2500);
+                  } catch (err) {
+                    console.error('Failed to copy trade link:', err);
+                  }
+                }}
+                className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-300 hover:text-white transition flex items-center gap-1.5 text-xs font-semibold border border-slate-700"
+                title="Copy link with automatic OpenGraph / Twitter preview card"
+              >
+                {copiedTradeId === selectedTrade.id ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    <span className="text-emerald-400">Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Share2 className="w-3.5 h-3.5 text-sky-400" />
+                    <span>Share Card</span>
+                  </>
+                )}
+              </button>
+              <a
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                  `Check out the trade retrospective on ${selectedTrade.title} on @NHLTradeMachine:`
+                )}&url=${encodeURIComponent(
+                  (typeof window !== 'undefined' ? window.location.origin : 'https://nhlmc.pages.dev') +
+                    `/?tab=historical&trade=${selectedTrade.id}`
+                )}`}
+                target="_blank"
+                rel="noreferrer"
+                className="px-2.5 py-1.5 rounded-lg bg-sky-950/70 hover:bg-sky-900 border border-sky-800/80 text-sky-300 hover:text-white transition flex items-center gap-1 text-xs font-semibold"
+                title="Post trade card to X / Twitter"
+              >
+                <span>X</span>
+                <ExternalLink className="w-3 h-3 text-sky-400" />
+              </a>
+            </div>
+          </div>
         </div>
 
         {/* The Teams & Assets Exchanged */}

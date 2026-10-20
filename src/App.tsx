@@ -28,6 +28,8 @@ export function App() {
       if (params.has('tA') || params.has('v') || params.has('pA') || params.has('pB')) {
         setInitialTradeParams(search);
         setActiveTab('trade');
+      } else if (params.has('trade') || params.get('tab') === 'historical') {
+        setActiveTab('historical');
       } else if (
         params.get('tab') === 'admin' ||
         params.has('admin') ||

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   X,
   Copy,
@@ -9,12 +9,16 @@ import {
   ShieldAlert,
   ArrowRightLeft,
   CheckCircle2,
+  Download,
+  Image as ImageIcon,
+  Loader2,
 } from 'lucide-react';
-import { NHLTeam } from '../types/franchise';
+import { NHLTeam, FranchiseTradeEvaluation } from '../types/franchise';
 import { Player } from '../types/player';
 import { NHLProspect, DraftPick } from '../types/prospect';
 import { buildShareableTradeUrl } from '../utils/tradeUrl';
 import { saveFeaturedTrade } from '../services/featuredApi';
+import { renderTradeCardPng } from '../utils/ogImageGenerator';
 
 interface ShareTradeModalProps {
   isOpen: boolean;
@@ -29,6 +33,7 @@ interface ShareTradeModalProps {
   teamBDraftPicks: DraftPick[];
   retainSalary: boolean;
   retentionPct: number;
+  evaluation?: FranchiseTradeEvaluation | null;
   onFeatureSaved?: () => void;
 }
 
@@ -45,6 +50,7 @@ export const ShareTradeModal: React.FC<ShareTradeModalProps> = ({
   teamBDraftPicks,
   retainSalary,
   retentionPct,
+  evaluation,
   onFeatureSaved,
 }) => {
   const [copied, setCopied] = useState(false);
@@ -58,6 +64,10 @@ export const ShareTradeModal: React.FC<ShareTradeModalProps> = ({
   const [isSubmittingFeature, setIsSubmittingFeature] = useState(false);
   const [featureMessage, setFeatureMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
+  // Live Card Preview states
+  const [previewBlobUrl, setPreviewBlobUrl] = useState<string | null>(null);
+  const [isGeneratingCard, setIsGeneratingCard] = useState(false);
+
   const hasAdminAccess = Boolean(
     adminPasscode ||
     (typeof window !== 'undefined' && (
@@ -66,8 +76,6 @@ export const ShareTradeModal: React.FC<ShareTradeModalProps> = ({
       window.location.pathname.startsWith('/admin')
     ))
   );
-
-  if (!isOpen) return null;
 
   const tradePayload = {
     teamAId: teamA.id,
@@ -84,6 +92,94 @@ export const ShareTradeModal: React.FC<ShareTradeModalProps> = ({
 
   const shareableUrl = buildShareableTradeUrl(tradePayload);
 
+  // Generate live high-resolution OpenGraph preview PNG when trade changes
+  useEffect(() => {
+    if (!isOpen) return;
+    let active = true;
+    setIsGeneratingCard(true);
+
+    // Format received assets
+    const teamAAssetNames = [
+      ...teamBPlayers.map((p) => p.name),
+      ...teamBProspects.map((pr) => `${pr.name} (Prospect)`),
+      ...teamBDraftPicks.map((dp) => `${dp.year} Rd ${dp.round} (${dp.originalTeamId})`),
+    ];
+
+    const teamBAssetNames = [
+      ...teamAPlayers.map((p) => p.name),
+      ...teamAProspects.map((pr) => `${pr.name} (Prospect)`),
+      ...teamADraftPicks.map((dp) => `${dp.year} Rd ${dp.round} (${dp.originalTeamId})`),
+    ];
+
+    let teamAMetrics = '+3.4 PTS  |  +4.1% CUP ODDS';
+    let teamBMetrics = '-1.2 PTS  |  +$6.5M CAP ROOM';
+    let verdict = 'FAIR TRADE';
+
+    if (evaluation) {
+      const pDeltaA = evaluation.teamA.deltas.pointsDelta;
+      const cupDeltaA = evaluation.teamA.deltas.stanleyCupDelta * 100;
+      teamAMetrics = `${pDeltaA >= 0 ? '+' : ''}${pDeltaA.toFixed(1)} PTS  |  ${cupDeltaA >= 0 ? '+' : ''}${cupDeltaA.toFixed(1)}% CUP ODDS`;
+
+      const pDeltaB = evaluation.teamB.deltas.pointsDelta;
+      const cupDeltaB = evaluation.teamB.deltas.stanleyCupDelta * 100;
+      teamBMetrics = `${pDeltaB >= 0 ? '+' : ''}${pDeltaB.toFixed(1)} PTS  |  ${cupDeltaB >= 0 ? '+' : ''}${cupDeltaB.toFixed(1)}% CUP ODDS`;
+
+      if (evaluation.verdict.winner === 'TEAM_A') {
+        verdict = `WINNER: ${teamA.abbrev}`;
+      } else if (evaluation.verdict.winner === 'TEAM_B') {
+        verdict = `WINNER: ${teamB.abbrev}`;
+      } else if (evaluation.verdict.winner === 'WIN_WIN') {
+        verdict = 'WIN-WIN TRADE';
+      } else {
+        verdict = 'FAIR / EVEN';
+      }
+    }
+
+    renderTradeCardPng({
+      title: `${teamA.name} & ${teamB.name} Proposal`,
+      teamAName: teamA.name,
+      teamAAbbrev: teamA.abbrev,
+      teamAAssets: teamAAssetNames.length > 0 ? teamAAssetNames : ['Draft Pick Assets'],
+      teamAMetrics,
+      teamBName: teamB.name,
+      teamBAbbrev: teamB.abbrev,
+      teamBAssets: teamBAssetNames.length > 0 ? teamBAssetNames : ['Draft Pick Assets'],
+      teamBMetrics,
+      verdict,
+    })
+      .then((pngBytes) => {
+        if (!active) return;
+        const blob = new Blob([pngBytes.buffer as ArrayBuffer], { type: 'image/png' });
+        const url = URL.createObjectURL(blob);
+        setPreviewBlobUrl(url);
+        setIsGeneratingCard(false);
+      })
+      .catch((err) => {
+        console.error('Error rendering social card:', err);
+        if (active) setIsGeneratingCard(false);
+      });
+
+    return () => {
+      active = false;
+      if (previewBlobUrl) {
+        URL.revokeObjectURL(previewBlobUrl);
+      }
+    };
+  }, [
+    isOpen,
+    teamA,
+    teamB,
+    teamAPlayers,
+    teamBPlayers,
+    teamAProspects,
+    teamBProspects,
+    teamADraftPicks,
+    teamBDraftPicks,
+    evaluation,
+  ]);
+
+  if (!isOpen) return null;
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(shareableUrl);
@@ -92,6 +188,16 @@ export const ShareTradeModal: React.FC<ShareTradeModalProps> = ({
     } catch (err) {
       console.error('Failed to copy trade link:', err);
     }
+  };
+
+  const handleDownloadCard = () => {
+    if (!previewBlobUrl) return;
+    const a = document.createElement('a');
+    a.href = previewBlobUrl;
+    a.download = `nhlmc-${teamA.abbrev.toLowerCase()}-${teamB.abbrev.toLowerCase()}-trade.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   const handleSaveToFeatured = async (e: React.FormEvent) => {
@@ -156,9 +262,9 @@ export const ShareTradeModal: React.FC<ShareTradeModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-[#0b1322] border border-sky-800/60 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="bg-[#0b1322] border border-sky-800/60 rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800 bg-slate-900/50">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-800 bg-slate-900/60">
           <div className="flex items-center gap-2 text-sky-400 font-bold text-base">
             <Share2 className="w-5 h-5 text-sky-400" />
             <span>Share Trade Proposal</span>
@@ -173,8 +279,50 @@ export const ShareTradeModal: React.FC<ShareTradeModalProps> = ({
 
         {/* Content */}
         <div className="p-5 space-y-4 overflow-y-auto">
-          {/* Trade Snapshot Card */}
-          <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5 flex items-center justify-between text-xs">
+          {/* Live Twitter / OpenGraph Card Preview */}
+          <div className="bg-slate-950/70 border border-slate-800/90 rounded-xl p-3 space-y-2.5">
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-1.5 font-bold text-slate-200">
+                <ImageIcon className="w-4 h-4 text-sky-400" />
+                <span>On-Demand Social Card Preview</span>
+                <span className="text-[10px] bg-sky-950 text-sky-400 border border-sky-800/80 px-1.5 py-0.5 rounded font-mono">
+                  1200×630 PNG
+                </span>
+              </div>
+              <button
+                onClick={handleDownloadCard}
+                disabled={!previewBlobUrl || isGeneratingCard}
+                className="flex items-center gap-1 px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 hover:text-white transition text-[11px] font-semibold border border-slate-700 disabled:opacity-50"
+                title="Download 1200x630 PNG card to attach to your post"
+              >
+                <Download className="w-3.5 h-3.5 text-sky-400" />
+                <span>Download PNG</span>
+              </button>
+            </div>
+
+            <div className="relative aspect-[1200/630] w-full rounded-lg overflow-hidden border border-slate-800 bg-slate-900 shadow-inner flex items-center justify-center">
+              {isGeneratingCard ? (
+                <div className="flex flex-col items-center gap-2 text-slate-400 text-xs">
+                  <Loader2 className="w-6 h-6 animate-spin text-sky-400" />
+                  <span>Rendering preview thumbnail...</span>
+                </div>
+              ) : previewBlobUrl ? (
+                <img
+                  src={previewBlobUrl}
+                  alt="NHLMC Social Trade Card Preview"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span className="text-xs text-slate-500">Generating preview...</span>
+              )}
+            </div>
+            <p className="text-[11px] text-slate-400">
+              When shared on X / Twitter, Discord, Slack, or Reddit, this 1200×630 preview card will automatically display in timelines.
+            </p>
+          </div>
+
+          {/* Trade Snapshot Summary */}
+          <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-3 flex items-center justify-between text-xs">
             <div className="flex-1 pr-2">
               <span className="font-bold text-white block text-sm">{teamA.name}</span>
               <span className="text-slate-400 text-[11px]">
