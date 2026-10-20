@@ -21,7 +21,7 @@ export const INITIAL_PLAYER_SPOTLIGHT: PlayerSpotlight = {
   badgeText: 'Blockbuster Trade Spotlight',
   headline: 'Franchise Crossroads: Why Connor Hellebuyck Has To Move',
   editorialStoryline:
-    'Despite posting back-to-back world-class regular seasons, Winnipeg has suffered consecutive first-round playoff exits while averaging under 2.4 goals per game in postseason action. With Hellebuyck in his prime at age 31 and signed to a franchise-record $8.5M cap commitment through 2031, Winnipeg faces an agonizing dilemma: ride out low-event playoff stalemates or cash in their franchise cornerstone for a historic offensive haul and replenish their timeline.',
+    'After completely missing the 2026 Stanley Cup Playoffs in a brutally competitive Central Division, Winnipeg’s championship window has officially slammed shut. With Hellebuyck now 31 years old and committed to an $8.5M cap hit through 2031, keeping a generational netminder on a retooling roster is an unsustainable luxury. Winnipeg faces an inevitable mandate: cash in their franchise cornerstone for a historic haul of blue-chip youth, top-line scoring, and premium draft equity to ignite the next era.',
   isActive: true,
   options: [
     {
@@ -51,10 +51,10 @@ export const INITIAL_PLAYER_SPOTLIGHT: PlayerSpotlight = {
       id: 'opt-car-contender',
       destinationTeamId: 'CAR',
       destinationTeamName: 'Carolina Hurricanes',
-      title: 'The Missing Championship Piece',
-      subtitle: 'Solve Carolina’s Perpetual Goaltending Question',
+      title: 'The Dynasty Repeat',
+      subtitle: 'Solidify the Reigning Champions’ Throne',
       pitch:
-        'Carolina regularly dominates 5v5 expected goals metrics across the league, but has repeatedly been undone in the Eastern Conference Finals by untimely playoff soft goals. Hellebuyck turns Rod Brind\'Amour\'s squad into the undisputed Stanley Cup favorite.',
+        'Fresh off lifting the 2026 Stanley Cup in dominant fashion, the Hurricanes are primed to build a modern NHL dynasty. While their crease battled bravely through the championship run, landing a two-time Vezina winner like Hellebuyck provides Rod Brind\'Amour with an impenetrable fortress to mount a historic back-to-back title defense.',
       tradeUrlParams:
         'v=1&tA=WPG&tB=CAR&pA=8476945&pB=8478427&prB=car-alexander-nikishin&dpB=car-2028-rd1-unprot,car-2028-rd2&rets=8476945:25',
       wpgReceives: [
@@ -69,16 +69,16 @@ export const INITIAL_PLAYER_SPOTLIGHT: PlayerSpotlight = {
       capFitSummary:
         'Winnipeg retains 25% ($2.125M) of Hellebuyck\'s salary, enabling Carolina to absorb his cap hit seamlessly.',
       projectedCupDeltaWinnipeg: '+1.1% (Massive upgrade at 1C with high-end draft capital)',
-      projectedCupDeltaDestination: '+8.2% (Eliminates Carolina’s lone playoff vulnerability)',
+      projectedCupDeltaDestination: '+8.8% (Locks in Carolina as overwhelming favorites to repeat as Stanley Cup Champions)',
     },
     {
       id: 'opt-det-accelerator',
       destinationTeamId: 'DET',
       destinationTeamName: 'Detroit Red Wings',
       title: 'The Yzerplan Fast-Forward',
-      subtitle: 'Accelerate Detroit’s Contention Window',
+      subtitle: 'Stop Watching Atlantic Rivals Pull Away',
       pitch:
-        'Steve Yzerman has accumulated an enviable farm system of blue-chip defensive prospects, but the Red Wings have plateaued on the playoff bubble. Hellebuyck provides an immediate top-3 world netminder to anchor Detroit alongside Moritz Seider.',
+        'While Atlantic rivals Buffalo (Game 7, Round 2) and Montreal (Eastern Conference Finals) made electric playoff runs last spring, Steve Yzerman\'s Red Wings were left watching from home. Detroit\'s deep prospect pool means nothing if they remain perpetually on the outside looking in—Hellebuyck provides the world-class anchor needed to vault into contention immediately.',
       tradeUrlParams:
         'v=1&tA=WPG&tB=DET&pA=8476945&pB=8481542&prB=det-axel-sandin-pellikka,det-nate-danielson&dpB=det-2028-rd1-top5',
       wpgReceives: [
@@ -102,7 +102,7 @@ export const INITIAL_PLAYER_SPOTLIGHT: PlayerSpotlight = {
       title: 'The Metropolitan Heavyweight',
       subtitle: 'Lock Down New Jersey’s Championship Window',
       pitch:
-        'The Devils boast high-octane offensive superstars in Jack Hughes, Nico Hischier, and Jesper Bratt, but inconsistent netminding has stalled their deep playoff aspirations. Landing Hellebuyck gives GM Tom Fitzgerald the final piece to dominate the Metro Division.',
+        'The Devils boast an enviable offensive arsenal in Jack Hughes, Nico Hischier, and Jesper Bratt, but missing the 2026 postseason made one thing crystal clear: inconsistent crease performance will continue to squander their prime years. Landing Hellebuyck gives GM Tom Fitzgerald the final piece to go toe-to-toe with reigning champion Carolina.',
       tradeUrlParams:
         'v=1&tA=WPG&tB=NJD&pA=8476945&prB=njd-anton-silayev&dpB=njd-2028-rd1,njd-2028-rd3',
       wpgReceives: [
