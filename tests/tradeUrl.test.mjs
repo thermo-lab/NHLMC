@@ -171,6 +171,8 @@ test('URL Engine: Correctly resolves Connor Hellebuyck (8476945) and Ryan McLeod
   assert.ok(decoded !== null, 'Decodes cleanly');
   assert.strictEqual(decoded.teamAId, 'WPG');
   assert.strictEqual(decoded.teamBId, 'BUF');
+  assert.deepStrictEqual(decoded.teamAPlayerIds, [8476945], 'Team A contains Connor Hellebuyck NHL ID');
+  assert.deepStrictEqual(decoded.teamBPlayerIds, [8480802], 'Team B contains Ryan McLeod NHL ID');
 
   const playerMap = new Map();
   for (const p of INITIAL_PLAYERS) {
