@@ -22,24 +22,37 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
         <div className="flex items-center justify-between h-14 sm:h-16 gap-2">
           {/* Brand & Subtitle */}
           <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
-            <div className="flex items-center space-x-2.5 min-w-0">
-              <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-xl bg-gradient-to-tr from-sky-600 via-blue-500 to-cyan-300 p-0.5 shadow-md shadow-sky-950/50 flex items-center justify-center shrink-0">
+            <button
+              onClick={() => {
+                setActiveTab('trade');
+                if (typeof window !== 'undefined') {
+                  if (window.location.search || window.location.hash) {
+                    window.history.pushState({}, '', window.location.pathname);
+                  }
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
+              className="flex items-center space-x-2.5 min-w-0 text-left cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 rounded-lg p-1 -m-1 transition-all"
+              title="Return to Home (Trade Machine)"
+              aria-label="NHLMC Home - Franchise Trade Machine"
+            >
+              <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-xl bg-gradient-to-tr from-sky-600 via-blue-500 to-cyan-300 p-0.5 shadow-md shadow-sky-950/50 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:shadow-sky-500/30 transition-all">
                 <span className="font-black text-black text-xs sm:text-sm tracking-tighter">NHL</span>
               </div>
               <div className="min-w-0">
                 <div className="flex items-center space-x-1.5">
-                  <span className="font-black text-base sm:text-lg tracking-tight text-white shrink-0">
+                  <span className="font-black text-base sm:text-lg tracking-tight text-white shrink-0 group-hover:text-sky-300 transition-colors">
                     NHL<span className="text-sky-400">MC</span>
                   </span>
-                  <span className="hidden sm:inline-block px-1.5 py-0.5 text-[9px] font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20 rounded uppercase">
+                  <span className="hidden sm:inline-block px-1.5 py-0.5 text-[9px] font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20 rounded uppercase group-hover:border-sky-400/40 transition-colors">
                     Franchise Engine
                   </span>
                 </div>
-                <div className="text-[11px] text-slate-400 truncate max-w-[140px] xs:max-w-[200px] sm:max-w-none">
-                  National Hockey League Trade Machine & Retrospectives
+                <div className="text-[11px] text-slate-400 truncate max-w-[140px] xs:max-w-[200px] sm:max-w-none group-hover:text-slate-300 transition-colors">
+                  National Hockey League Trade Machine &amp; Retrospectives
                 </div>
               </div>
-            </div>
+            </button>
 
             {/* Desktop Navigation Tabs */}
             <nav className="hidden md:flex items-center space-x-1 pl-4 border-l border-rink-border">

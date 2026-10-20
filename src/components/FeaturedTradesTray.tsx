@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Flame, Sparkles, ChevronRight, ArrowRightLeft, Layers, ShieldCheck } from 'lucide-react';
+import { Flame, Sparkles, ChevronRight, ArrowRightLeft } from 'lucide-react';
 import { FeaturedTradeProposal } from '../types/featured';
 
 interface FeaturedTradesTrayProps {
@@ -25,11 +25,8 @@ export const FeaturedTradesTray: React.FC<FeaturedTradesTrayProps> = ({
             <Flame className="w-4 h-4 text-amber-400 animate-pulse" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              Featured Blockbusters & Rumor Proposals
-              <span className="text-[10px] font-normal uppercase px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20">
-                1-Click Load
-              </span>
+            <h3 className="text-sm font-bold text-white">
+              Featured Blockbusters &amp; Rumor Proposals
             </h3>
             <p className="text-xs text-slate-400">
               Select an editorial trade proposal to instantly simulate its Monte Carlo playoff and salary cap impact.

@@ -134,9 +134,23 @@ export function App() {
       <footer className="border-t border-rink-border/60 py-6 text-center text-xs text-slate-500 bg-[#060910]">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center space-x-2">
-            <span className="font-bold text-slate-300">NHLMC</span>
+            <button
+              onClick={() => {
+                setActiveTab('trade');
+                if (typeof window !== 'undefined') {
+                  if (window.location.search || window.location.hash) {
+                    window.history.pushState({}, '', window.location.pathname);
+                  }
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
+              className="font-bold text-slate-300 hover:text-sky-400 transition-colors cursor-pointer"
+              title="Return to Home (Trade Machine)"
+            >
+              NHLMC
+            </button>
             <span>•</span>
-            <span>National Hockey League Monte Carlo & Historical Retrospective Engine</span>
+            <span>National Hockey League Monte Carlo &amp; Historical Retrospective Engine</span>
           </div>
           <div className="text-[11px] text-slate-600">
             <span>Official NHL statistics via NHL Web API. Simulates regular season points, $88M salary cap, and Stanley Cup odds.</span>
