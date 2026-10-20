@@ -309,18 +309,48 @@ export function evaluateFranchiseTrade(
   // Team A receives Team B's draft picks
   if (proposal.teamBDraftPicks) {
     for (const dp of proposal.teamBDraftPicks) {
-      const pickVal = dp.round === 1 ? 80 : dp.round === 2 ? 48 : 28;
+      let pickVal = dp.round === 1 ? 80 : dp.round === 2 ? 48 : 28;
+      let label = '';
+      if (dp.round === 1) {
+        if (dp.protection === 'UNPROTECTED') {
+          pickVal = 88;
+          label = ' - Unprotected';
+        } else if (dp.protection === 'TOP_5_PROTECTED') {
+          pickVal = 82;
+          label = ' - Top 5 Protected';
+        } else {
+          pickVal = 76;
+          label = ' - Top 10 Protected';
+        }
+      } else if (dp.isProtected) {
+        label = ' - Protected';
+      }
       teamACapitalReceived += pickVal;
-      teamAAssetsAcquired.push(`${dp.year} Round ${dp.round} (${dp.originalTeam}${dp.isProtected ? ' - Protected' : ''})`);
+      teamAAssetsAcquired.push(`${dp.year} Round ${dp.round} (${dp.originalTeam}${label})`);
     }
   }
 
   // Team B receives Team A's draft picks
   if (proposal.teamADraftPicks) {
     for (const dp of proposal.teamADraftPicks) {
-      const pickVal = dp.round === 1 ? 80 : dp.round === 2 ? 48 : 28;
+      let pickVal = dp.round === 1 ? 80 : dp.round === 2 ? 48 : 28;
+      let label = '';
+      if (dp.round === 1) {
+        if (dp.protection === 'UNPROTECTED') {
+          pickVal = 88;
+          label = ' - Unprotected';
+        } else if (dp.protection === 'TOP_5_PROTECTED') {
+          pickVal = 82;
+          label = ' - Top 5 Protected';
+        } else {
+          pickVal = 76;
+          label = ' - Top 10 Protected';
+        }
+      } else if (dp.isProtected) {
+        label = ' - Protected';
+      }
       teamBCapitalReceived += pickVal;
-      teamBAssetsAcquired.push(`${dp.year} Round ${dp.round} (${dp.originalTeam}${dp.isProtected ? ' - Protected' : ''})`);
+      teamBAssetsAcquired.push(`${dp.year} Round ${dp.round} (${dp.originalTeam}${label})`);
     }
   }
 
@@ -406,6 +436,18 @@ export function evaluateFranchiseTrade(
   if (teamAAssetsAcquired.length > 0) {
     bullets.push(
       `Futures Infusion: ${teamA.name} acquires key future capital [${teamAAssetsAcquired.join(', ')}].`
+    );
+  }
+
+  if (teamARetainedSalary > 0) {
+    bullets.push(
+      `${teamA.name} retains $${(teamARetainedSalary / 1e6).toFixed(2)}M in salary, facilitating financial cap viability for ${teamB.name}.`
+    );
+  }
+
+  if (teamBRetainedSalary > 0) {
+    bullets.push(
+      `${teamB.name} retains $${(teamBRetainedSalary / 1e6).toFixed(2)}M in salary, facilitating financial cap viability for ${teamA.name}.`
     );
   }
 

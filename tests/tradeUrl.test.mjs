@@ -62,9 +62,73 @@ test('URL Engine: Decodes durable URL back to exact trade state', () => {
   assert.strictEqual(decoded.teamBDraftPicks.length, 1);
   assert.strictEqual(decoded.teamBDraftPicks[0].year, 2027);
   assert.strictEqual(decoded.teamBDraftPicks[0].round, 1);
+  assert.strictEqual(decoded.teamBDraftPicks[0].protection, 'TOP_10_PROTECTED');
   assert.strictEqual(decoded.retainSalary, true);
   assert.strictEqual(decoded.retentionPct, 25);
+  assert.strictEqual(decoded.playerRetentions[353], 25, 'Maps retention to player ID');
   assert.strictEqual(decoded.isAutoSimulate, true);
+});
+
+test('URL Engine: Encodes and decodes custom pick protections and multi-player salary retentions', () => {
+  const query = encodeTradeToUrl({
+    teamAId: 'WPG',
+    teamBId: 'BUF',
+    teamAPlayers: [mockPlayers[0]],
+    teamBPlayers: [mockPlayers[2]],
+    teamAProspects: [],
+    teamBProspects: [],
+    teamADraftPicks: [
+      {
+        id: 'wpg-2028-rd1',
+        year: 2028,
+        round: 1,
+        owningTeamId: 'WPG',
+        originalTeamId: 'WPG',
+        protection: 'UNPROTECTED',
+        tradeValueScore: 88,
+      },
+      {
+        id: 'wpg-2029-rd1',
+        year: 2029,
+        round: 1,
+        owningTeamId: 'WPG',
+        originalTeamId: 'WPG',
+        protection: 'TOP_5_PROTECTED',
+        tradeValueScore: 82,
+      },
+    ],
+    teamBDraftPicks: [
+      {
+        id: 'buf-2028-rd1',
+        year: 2028,
+        round: 1,
+        owningTeamId: 'BUF',
+        originalTeamId: 'BUF',
+        protection: 'TOP_10_PROTECTED',
+        tradeValueScore: 76,
+      },
+    ],
+    playerRetentions: {
+      8476945: 50, // 50% max retention on Hellebuyck
+      8479420: 25, // 25% retention on Thompson
+    },
+  });
+
+  assert.ok(query.includes('dpA=wpg-2028-rd1-unprot%2Cwpg-2029-rd1-top5') || query.includes('dpA=wpg-2028-rd1-unprot,wpg-2029-rd1-top5'), 'Encodes custom protection suffixes');
+  assert.ok(query.includes('dpB=buf-2028-rd1'), 'Encodes default top10 protection without redundant suffix');
+  assert.ok(query.includes('rets='), 'Includes rets parameter');
+
+  const decoded = decodeTradeFromUrl(query, mockPlayers, mockProspects);
+  assert.ok(decoded !== null);
+  assert.strictEqual(decoded.teamADraftPicks[0].protection, 'UNPROTECTED');
+  assert.strictEqual(decoded.teamADraftPicks[0].tradeValueScore, 88);
+  assert.strictEqual(decoded.teamADraftPicks[1].protection, 'TOP_5_PROTECTED');
+  assert.strictEqual(decoded.teamADraftPicks[1].tradeValueScore, 82);
+  assert.strictEqual(decoded.teamBDraftPicks[0].protection, 'TOP_10_PROTECTED');
+  assert.strictEqual(decoded.teamBDraftPicks[0].tradeValueScore, 76);
+
+  assert.strictEqual(decoded.playerRetentions[353], 50, '50% retention on Hellebuyck');
+  assert.strictEqual(decoded.playerRetentions[358], 25, '25% retention on Thompson');
 });
 
 test('Anti-Exploitation: Sanitizes rogue teams, out-of-bounds numbers, and XSS attempts', () => {

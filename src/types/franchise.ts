@@ -49,6 +49,7 @@ export interface DraftPickAsset {
   round: 1 | 2 | 3;
   originalTeam: string;
   isProtected?: boolean; // e.g. "Top-10 Lottery Protected"
+  protection?: 'UNPROTECTED' | 'TOP_10_PROTECTED' | 'TOP_5_PROTECTED' | 'CONDITIONAL';
 }
 
 export interface FranchiseTradeProposal {

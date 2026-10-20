@@ -13,6 +13,7 @@ export interface TradeUrlPayload {
   teamBDraftPicks: DraftPick[];
   retainSalary?: boolean;
   retentionPct?: number;
+  playerRetentions?: Record<number, number>;
 }
 
 export interface DecodedTradeState {
@@ -26,6 +27,7 @@ export interface DecodedTradeState {
   teamBDraftPicks: DraftPick[];
   retainSalary: boolean;
   retentionPct: number;
+  playerRetentions: Record<number, number>;
   isAutoSimulate: boolean;
   warnings: string[];
 }
@@ -68,20 +70,37 @@ export function encodeTradeToUrl(trade: TradeUrlPayload): string {
     params.set('prB', prIds.join(','));
   }
 
-  // Encode Team A draft picks (e.g. wpg-2027-rd1)
+  // Encode Team A draft picks (e.g. wpg-2027-rd1 or wpg-2027-rd1-unprot)
   if (trade.teamADraftPicks.length > 0) {
-    const dpIds = trade.teamADraftPicks.map((dp) => dp.id);
+    const dpIds = trade.teamADraftPicks.map((dp) => {
+      let suffix = '';
+      if (dp.protection === 'UNPROTECTED') suffix = '-unprot';
+      else if (dp.protection === 'TOP_5_PROTECTED') suffix = '-top5';
+      return `${dp.id}${suffix}`;
+    });
     params.set('dpA', dpIds.join(','));
   }
 
-  // Encode Team B draft picks (e.g. buf-2027-rd1)
+  // Encode Team B draft picks (e.g. buf-2027-rd1 or buf-2027-rd1-unprot)
   if (trade.teamBDraftPicks.length > 0) {
-    const dpIds = trade.teamBDraftPicks.map((dp) => dp.id);
+    const dpIds = trade.teamBDraftPicks.map((dp) => {
+      let suffix = '';
+      if (dp.protection === 'UNPROTECTED') suffix = '-unprot';
+      else if (dp.protection === 'TOP_5_PROTECTED') suffix = '-top5';
+      return `${dp.id}${suffix}`;
+    });
     params.set('dpB', dpIds.join(','));
   }
 
-  // Encode salary retention if enabled
-  if (trade.retainSalary && trade.retentionPct) {
+  // Encode player salary retentions (e.g. rets=8476945:25,8479420:50 or legacy ret=25)
+  if (trade.playerRetentions && Object.keys(trade.playerRetentions).length > 0) {
+    const entries = Object.entries(trade.playerRetentions)
+      .filter(([_, pct]) => pct > 0)
+      .map(([id, pct]) => `${id}:${pct}`);
+    if (entries.length > 0) {
+      params.set('rets', entries.join(','));
+    }
+  } else if (trade.retainSalary && trade.retentionPct) {
     const clamped = Math.max(1, Math.min(50, Math.round(trade.retentionPct)));
     params.set('ret', `${clamped}`);
   }
@@ -202,30 +221,51 @@ export function decodeTradeFromUrl(
       return Array.from(new Set(matchedIds));
     };
 
-    // Helper to resolve draft pick tokens (e.g. "buf-2027-rd1" or "2027-1-BUF")
+    // Helper to resolve draft pick tokens (e.g. "buf-2027-rd1", "buf-2027-rd1-unprot", "buf-2027-rd1-top5")
     const parseDraftPickTokens = (rawParam: string | null, defaultTeam: string): DraftPick[] => {
       if (!rawParam) return [];
       const tokens = rawParam.split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
       const picks: DraftPick[] = [];
 
       for (const token of tokens) {
-        // Match standard format: "buf-2027-rd1" or "wpg-2026-rd2"
-        const standardMatch = token.match(/^([a-z]{3})-(\d{4})-rd([1-3])$/i);
+        // Match standard format with optional protection suffix: "buf-2027-rd1" or "buf-2027-rd1-unprot"
+        const standardMatch = token.match(/^([a-z]{3})-(\d{4})-rd([1-3])(?:-([a-z0-9]+))?$/i);
         // Match alternate format: "2027-1-buf"
-        const altMatch = token.match(/^(\d{4})-([1-3])-([a-z]{3})$/i);
+        const altMatch = token.match(/^(\d{4})-([1-3])-([a-z]{3})(?:-([a-z0-9]+))?$/i);
 
         let team = defaultTeam;
         let year = 2027;
         let round: 1 | 2 | 3 = 1;
+        let protection: DraftPick['protection'] = 'UNPROTECTED';
 
         if (standardMatch) {
           team = standardMatch[1].toUpperCase();
           year = parseInt(standardMatch[2], 10);
           round = parseInt(standardMatch[3], 10) as 1 | 2 | 3;
+          const protSuffix = standardMatch[4]?.toLowerCase();
+          if (protSuffix === 'unprot') {
+            protection = 'UNPROTECTED';
+          } else if (protSuffix === 'top5') {
+            protection = 'TOP_5_PROTECTED';
+          } else if (protSuffix === 'top10') {
+            protection = 'TOP_10_PROTECTED';
+          } else {
+            protection = round === 1 ? 'TOP_10_PROTECTED' : 'UNPROTECTED';
+          }
         } else if (altMatch) {
           year = parseInt(altMatch[1], 10);
           round = parseInt(altMatch[2], 10) as 1 | 2 | 3;
           team = altMatch[3].toUpperCase();
+          const protSuffix = altMatch[4]?.toLowerCase();
+          if (protSuffix === 'unprot') {
+            protection = 'UNPROTECTED';
+          } else if (protSuffix === 'top5') {
+            protection = 'TOP_5_PROTECTED';
+          } else if (protSuffix === 'top10') {
+            protection = 'TOP_10_PROTECTED';
+          } else {
+            protection = round === 1 ? 'TOP_10_PROTECTED' : 'UNPROTECTED';
+          }
         } else {
           continue;
         }
@@ -234,14 +274,20 @@ export function decodeTradeFromUrl(
         if (year < 2025 || year > 2035) continue;
         if (!VALID_FRANCHISE_IDS.has(team)) team = defaultTeam;
 
-        const baseValue = round === 1 ? 80 : round === 2 ? 48 : 28;
+        let baseValue = round === 1 ? 76 : round === 2 ? 48 : 28;
+        if (round === 1) {
+          if (protection === 'UNPROTECTED') baseValue = 88;
+          else if (protection === 'TOP_5_PROTECTED') baseValue = 82;
+          else baseValue = 76;
+        }
+
         picks.push({
           id: `${team.toLowerCase()}-${year}-rd${round}`,
           year,
           round,
           owningTeamId: team,
           originalTeamId: team,
-          protection: round === 1 ? 'TOP_10_PROTECTED' : 'UNPROTECTED',
+          protection,
           tradeValueScore: baseValue,
         });
       }
@@ -256,15 +302,34 @@ export function decodeTradeFromUrl(
     const teamADraftPicks = parseDraftPickTokens(params.get('dpA'), teamAId);
     const teamBDraftPicks = parseDraftPickTokens(params.get('dpB'), teamBId);
 
-    // 3. Parse salary retention (clamped between 0 and 50)
-    const rawRet = params.get('ret');
-    let retainSalary = false;
+    // 3. Parse salary retentions (rets=8476945:25,8479420:50 or legacy ret=25)
+    const playerRetentions: Record<number, number> = {};
+    const rawRets = params.get('rets');
+    if (rawRets) {
+      const parts = rawRets.split(',').map((s) => s.trim()).filter(Boolean);
+      for (const p of parts) {
+        const [idStr, pctStr] = p.split(':');
+        const pId = parseInt(idStr, 10);
+        const pPct = parseInt(pctStr, 10);
+        if (!isNaN(pId) && !isNaN(pPct) && pPct > 0) {
+          const matchedPlayer = playersByNhlId.get(pId) || playersById.get(pId);
+          const resolvedId = matchedPlayer ? matchedPlayer.id : pId;
+          playerRetentions[resolvedId] = Math.min(50, Math.max(1, pPct));
+        }
+      }
+    }
+
+    let retainSalary = Object.keys(playerRetentions).length > 0;
     let retentionPct = 25;
+    const rawRet = params.get('ret');
     if (rawRet) {
       const parsedRet = parseInt(rawRet, 10);
       if (!isNaN(parsedRet) && parsedRet > 0) {
         retainSalary = true;
         retentionPct = Math.max(1, Math.min(50, parsedRet));
+        if (teamAPlayerIds.length > 0 && !playerRetentions[teamAPlayerIds[0]]) {
+          playerRetentions[teamAPlayerIds[0]] = retentionPct;
+        }
       }
     }
 
@@ -287,6 +352,7 @@ export function decodeTradeFromUrl(
       teamBDraftPicks,
       retainSalary,
       retentionPct,
+      playerRetentions,
       isAutoSimulate: hasAnyAssets,
       warnings,
     };

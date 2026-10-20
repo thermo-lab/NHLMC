@@ -68,6 +68,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
   const [teamBAssetTab, setTeamBAssetTab] = useState<'roster' | 'prospects' | 'picks'>('roster');
 
   // Salary retention
+  const [playerRetentions, setPlayerRetentions] = useState<Record<number, number>>({});
   const [retainSalary, setRetainSalary] = useState<boolean>(false);
   const [retentionPct, setRetentionPct] = useState<number>(25);
 
@@ -174,6 +175,21 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     setIsSimulating(true);
     setTimeout(() => {
       try {
+        const retList: { playerId: number; retainedPct: number; retainingTeamId: string }[] = [];
+        for (const pid of teamAPlayerIds) {
+          if (playerRetentions[pid]) {
+            retList.push({ playerId: pid, retainedPct: playerRetentions[pid], retainingTeamId: teamA.id });
+          }
+        }
+        for (const pid of teamBPlayerIds) {
+          if (playerRetentions[pid]) {
+            retList.push({ playerId: pid, retainedPct: playerRetentions[pid], retainingTeamId: teamB.id });
+          }
+        }
+        if (retList.length === 0 && retainSalary && teamAPlayerIds.length > 0) {
+          retList.push({ playerId: teamAPlayerIds[0], retainedPct: retentionPct || 25, retainingTeamId: teamA.id });
+        }
+
         const proposal: FranchiseTradeProposal = {
           teamAId: teamA.id,
           teamBId: teamB.id,
@@ -187,6 +203,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
             round: p.round,
             originalTeam: p.originalTeamId,
             isProtected: p.protection !== 'UNPROTECTED',
+            protection: p.protection,
           })),
           teamBDraftPicks: teamBDraftPicks.map((p) => ({
             id: p.id,
@@ -194,11 +211,9 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
             round: p.round,
             originalTeam: p.originalTeamId,
             isProtected: p.protection !== 'UNPROTECTED',
+            protection: p.protection,
           })),
-          salaryRetention:
-            retainSalary && teamAPlayerIds.length > 0
-              ? [{ playerId: teamAPlayerIds[0], retainedPct: retentionPct, retainingTeamId: teamA.id }]
-              : undefined,
+          salaryRetention: retList.length > 0 ? retList : undefined,
         };
 
         const result = evaluateFranchiseTrade(franchises, players, proposal, iterations, prospects);
@@ -234,6 +249,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     setTeamBProspectIds(decoded.teamBProspectIds);
     setTeamADraftPicks(decoded.teamADraftPicks);
     setTeamBDraftPicks(decoded.teamBDraftPicks);
+    setPlayerRetentions(decoded.playerRetentions || {});
     setRetainSalary(decoded.retainSalary);
     setRetentionPct(decoded.retentionPct);
 
@@ -243,6 +259,22 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
       try {
         const teamAObj = franchises.find((t) => t.id === decoded.teamAId) || franchises[0];
         const teamBObj = franchises.find((t) => t.id === decoded.teamBId) || franchises[1];
+
+        const retList: { playerId: number; retainedPct: number; retainingTeamId: string }[] = [];
+        const pRets = decoded.playerRetentions || {};
+        for (const pid of decoded.teamAPlayerIds) {
+          if (pRets[pid]) {
+            retList.push({ playerId: pid, retainedPct: pRets[pid], retainingTeamId: teamAObj.id });
+          }
+        }
+        for (const pid of decoded.teamBPlayerIds) {
+          if (pRets[pid]) {
+            retList.push({ playerId: pid, retainedPct: pRets[pid], retainingTeamId: teamBObj.id });
+          }
+        }
+        if (retList.length === 0 && decoded.retainSalary && decoded.teamAPlayerIds.length > 0) {
+          retList.push({ playerId: decoded.teamAPlayerIds[0], retainedPct: decoded.retentionPct || 25, retainingTeamId: teamAObj.id });
+        }
 
         const proposal: FranchiseTradeProposal = {
           teamAId: teamAObj.id,
@@ -257,6 +289,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
             round: p.round,
             originalTeam: p.originalTeamId,
             isProtected: p.protection !== 'UNPROTECTED',
+            protection: p.protection,
           })),
           teamBDraftPicks: decoded.teamBDraftPicks.map((p) => ({
             id: p.id,
@@ -264,11 +297,9 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
             round: p.round,
             originalTeam: p.originalTeamId,
             isProtected: p.protection !== 'UNPROTECTED',
+            protection: p.protection,
           })),
-          salaryRetention:
-            decoded.retainSalary && decoded.teamAPlayerIds.length > 0
-              ? [{ playerId: decoded.teamAPlayerIds[0], retainedPct: decoded.retentionPct, retainingTeamId: teamAObj.id }]
-              : undefined,
+          salaryRetention: retList.length > 0 ? retList : undefined,
         };
 
         const result = evaluateFranchiseTrade(franchises, players, proposal, iterations, prospects);
@@ -310,6 +341,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     teamBProspectIds,
     teamADraftPicks,
     teamBDraftPicks,
+    playerRetentions,
     retainSalary,
     retentionPct,
     iterations,
@@ -330,6 +362,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     teamBDraftPicks,
     retainSalary,
     retentionPct,
+    playerRetentions,
   };
 
   const handleOpenShareModal = () => {
@@ -386,6 +419,63 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
         setTeamBDraftPicks([...teamBDraftPicks, pick]);
       }
     }
+  };
+
+  const handleCyclePickProtection = (pickId: string, isTeamA: boolean) => {
+    const cycle = (current: DraftPick['protection']): DraftPick['protection'] => {
+      if (current === 'TOP_10_PROTECTED') return 'TOP_5_PROTECTED';
+      if (current === 'TOP_5_PROTECTED') return 'UNPROTECTED';
+      return 'TOP_10_PROTECTED';
+    };
+
+    if (isTeamA) {
+      setTeamADraftPicks((prev) =>
+        prev.map((p) => {
+          if (p.id !== pickId) return p;
+          const nextProt = cycle(p.protection);
+          const nextScore =
+            p.round === 1
+              ? nextProt === 'UNPROTECTED'
+                ? 88
+                : nextProt === 'TOP_5_PROTECTED'
+                ? 82
+                : 76
+              : p.tradeValueScore;
+          return { ...p, protection: nextProt, tradeValueScore: nextScore };
+        })
+      );
+    } else {
+      setTeamBDraftPicks((prev) =>
+        prev.map((p) => {
+          if (p.id !== pickId) return p;
+          const nextProt = cycle(p.protection);
+          const nextScore =
+            p.round === 1
+              ? nextProt === 'UNPROTECTED'
+                ? 88
+                : nextProt === 'TOP_5_PROTECTED'
+                ? 82
+                : 76
+              : p.tradeValueScore;
+          return { ...p, protection: nextProt, tradeValueScore: nextScore };
+        })
+      );
+    }
+  };
+
+  const handleCycleSalaryRetention = (playerId: number) => {
+    setPlayerRetentions((prev) => {
+      const current = prev[playerId] || 0;
+      // Cycle: 0% -> 25% -> 50% (NHL CBA Max) -> 0%
+      const next = current === 0 ? 25 : current === 25 ? 50 : 0;
+      const updated = { ...prev };
+      if (next === 0) {
+        delete updated[playerId];
+      } else {
+        updated[playerId] = next;
+      }
+      return updated;
+    });
   };
 
   const handleSaveCustomProspect = (e: React.FormEvent) => {
@@ -513,36 +603,72 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
               ) : (
                 <div className="space-y-1.5">
                   {/* Roster Players */}
-                  {teamASendingPlayers.map((p) => (
-                    <div
-                      key={p.id}
-                      className="flex items-center justify-between bg-rink-surface border border-rink-border rounded-lg p-2 gap-2"
-                    >
-                      <div className="flex items-center space-x-2.5 min-w-0 flex-1">
-                        {p.headshotUrl && (
-                          <img src={p.headshotUrl} alt={p.name} className="w-8 h-8 rounded-full object-cover bg-slate-800 shrink-0" />
-                        )}
-                        <div className="min-w-0 flex-1">
-                          <div className="text-xs font-bold text-white flex flex-wrap items-center gap-1.5">
-                            <span className="truncate">{p.name}</span>
-                            <span className="text-[9px] px-1 py-0.2 bg-slate-800 text-sky-400 rounded shrink-0">
-                              {p.primaryPosition}
-                            </span>
-                          </div>
-                          <div className="text-[10px] text-emerald-400 font-mono truncate">
-                            ${(p.capHit / 1e6).toFixed(2)}M AAV
+                  {teamASendingPlayers.map((p) => {
+                    const retPct = playerRetentions[p.id] || 0;
+                    const retainedAmt = (p.capHit * retPct) / 100;
+                    return (
+                      <div
+                        key={p.id}
+                        className="flex items-center justify-between bg-rink-surface border border-rink-border rounded-lg p-2 gap-2"
+                      >
+                        <div className="flex items-center space-x-2.5 min-w-0 flex-1">
+                          {p.headshotUrl && (
+                            <img src={p.headshotUrl} alt={p.name} className="w-8 h-8 rounded-full object-cover bg-slate-800 shrink-0" />
+                          )}
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs font-bold text-white flex flex-wrap items-center gap-1.5">
+                              <span className="truncate">{p.name}</span>
+                              <span className="text-[9px] px-1 py-0.2 bg-slate-800 text-sky-400 rounded shrink-0">
+                                {p.primaryPosition}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2 flex-wrap mt-0.5">
+                              <span className="text-[10px] text-emerald-400 font-mono">
+                                ${((p.capHit - retainedAmt) / 1e6).toFixed(2)}M AAV
+                              </span>
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleCycleSalaryRetention(p.id);
+                                }}
+                                className={`text-[9px] px-1.5 py-0.5 rounded font-mono font-bold border transition flex items-center gap-1 cursor-pointer shrink-0 ${
+                                  retPct === 50
+                                    ? 'bg-amber-950/80 text-amber-300 border-amber-600/80 hover:bg-amber-900'
+                                    : retPct > 0
+                                    ? 'bg-sky-950/80 text-sky-300 border-sky-600/80 hover:bg-sky-900'
+                                    : 'bg-slate-900/80 text-slate-400 border-slate-700 hover:text-slate-200 hover:border-slate-500'
+                                }`}
+                                title="Click to cycle retention: 0% ↔ 25% ↔ 50% (CBA Max)"
+                              >
+                                <Percent className="w-2.5 h-2.5" />
+                                <span>
+                                  {retPct > 0
+                                    ? `Retain ${retPct}% (-$${(retainedAmt / 1e6).toFixed(2)}M)`
+                                    : 'Retain 0%'}
+                                </span>
+                                <span className="text-[8px] opacity-60">⇄</span>
+                              </button>
+                            </div>
                           </div>
                         </div>
+                        <button
+                          onClick={() => {
+                            setTeamAPlayerIds(teamAPlayerIds.filter((id) => id !== p.id));
+                            setPlayerRetentions((prev) => {
+                              const updated = { ...prev };
+                              delete updated[p.id];
+                              return updated;
+                            });
+                          }}
+                          className="text-slate-500 hover:text-red-400 p-1 shrink-0"
+                          title="Remove player"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
                       </div>
-                      <button
-                        onClick={() => setTeamAPlayerIds(teamAPlayerIds.filter((id) => id !== p.id))}
-                        className="text-slate-500 hover:text-red-400 p-1 shrink-0"
-                        title="Remove player"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  ))}
+                    );
+                  })}
 
                   {/* Prospects */}
                   {teamASendingProspects.map((pr) => (
@@ -584,13 +710,29 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                     >
                       <div className="flex items-center space-x-2 min-w-0 flex-1">
                         <Ticket className="w-4 h-4 text-amber-400 shrink-0" />
-                        <div className="min-w-0 flex-1 flex flex-wrap items-center gap-1">
+                        <div className="min-w-0 flex-1 flex flex-wrap items-center gap-1.5">
                           <span className="font-bold text-amber-300 truncate">
                             {pick.year} Round {pick.round} ({pick.originalTeamId})
                           </span>
-                          <span className="text-[10px] text-slate-400 font-mono shrink-0">
-                            {pick.protection.replace(/_/g, ' ')}
-                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleCyclePickProtection(pick.id, true);
+                            }}
+                            className={`text-[9px] px-1.5 py-0.5 rounded font-mono font-bold border transition flex items-center gap-1 cursor-pointer shrink-0 ${
+                              pick.protection === 'UNPROTECTED'
+                                ? 'bg-rose-950/70 text-rose-300 border-rose-800 hover:bg-rose-900/80'
+                                : pick.protection === 'TOP_5_PROTECTED'
+                                ? 'bg-purple-950/70 text-purple-300 border-purple-800 hover:bg-purple-900/80'
+                                : 'bg-amber-950/70 text-amber-300 border-amber-800 hover:bg-amber-900/80'
+                            }`}
+                            title="Click to toggle: Top 10 Protected ↔ Top 5 Protected ↔ Unprotected"
+                          >
+                            <Shield className="w-2.5 h-2.5 shrink-0" />
+                            <span>{pick.protection.replace(/_/g, ' ')}</span>
+                            <span className="text-[8px] opacity-60">⇄</span>
+                          </button>
                         </div>
                       </div>
                       <button
@@ -665,16 +807,11 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                     ))}
                 </select>
 
-                <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
-                  <label className="flex items-center gap-1.5 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={retainSalary}
-                      onChange={(e) => setRetainSalary(e.target.checked)}
-                      className="rounded bg-slate-800 text-sky-500"
-                    />
-                    <span>Retain 25% Salary on Player</span>
-                  </label>
+                <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+                  <span className="flex items-center gap-1.5 text-sky-400/90 font-medium">
+                    <Percent className="w-3 h-3 text-sky-400" />
+                    <span>Click the <strong>Retain</strong> chip on any traded player to cycle 0% ↔ 25% ↔ 50%</span>
+                  </span>
                 </div>
               </div>
             )}
@@ -814,36 +951,72 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
               ) : (
                 <div className="space-y-1.5">
                   {/* Roster Players */}
-                  {teamBSendingPlayers.map((p) => (
-                    <div
-                      key={p.id}
-                      className="flex items-center justify-between bg-rink-surface border border-rink-border rounded-lg p-2 gap-2"
-                    >
-                      <div className="flex items-center space-x-2.5 min-w-0 flex-1">
-                        {p.headshotUrl && (
-                          <img src={p.headshotUrl} alt={p.name} className="w-8 h-8 rounded-full object-cover bg-slate-800 shrink-0" />
-                        )}
-                        <div className="min-w-0 flex-1">
-                          <div className="text-xs font-bold text-white flex flex-wrap items-center gap-1.5">
-                            <span className="truncate">{p.name}</span>
-                            <span className="text-[9px] px-1 py-0.2 bg-slate-800 text-emerald-400 rounded shrink-0">
-                              {p.primaryPosition}
-                            </span>
-                          </div>
-                          <div className="text-[10px] text-emerald-400 font-mono truncate">
-                            ${(p.capHit / 1e6).toFixed(2)}M AAV
+                  {teamBSendingPlayers.map((p) => {
+                    const retPct = playerRetentions[p.id] || 0;
+                    const retainedAmt = (p.capHit * retPct) / 100;
+                    return (
+                      <div
+                        key={p.id}
+                        className="flex items-center justify-between bg-rink-surface border border-rink-border rounded-lg p-2 gap-2"
+                      >
+                        <div className="flex items-center space-x-2.5 min-w-0 flex-1">
+                          {p.headshotUrl && (
+                            <img src={p.headshotUrl} alt={p.name} className="w-8 h-8 rounded-full object-cover bg-slate-800 shrink-0" />
+                          )}
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs font-bold text-white flex flex-wrap items-center gap-1.5">
+                              <span className="truncate">{p.name}</span>
+                              <span className="text-[9px] px-1 py-0.2 bg-slate-800 text-emerald-400 rounded shrink-0">
+                                {p.primaryPosition}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2 flex-wrap mt-0.5">
+                              <span className="text-[10px] text-emerald-400 font-mono">
+                                ${((p.capHit - retainedAmt) / 1e6).toFixed(2)}M AAV
+                              </span>
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleCycleSalaryRetention(p.id);
+                                }}
+                                className={`text-[9px] px-1.5 py-0.5 rounded font-mono font-bold border transition flex items-center gap-1 cursor-pointer shrink-0 ${
+                                  retPct === 50
+                                    ? 'bg-amber-950/80 text-amber-300 border-amber-600/80 hover:bg-amber-900'
+                                    : retPct > 0
+                                    ? 'bg-sky-950/80 text-sky-300 border-sky-600/80 hover:bg-sky-900'
+                                    : 'bg-slate-900/80 text-slate-400 border-slate-700 hover:text-slate-200 hover:border-slate-500'
+                                }`}
+                                title="Click to cycle retention: 0% ↔ 25% ↔ 50% (CBA Max)"
+                              >
+                                <Percent className="w-2.5 h-2.5" />
+                                <span>
+                                  {retPct > 0
+                                    ? `Retain ${retPct}% (-$${(retainedAmt / 1e6).toFixed(2)}M)`
+                                    : 'Retain 0%'}
+                                </span>
+                                <span className="text-[8px] opacity-60">⇄</span>
+                              </button>
+                            </div>
                           </div>
                         </div>
+                        <button
+                          onClick={() => {
+                            setTeamBPlayerIds(teamBPlayerIds.filter((id) => id !== p.id));
+                            setPlayerRetentions((prev) => {
+                              const updated = { ...prev };
+                              delete updated[p.id];
+                              return updated;
+                            });
+                          }}
+                          className="text-slate-500 hover:text-red-400 p-1 shrink-0"
+                          title="Remove player"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
                       </div>
-                      <button
-                        onClick={() => setTeamBPlayerIds(teamBPlayerIds.filter((id) => id !== p.id))}
-                        className="text-slate-500 hover:text-red-400 p-1 shrink-0"
-                        title="Remove player"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  ))}
+                    );
+                  })}
 
                   {/* Prospects (e.g. Radim Mrtka) */}
                   {teamBSendingProspects.map((pr) => (
@@ -885,13 +1058,29 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                     >
                       <div className="flex items-center space-x-2 min-w-0 flex-1">
                         <Ticket className="w-4 h-4 text-amber-400 shrink-0" />
-                        <div className="min-w-0 flex-1 flex flex-wrap items-center gap-1">
+                        <div className="min-w-0 flex-1 flex flex-wrap items-center gap-1.5">
                           <span className="font-bold text-amber-300 truncate">
                             {pick.year} Round {pick.round} ({pick.originalTeamId})
                           </span>
-                          <span className="text-[10px] text-slate-400 font-mono shrink-0">
-                            {pick.protection.replace(/_/g, ' ')}
-                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleCyclePickProtection(pick.id, false);
+                            }}
+                            className={`text-[9px] px-1.5 py-0.5 rounded font-mono font-bold border transition flex items-center gap-1 cursor-pointer shrink-0 ${
+                              pick.protection === 'UNPROTECTED'
+                                ? 'bg-rose-950/70 text-rose-300 border-rose-800 hover:bg-rose-900/80'
+                                : pick.protection === 'TOP_5_PROTECTED'
+                                ? 'bg-purple-950/70 text-purple-300 border-purple-800 hover:bg-purple-900/80'
+                                : 'bg-amber-950/70 text-amber-300 border-amber-800 hover:bg-amber-900/80'
+                            }`}
+                            title="Click to toggle: Top 10 Protected ↔ Top 5 Protected ↔ Unprotected"
+                          >
+                            <Shield className="w-2.5 h-2.5 shrink-0" />
+                            <span>{pick.protection.replace(/_/g, ' ')}</span>
+                            <span className="text-[8px] opacity-60">⇄</span>
+                          </button>
                         </div>
                       </div>
                       <button
@@ -965,6 +1154,13 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                       </option>
                     ))}
                 </select>
+
+                <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+                  <span className="flex items-center gap-1.5 text-emerald-400/90 font-medium">
+                    <Percent className="w-3 h-3 text-emerald-400" />
+                    <span>Click the <strong>Retain</strong> chip on any traded player to cycle 0% ↔ 25% ↔ 50%</span>
+                  </span>
+                </div>
               </div>
             )}
 
@@ -1626,8 +1822,9 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
         teamBProspects={teamBSendingProspects}
         teamADraftPicks={teamADraftPicks}
         teamBDraftPicks={teamBDraftPicks}
-        retainSalary={retainSalary}
+        retainSalary={retainSalary || Object.keys(playerRetentions).length > 0}
         retentionPct={retentionPct}
+        playerRetentions={playerRetentions}
         evaluation={evaluation}
         onFeatureSaved={() => {
           fetchFeaturedTrades().then((data) => {

@@ -29,7 +29,7 @@ for (const pr of INITIAL_PROSPECTS) {
 }
 
 function formatDraftPickToken(token: string): string {
-  // Format tokens like 'buf-2027-rd1' -> '2027 1st Rd Pick (BUF)'
+  // Format tokens like 'buf-2027-rd1' or 'buf-2028-rd1-unprot' -> '2028 1st Rd (BUF [Unprot])'
   const parts = token.split('-');
   if (parts.length >= 3) {
     const team = parts[0].toUpperCase();
@@ -37,7 +37,10 @@ function formatDraftPickToken(token: string): string {
     const rd = parts[2].toLowerCase();
     const rdNum = rd.replace('rd', '');
     const suffix = rdNum === '1' ? 'st' : rdNum === '2' ? 'nd' : rdNum === '3' ? 'rd' : 'th';
-    return `${year} ${rdNum}${suffix} Rd Pick (${team})`;
+    let prot = '';
+    if (parts.includes('unprot')) prot = ' [Unprot]';
+    else if (parts.includes('top5')) prot = ' [Top 5]';
+    return `${year} ${rdNum}${suffix} Rd (${team}${prot})`;
   }
   return token.toUpperCase();
 }
@@ -45,7 +48,8 @@ function formatDraftPickToken(token: string): string {
 function resolveAssetNames(
   playerIdsStr: string | null,
   prospectIdsStr: string | null,
-  draftPickIdsStr: string | null
+  draftPickIdsStr: string | null,
+  retMap?: Map<number, number>
 ): string[] {
   const assets: string[] = [];
 
@@ -54,14 +58,15 @@ function resolveAssetNames(
     const tokens = playerIdsStr.split(',').map((s) => s.trim()).filter(Boolean);
     for (const token of tokens) {
       const num = parseInt(token, 10);
+      const retPct = !isNaN(num) && retMap?.get(num);
+      const retLabel = retPct ? ` (${retPct}% Ret)` : '';
       if (!isNaN(num) && PLAYERS_BY_ID.has(num)) {
-        assets.push(PLAYERS_BY_ID.get(num)!);
+        assets.push(`${PLAYERS_BY_ID.get(num)!}${retLabel}`);
       } else if (token) {
-        // If not a numeric ID or not found, use token as name if alphabetic
         if (isNaN(num)) {
-          assets.push(decodeURIComponent(token));
+          assets.push(`${decodeURIComponent(token)}${retLabel}`);
         } else {
-          assets.push(`Player #${token}`);
+          assets.push(`Player #${token}${retLabel}`);
         }
       }
     }
@@ -182,18 +187,37 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     const teamAName = FRANCHISE_MAP.get(rawTeamA) || rawTeamA;
     const teamBName = FRANCHISE_MAP.get(rawTeamB) || rawTeamB;
 
+    const retMap = new Map<number, number>();
+    const rawRets = url.searchParams.get('rets');
+    if (rawRets) {
+      for (const entry of rawRets.split(',')) {
+        const [idStr, pctStr] = entry.split(':');
+        const pId = parseInt(idStr, 10);
+        const pPct = parseInt(pctStr, 10);
+        if (!isNaN(pId) && !isNaN(pPct)) retMap.set(pId, pPct);
+      }
+    }
+    const legacyRet = url.searchParams.get('ret');
+    if (legacyRet && retMap.size === 0) {
+      const pRet = parseInt(legacyRet, 10);
+      const firstA = url.searchParams.get('pA')?.split(',')[0];
+      if (firstA && !isNaN(pRet)) retMap.set(parseInt(firstA, 10), pRet);
+    }
+
     // Team A receives assets sent by Team B (pB, prB, dpB)
     const teamAAssets = resolveAssetNames(
       url.searchParams.get('pB'),
       url.searchParams.get('prB'),
-      url.searchParams.get('dpB')
+      url.searchParams.get('dpB'),
+      retMap
     );
 
     // Team B receives assets sent by Team A (pA, prA, dpA)
     const teamBAssets = resolveAssetNames(
       url.searchParams.get('pA'),
       url.searchParams.get('prA'),
-      url.searchParams.get('dpA')
+      url.searchParams.get('dpA'),
+      retMap
     );
 
     const titleParam = url.searchParams.get('title');

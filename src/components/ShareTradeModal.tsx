@@ -33,6 +33,7 @@ interface ShareTradeModalProps {
   teamBDraftPicks: DraftPick[];
   retainSalary: boolean;
   retentionPct: number;
+  playerRetentions?: Record<number, number>;
   evaluation?: FranchiseTradeEvaluation | null;
   onFeatureSaved?: () => void;
 }
@@ -50,6 +51,7 @@ export const ShareTradeModal: React.FC<ShareTradeModalProps> = ({
   teamBDraftPicks,
   retainSalary,
   retentionPct,
+  playerRetentions,
   evaluation,
   onFeatureSaved,
 }) => {
@@ -88,6 +90,7 @@ export const ShareTradeModal: React.FC<ShareTradeModalProps> = ({
     teamBDraftPicks,
     retainSalary,
     retentionPct,
+    playerRetentions,
   };
 
   const shareableUrl = buildShareableTradeUrl(tradePayload);
@@ -100,15 +103,37 @@ export const ShareTradeModal: React.FC<ShareTradeModalProps> = ({
 
     // Format received assets
     const teamAAssetNames = [
-      ...teamBPlayers.map((p) => p.name),
+      ...teamBPlayers.map((p) => {
+        const ret = playerRetentions?.[p.id];
+        return ret && ret > 0 ? `${p.name} (${ret}% Ret)` : p.name;
+      }),
       ...teamBProspects.map((pr) => `${pr.name} (Prospect)`),
-      ...teamBDraftPicks.map((dp) => `${dp.year} Rd ${dp.round} (${dp.originalTeamId})`),
+      ...teamBDraftPicks.map((dp) => {
+        const prot =
+          dp.protection === 'UNPROTECTED'
+            ? 'Unprot'
+            : dp.protection === 'TOP_5_PROTECTED'
+            ? 'Top 5'
+            : 'Top 10';
+        return `${dp.year} Rd ${dp.round} (${prot})`;
+      }),
     ];
 
     const teamBAssetNames = [
-      ...teamAPlayers.map((p) => p.name),
+      ...teamAPlayers.map((p) => {
+        const ret = playerRetentions?.[p.id];
+        return ret && ret > 0 ? `${p.name} (${ret}% Ret)` : p.name;
+      }),
       ...teamAProspects.map((pr) => `${pr.name} (Prospect)`),
-      ...teamADraftPicks.map((dp) => `${dp.year} Rd ${dp.round} (${dp.originalTeamId})`),
+      ...teamADraftPicks.map((dp) => {
+        const prot =
+          dp.protection === 'UNPROTECTED'
+            ? 'Unprot'
+            : dp.protection === 'TOP_5_PROTECTED'
+            ? 'Top 5'
+            : 'Top 10';
+        return `${dp.year} Rd ${dp.round} (${prot})`;
+      }),
     ];
 
     let teamAMetrics = '+3.4 PTS  |  +4.1% CUP ODDS';
@@ -206,15 +231,25 @@ export const ShareTradeModal: React.FC<ShareTradeModalProps> = ({
     setFeatureMessage(null);
 
     const teamAAssetNames = [
-      ...teamAPlayers.map((p) => `${p.name} ($${(p.capHit / 1_000_000).toFixed(2)}M)`),
+      ...teamAPlayers.map((p) => {
+        const ret = playerRetentions?.[p.id];
+        const cap = ret && ret > 0 ? p.capHit * (1 - ret / 100) : p.capHit;
+        const retLabel = ret && ret > 0 ? ` [${ret}% Retained]` : '';
+        return `${p.name} ($${(cap / 1_000_000).toFixed(2)}M)${retLabel}`;
+      }),
       ...teamAProspects.map((pr) => `${pr.name} (Prospect)`),
-      ...teamADraftPicks.map((dp) => `${dp.year} Rd ${dp.round} (${dp.originalTeamId})`),
+      ...teamADraftPicks.map((dp) => `${dp.year} Rd ${dp.round} (${dp.originalTeamId} - ${dp.protection.replace(/_/g, ' ')})`),
     ];
 
     const teamBAssetNames = [
-      ...teamBPlayers.map((p) => `${p.name} ($${(p.capHit / 1_000_000).toFixed(2)}M)`),
+      ...teamBPlayers.map((p) => {
+        const ret = playerRetentions?.[p.id];
+        const cap = ret && ret > 0 ? p.capHit * (1 - ret / 100) : p.capHit;
+        const retLabel = ret && ret > 0 ? ` [${ret}% Retained]` : '';
+        return `${p.name} ($${(cap / 1_000_000).toFixed(2)}M)${retLabel}`;
+      }),
       ...teamBProspects.map((pr) => `${pr.name} (Prospect)`),
-      ...teamBDraftPicks.map((dp) => `${dp.year} Rd ${dp.round} (${dp.originalTeamId})`),
+      ...teamBDraftPicks.map((dp) => `${dp.year} Rd ${dp.round} (${dp.originalTeamId} - ${dp.protection.replace(/_/g, ' ')})`),
     ];
 
     const query = shareableUrl.includes('?') ? shareableUrl.split('?')[1] : '';
