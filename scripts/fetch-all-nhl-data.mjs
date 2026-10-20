@@ -268,7 +268,7 @@ async function main() {
       const mug = s.headshot || `https://assets.nhle.com/mugs/nhl/latest/${nhlId}.png`;
 
       allPlayers.push({
-        id: pid,
+        id: nhlId,
         nhlId: nhlId,
         name: fullName,
         nhlTeam: abbrev,
@@ -353,7 +353,7 @@ async function main() {
       const mug = g.headshot || `https://assets.nhle.com/mugs/nhl/latest/${nhlId}.png`;
 
       allPlayers.push({
-        id: pid,
+        id: nhlId,
         nhlId: nhlId,
         name: fullName,
         nhlTeam: abbrev,
@@ -421,7 +421,7 @@ async function main() {
 
       if (isGoalie) {
         allPlayers.push({
-          id: pid,
+          id: rp.id,
           nhlId: rp.id,
           name: fullName,
           nhlTeam: abbrev,
@@ -462,7 +462,7 @@ async function main() {
         });
       } else {
         allPlayers.push({
-          id: pid,
+          id: rp.id,
           nhlId: rp.id,
           name: fullName,
           nhlTeam: abbrev,

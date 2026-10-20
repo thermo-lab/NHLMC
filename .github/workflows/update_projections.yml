@@ -26,7 +26,7 @@ jobs:
         run: npm ci
 
       - name: Run NHL data ingestion script
-        run: node scripts/fetch-nhl-data.mjs
+        run: node scripts/fetch-all-nhl-data.mjs
 
       - name: Commit and push updated dataset
         run: |
