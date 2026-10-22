@@ -11,9 +11,15 @@ test('Trade Targets Engine: Evaluates 805 players and identifies ripeness archet
 
   const buyLows = targets.filter((t) => t.archetype === 'BUY_LOW');
   const sellHighs = targets.filter((t) => t.archetype === 'SELL_HIGH');
+  const capCasualties = targets.filter((t) => t.archetype === 'CAP_CASUALTY');
+  const buriedTalents = targets.filter((t) => t.archetype === 'BURIED_TALENT');
+  const expiringRentals = targets.filter((t) => t.archetype === 'EXPIRING_RENTAL');
 
   assert.ok(buyLows.length > 5, `Identified ${buyLows.length} buy-low candidates`);
   assert.ok(sellHighs.length > 5, `Identified ${sellHighs.length} sell-high candidates`);
+  assert.ok(capCasualties.length > 5, `Identified ${capCasualties.length} cap casualty candidates`);
+  assert.ok(buriedTalents.length > 5, `Identified ${buriedTalents.length} buried talent candidates`);
+  assert.ok(expiringRentals.length > 5, `Identified ${expiringRentals.length} expiring rental candidates`);
 
   // Verify sorting
   for (let i = 0; i < targets.length - 1; i++) {

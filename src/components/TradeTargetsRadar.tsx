@@ -17,6 +17,7 @@ import {
   SlidersHorizontal,
   Activity,
   CheckCircle2,
+  ArrowUpDown,
 } from 'lucide-react';
 import { Player } from '../types/player';
 import { NHLTeam } from '../types/franchise';
@@ -319,17 +320,20 @@ export const TradeTargetsRadar: React.FC<TradeTargetsRadarProps> = ({
             </select>
           </div>
 
-          {/* Sort By */}
-          <div className="md:col-span-3">
+          {/* Sort By Selector */}
+          <div className="md:col-span-3 relative">
+            <ArrowUpDown className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-sky-400 pointer-events-none" />
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="w-full bg-rink-surface border border-rink-border text-white text-xs rounded-lg px-3 py-2.5 focus:outline-none focus:border-brand-500 font-bold"
+              className="w-full bg-rink-surface border border-rink-border text-white text-xs rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:border-brand-500 font-bold cursor-pointer"
+              aria-label="Sort Candidates By"
+              title="Sort Candidates"
             >
-              <option value="RIPENESS_DESC">Highest Ripeness Score</option>
-              <option value="SHOT_DEFICIT_DESC">Coldest Shooting % (Buy Low)</option>
-              <option value="PACE_GAP_DESC">Largest Pace Slump Gap</option>
-              <option value="CAP_DESC">Highest Cap Hit AAV</option>
+              <option value="RIPENESS_DESC">Sort: Highest Ripeness</option>
+              <option value="SHOT_DEFICIT_DESC">Sort: Coldest Shooting % (Buy Low)</option>
+              <option value="PACE_GAP_DESC">Sort: Largest Pace Slump Gap</option>
+              <option value="CAP_DESC">Sort: Highest Cap Hit AAV</option>
             </select>
           </div>
         </div>
@@ -368,16 +372,16 @@ export const TradeTargetsRadar: React.FC<TradeTargetsRadarProps> = ({
                       <img
                         src={p.headshotUrl}
                         alt={p.name}
-                        className="w-13 h-13 rounded-full object-cover bg-slate-800 border border-slate-700 shrink-0"
+                        className="w-14 h-14 min-w-[3.5rem] rounded-full object-cover bg-slate-800 border border-slate-700 shrink-0"
                       />
                     ) : (
-                      <div className="w-13 h-13 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-white shrink-0">
+                      <div className="w-14 h-14 min-w-[3.5rem] rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-white shrink-0">
                         {p.primaryPosition}
                       </div>
                     )}
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="text-base font-bold text-white truncate">{p.name}</h3>
+                        <h3 className="text-base font-bold text-white leading-snug">{p.name}</h3>
                         <span
                           className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold border ${badge.color}`}
                         >

@@ -1,5 +1,6 @@
 import { Player } from '../types/player';
 import { NHLTeam } from '../types/franchise';
+import { NHL_FRANCHISES } from '../data/nhlFranchises';
 
 export type RipenessArchetype =
   | 'BUY_LOW'
@@ -32,8 +33,9 @@ export function evaluateTradeTargets(
   players: Player[],
   franchises: NHLTeam[] = []
 ): TradeTarget[] {
+  const teamList = franchises && franchises.length > 0 ? franchises : NHL_FRANCHISES;
   const teamMap = new Map<string, NHLTeam>();
-  for (const t of franchises) {
+  for (const t of teamList) {
     teamMap.set(t.id, t);
     teamMap.set(t.abbrev, t);
   }
@@ -46,6 +48,8 @@ export function evaluateTradeTargets(
     const isContender = team?.contenderTier === 'STANLEY_CUP_CONTENDER';
     const isRebuilder = team?.contenderTier === 'REBUILDING';
     const teamCapSpace = team ? team.capSpace : 2000000;
+    const teamPayroll = team?.activePayroll || 0;
+    const isCapConstrained = teamCapSpace <= 2000000 || teamPayroll >= 87000000;
 
     // 1. Skater Evaluation
     if (p.playerType === 'skater') {
@@ -69,7 +73,10 @@ export function evaluateTradeTargets(
       }
 
       const currentPacePts = Number(((pts / gp) * 82).toFixed(1));
-      const expectedPacePts = Number((pts + (proj.rosPoints || 0)).toFixed(1));
+      const baselineExpectedPts = isDef
+        ? Math.max(16, Math.round(toiMin * 1.6 + (cap / 1e6) * 2.0))
+        : Math.max(25, Math.round(toiMin * 3.0 + (cap / 1e6) * 3.2));
+      const expectedPacePts = baselineExpectedPts;
       const paceDelta = Number((currentPacePts - expectedPacePts).toFixed(1));
 
       const actualShootingPct = shots > 0 ? Number(((goals / shots) * 100).toFixed(1)) : 10.0;
@@ -198,11 +205,19 @@ export function evaluateTradeTargets(
       }
 
       // ARCHETYPE E: CAP_CASUALTY (Hard Cap Ceiling Squeeze)
-      // Big cap hit on a team facing severe cap crunch
-      if (teamCapSpace <= 1200000 && cap >= 4500000 && paceDelta <= -5) {
-        const crunchFactor = Math.min(35, (2000000 - teamCapSpace) / 50000);
-        const capWeight = Math.min(35, (cap / 1e6) * 4);
-        const ripenessScore = Math.min(91, Math.round(30 + crunchFactor + capWeight));
+      // Big cap hit on a team facing severe cap crunch with suboptimal cost efficiency
+      const costPerPoint = cap / Math.max(12, currentPacePts);
+      const isUnderperformingAAV =
+        (!isDef && cap >= 4000000 && currentPacePts <= 42) ||
+        (isDef && cap >= 4000000 && currentPacePts <= 22) ||
+        (cap >= 5000000 && (!isDef ? toiMin <= 15.5 : toiMin <= 18.5)) ||
+        (cap >= 4500000 && costPerPoint >= 125000);
+
+      if (isCapConstrained && isUnderperformingAAV) {
+        const crunchFactor = Math.min(30, Math.max(10, Math.round((2500000 - teamCapSpace) / 80000)));
+        const capWeight = Math.min(35, (cap / 1e6) * 3.5);
+        const inefficiencyFactor = Math.min(25, Math.round(costPerPoint / 10000));
+        const ripenessScore = Math.min(94, Math.max(60, Math.round(20 + crunchFactor + capWeight + inefficiencyFactor * 0.5)));
 
         targets.push({
           player: p,
@@ -215,12 +230,12 @@ export function evaluateTradeTargets(
           actualShootingPct,
           expectedShootingPct,
           shootingPctDelta,
-          diagnosis: `${p.nhlTeam} has only $${(teamCapSpace / 1e6).toFixed(2)}M cap cushion under the $88.0M ceiling. Club is under intense pressure to shed $${(cap / 1e6).toFixed(1)}M payroll.`,
-          recommendedAction: 'Acquiring franchise holds supreme leverage to demand retention or pick sweeteners.',
+          diagnosis: `${p.nhlTeam} has only $${(teamCapSpace / 1e6).toFixed(2)}M cap cushion against the ceiling with an active payroll of $${((teamPayroll) / 1e6).toFixed(1)}M. Carrying a $${(cap / 1e6).toFixed(2)}M AAV cap hit on a ${currentPacePts} pt pace ($${Math.round(costPerPoint).toLocaleString()}/pt) forces management to explore trade relief.`,
+          recommendedAction: 'Acquiring franchise holds supreme leverage to demand retention or draft sweeteners.',
           keyMetric: {
-            label: 'Cap Space Squeeze',
-            value: `$${(teamCapSpace / 1e6).toFixed(2)}M`,
-            subtext: `${p.nhlTeam} near $88M hard cap`,
+            label: 'Cap Hit vs Pace',
+            value: `$${(cap / 1e6).toFixed(2)}M AAV`,
+            subtext: `${currentPacePts} pt pace ($${(teamCapSpace / 1e6).toFixed(2)}M team space)`,
           },
         });
         continue;
@@ -256,7 +271,7 @@ export function evaluateTradeTargets(
           actualShootingPct: 0,
           expectedShootingPct: 0,
           shootingPctDelta: 0,
-          diagnosis: `Elite starter enduring a temporary $.${Math.round(svPct * 1000)} SV% slump over ${gp} starts. Historically a $.${Math.round(rosSvPct * 1000)} cornerstone; defensive breakdowns on ${p.nhlTeam} mask elite underlying technique.`,
+          diagnosis: `Elite starter enduring a temporary .${Math.round(svPct * 1000)} SV% slump over ${gp} starts. Historically a .${Math.round(rosSvPct * 1000)} cornerstone; defensive breakdowns on ${p.nhlTeam} mask elite underlying technique.`,
           recommendedAction: 'Buy low before baseline save mechanics restore high-danger stabilization.',
           keyMetric: {
             label: 'Save % Slump',
@@ -290,6 +305,33 @@ export function evaluateTradeTargets(
             subtext: `Prime rental for Cup contender`,
           },
         });
+        continue;
+      }
+
+      // Goalie Cap Casualty (Expensive goalie on tight team)
+      if (isCapConstrained && cap >= 3500000 && svPct <= 0.895) {
+        const ripenessScore = Math.min(93, Math.round(55 + (cap / 1e6) * 3));
+
+        targets.push({
+          player: p,
+          archetype: 'CAP_CASUALTY',
+          ripenessScore,
+          urgencyLabel: ripenessScore >= 85 ? 'HIGH' : 'MODERATE',
+          currentPacePts: 0,
+          expectedPacePts: 0,
+          paceDelta: 0,
+          actualShootingPct: 0,
+          expectedShootingPct: 0,
+          shootingPctDelta: 0,
+          diagnosis: `${p.nhlTeam} carries a $${(cap / 1e6).toFixed(2)}M cap hit in net while constrained to $${(teamCapSpace / 1e6).toFixed(2)}M space. Sub-.900 save percentage creates urgent pressure to reallocate salary.`,
+          recommendedAction: 'Target for buy-out rehabilitation trade or package with sweetening draft capital.',
+          keyMetric: {
+            label: 'Goaltender Cap Pressure',
+            value: `$${(cap / 1e6).toFixed(2)}M AAV`,
+            subtext: `.${Math.round(svPct * 1000)} SV% ($${(teamCapSpace / 1e6).toFixed(2)}M team space)`,
+          },
+        });
+        continue;
       }
     }
   }
