@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "fetch-data": "node scripts/fetch-nhl-data.mjs",
-    "test": "tsx --test tests/engine.test.mjs tests/accuracy.test.mjs tests/tradeUrl.test.mjs tests/og.test.mjs"
+    "test": "tsx --test tests/engine.test.mjs tests/accuracy.test.mjs tests/tradeUrl.test.mjs tests/og.test.mjs tests/tradeTargets.test.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

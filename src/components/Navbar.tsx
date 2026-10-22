@@ -11,8 +11,8 @@ import {
 } from 'lucide-react';
 
 interface NavbarProps {
-  activeTab: 'trade' | 'historical' | 'teams' | 'players' | 'guide' | 'admin';
-  setActiveTab: (tab: 'trade' | 'historical' | 'teams' | 'players' | 'guide' | 'admin') => void;
+  activeTab: 'trade' | 'targets' | 'historical' | 'teams' | 'players' | 'guide' | 'admin';
+  setActiveTab: (tab: 'trade' | 'targets' | 'historical' | 'teams' | 'players' | 'guide' | 'admin') => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {

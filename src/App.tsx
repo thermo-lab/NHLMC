@@ -5,15 +5,17 @@ import { HistoricalTradeAnalyzer } from './components/HistoricalTradeAnalyzer';
 import { TeamsHub } from './components/TeamsHub';
 import { PlayerBrowser } from './components/PlayerBrowser';
 import { GuideView } from './components/GuideView';
+import { TradeTargetsRadar } from './components/TradeTargetsRadar';
 import { AdminPortal } from './components/AdminPortal';
 import { NHL_FRANCHISES } from './data/nhlFranchises';
 import { INITIAL_PLAYERS } from './data/sampleLeague';
 import { INITIAL_PROSPECTS } from './data/nhlProspects';
 import { NHLProspect } from './types/prospect';
+import { Player } from './types/player';
 import { fetchFranchises, fetchPlayers, fetchProspects, saveProspectToD1 } from './services/api';
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<'trade' | 'historical' | 'teams' | 'players' | 'guide' | 'admin'>('trade');
+  const [activeTab, setActiveTab] = useState<'trade' | 'targets' | 'historical' | 'teams' | 'players' | 'guide' | 'admin'>('trade');
   const [franchises, setFranchises] = useState(NHL_FRANCHISES);
   const [players, setPlayers] = useState(INITIAL_PLAYERS);
   const [prospects, setProspects] = useState<NHLProspect[]>(INITIAL_PROSPECTS);
@@ -72,6 +74,18 @@ export function App() {
     saveProspectToD1(newProspect);
   };
 
+
+  const handleLoadTargetPlayerIntoMachine = (player: Player) => {
+    // Select the player's team as Team A, and select the player
+    const urlParams = `?v=1&tA=${encodeURIComponent(player.nhlTeam)}&pA=${player.id}`;
+    setInitialTradeParams(urlParams);
+    setSelectedTradeTeamAId(player.nhlTeam);
+    setActiveTab('trade');
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   const handleLoadTradeIntoMachine = (paramsString: string) => {
     let clean = paramsString;
     if (clean.includes('?')) clean = clean.split('?')[1];
@@ -94,6 +108,15 @@ export function App() {
             onCreateProspect={handleCreateProspect}
             initialTeamAId={selectedTradeTeamAId}
             initialTradeParams={initialTradeParams}
+          />
+        )}
+
+
+        {activeTab === 'targets' && (
+          <TradeTargetsRadar
+            players={players}
+            franchises={franchises}
+            onLoadPlayerIntoTradeMachine={handleLoadTargetPlayerIntoMachine}
           />
         )}
 
