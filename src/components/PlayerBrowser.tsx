@@ -11,6 +11,10 @@ import {
   Sparkles,
   UserPlus,
   Users,
+  X,
+  Zap,
+  TrendingUp,
+  Clock,
 } from 'lucide-react';
 import { Player, Position } from '../types/player';
 import { NHLProspect, ProspectPotential } from '../types/prospect';
@@ -197,7 +201,7 @@ export const PlayerBrowser: React.FC<PlayerBrowserProps> = ({
         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 pt-2 border-t border-rink-border">
           {/* Search Box */}
           <div className="relative flex-1 max-w-md">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 shrink-0" />
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 shrink-0 pointer-events-none" />
             <input
               type="text"
               value={searchTerm}
@@ -207,8 +211,19 @@ export const PlayerBrowser: React.FC<PlayerBrowserProps> = ({
                   ? 'Search player or team (e.g. McDavid, EDM, Makar)...'
                   : 'Search prospect, team, or draft (e.g. Radim Mrtka, BUF, Demidov)...'
               }
-              className="w-full bg-rink-surface border border-rink-border text-white text-xs rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:border-brand-500"
+              className="w-full bg-rink-surface border border-rink-border text-white text-xs rounded-lg pl-9 pr-8 py-2.5 focus:outline-none focus:border-brand-500 transition-colors"
             />
+            {searchTerm && (
+              <button
+                type="button"
+                onClick={() => setSearchTerm('')}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white p-1 rounded-full hover:bg-slate-700/50 transition-colors"
+                title="Clear search text"
+                aria-label="Clear search text"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
 
           {/* Position Pills & Selectors Group */}
@@ -482,94 +497,352 @@ export const PlayerBrowser: React.FC<PlayerBrowserProps> = ({
       )}
 
       {/* Player Detail Modal */}
-      {selectedPlayer && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-rink-card border border-rink-border rounded-xl max-w-md w-full p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-rink-border pb-3">
-              <div className="flex items-center space-x-3">
-                {selectedPlayer.headshotUrl && (
-                  <img
-                    src={selectedPlayer.headshotUrl}
-                    alt={selectedPlayer.name}
-                    className="w-12 h-12 rounded-full object-cover bg-slate-800"
-                  />
-                )}
-                <div>
-                  <h3 className="text-base font-bold text-white">{selectedPlayer.name}</h3>
-                  <div className="text-xs text-slate-400 font-mono">
-                    {selectedPlayer.primaryPosition} • {selectedPlayer.nhlTeam} • ${(selectedPlayer.capHit / 1e6).toFixed(2)}M AAV
-                  </div>
-                </div>
-              </div>
-              <button onClick={() => setSelectedPlayer(null)} className="text-slate-400 hover:text-white">
-                ✕
-              </button>
-            </div>
+      {selectedPlayer && (() => {
+        const isGoalie = selectedPlayer.playerType === 'goalie';
+        const skaterActual = selectedPlayer.actualStats?.skater;
+        const goalieActual = selectedPlayer.actualStats?.goalie;
+        const proj = selectedPlayer.projections;
 
-            {/* Projection Details */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold text-sky-400 uppercase tracking-wider">
-                Stochastic Rest-of-Season Profile
-              </h4>
-              <div className="bg-rink-surface p-3 rounded-lg border border-rink-border space-y-1.5 text-xs text-slate-300 font-mono">
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Remaining Games Base:</span>
-                  <span className="font-bold text-white">{selectedPlayer.projections.rosGamesRemaining} GP</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Playing Time Volatility (SD):</span>
-                  <span className="font-bold text-amber-400">
-                    ±{(selectedPlayer.projections.sdPlayingTimePct * 100).toFixed(0)}%
-                  </span>
-                </div>
-                {selectedPlayer.playerType === 'goalie' ? (
-                  <>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Expected Starts:</span>
-                      <span className="font-bold text-white">{selectedPlayer.projections.rosGamesStarted}</span>
+        // Skater Stats
+        const actualGp = skaterActual?.gamesPlayed || 0;
+        const actualGoals = skaterActual?.goals || 0;
+        const actualAssists = skaterActual?.assists || 0;
+        const actualPoints = skaterActual?.points ?? (actualGoals + actualAssists);
+        const actualPPP = skaterActual?.powerPlayPoints || 0;
+        const actualPPG = skaterActual?.powerPlayGoals || 0;
+        const actualPlusMinus = skaterActual?.plusMinus || 0;
+        const actualShots = skaterActual?.shots || 0;
+        const actualHits = skaterActual?.hits || 0;
+        const actualBlocks = skaterActual?.blockedShots || 0;
+        const actualPim = skaterActual?.penaltyMinutes || 0;
+        const actualToi = skaterActual?.avgTimeOnIce || '18:00';
+        const actualShPct = skaterActual?.shootingPctg ? (skaterActual.shootingPctg * 100).toFixed(1) : '10.0';
+
+        const rosGp = proj?.rosGamesRemaining || 0;
+        const rosGoals = proj?.rosGoals || 0;
+        const rosAssists = proj?.rosAssists || 0;
+        const rosPoints = proj?.rosPoints ?? (rosGoals + rosAssists);
+        const rosPPP =
+          proj?.rosPPP !== undefined && proj.rosPPP > 0
+            ? proj.rosPPP
+            : Math.round(rosPoints * (selectedPlayer.primaryPosition === 'D' ? 0.20 : 0.25));
+        const rosPlusMinus = proj?.rosPlusMinus || 0;
+        const rosSOG = proj?.rosSOG || 0;
+        const rosHits = proj?.rosHits || 0;
+        const rosBlocks = proj?.rosBlocks || 0;
+        const rosPim = proj?.rosPIM || 0;
+
+        // Full-Season 82-Game Totals
+        const totalGp = actualGp + rosGp;
+        const totalGoals = actualGoals + rosGoals;
+        const totalAssists = actualAssists + rosAssists;
+        const totalPoints = actualPoints + rosPoints;
+        const totalPPP = actualPPP + rosPPP;
+
+        // Goalie Stats
+        const gActualGp = goalieActual?.gamesPlayed || 0;
+        const gActualGs = goalieActual?.gamesStarted || 0;
+        const gWins = goalieActual?.wins || 0;
+        const gLosses = goalieActual?.losses || 0;
+        const gOtLosses = goalieActual?.otLosses || 0;
+        const gSvPct = goalieActual?.savePercentage ? goalieActual.savePercentage.toFixed(3) : '.905';
+        const gGaa = goalieActual?.goalsAgainstAverage ? goalieActual.goalsAgainstAverage.toFixed(2) : '2.85';
+        const gShutouts = goalieActual?.shutouts || 0;
+        const gSaves = goalieActual?.saves || 0;
+        const gShots = goalieActual?.shotsAgainst || 0;
+
+        const gRosGs = proj?.rosGamesStarted || 0;
+        const gRosSvPct = proj?.rosSavePctg ? proj.rosSavePctg.toFixed(3) : gSvPct;
+
+        return (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4">
+            <div className="bg-rink-card border border-rink-border rounded-2xl max-w-xl w-full p-5 sm:p-6 space-y-4 shadow-2xl max-h-[92vh] overflow-y-auto">
+              {/* Header */}
+              <div className="flex items-center justify-between border-b border-rink-border pb-3.5">
+                <div className="flex items-center space-x-3.5 min-w-0">
+                  {selectedPlayer.headshotUrl ? (
+                    <img
+                      src={selectedPlayer.headshotUrl}
+                      alt={selectedPlayer.name}
+                      className="w-13 h-13 rounded-full object-cover bg-slate-800 border border-slate-700 shrink-0"
+                    />
+                  ) : (
+                    <div className="w-13 h-13 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-white shrink-0">
+                      {selectedPlayer.primaryPosition}
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Projected Save %:</span>
-                      <span className="font-bold text-emerald-400">{selectedPlayer.projections.rosSavePctg}</span>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Projected Goals:</span>
-                      <span className="font-bold text-white">{selectedPlayer.projections.rosGoals}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Projected Assists:</span>
-                      <span className="font-bold text-white">{selectedPlayer.projections.rosAssists}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Projected Power Play Pts:</span>
-                      <span className="font-bold text-white">
-                        {selectedPlayer.projections.rosPPP !== undefined && selectedPlayer.projections.rosPPP > 0
-                          ? selectedPlayer.projections.rosPPP
-                          : Math.round(
-                              (selectedPlayer.projections.rosPoints || 0) *
-                                (selectedPlayer.primaryPosition === 'D' ? 0.20 : 0.25)
-                            )}
+                  )}
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="text-base sm:text-lg font-bold text-white truncate">
+                        {selectedPlayer.name}
+                      </h3>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-800 text-sky-400 border border-slate-700">
+                        {selectedPlayer.injuryStatus}
                       </span>
                     </div>
-                  </>
+                    <div className="text-xs text-slate-400 font-mono mt-0.5">
+                      <span className="font-bold text-slate-300">{selectedPlayer.primaryPosition}</span> •{' '}
+                      <span className="text-sky-400 font-semibold">{selectedPlayer.nhlTeam}</span> •{' '}
+                      <span className="text-emerald-400 font-semibold">
+                        ${(selectedPlayer.capHit / 1e6).toFixed(2)}M AAV
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedPlayer(null)}
+                  className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors shrink-0"
+                  title="Close modal"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* 82-Game Projected Summary Banner */}
+              <div className="bg-gradient-to-r from-sky-950/50 via-slate-900 to-indigo-950/40 border border-sky-800/40 rounded-xl p-3 space-y-1">
+                <div className="flex items-center justify-between text-[11px] text-slate-400">
+                  <span className="font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
+                    <TrendingUp className="w-3.5 h-3.5" />
+                    <span>82-Game Season Projected Pace</span>
+                  </span>
+                  <span className="font-mono text-slate-400">
+                    {totalGp > 0 ? `${totalGp} Total GP` : 'Full Season'}
+                  </span>
+                </div>
+                {!isGoalie ? (
+                  <div className="flex items-center justify-between text-xs sm:text-sm font-mono font-bold pt-0.5">
+                    <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                      <span className="text-white text-sm sm:text-base">{totalPoints} PTS</span>
+                      <span className="text-slate-600">•</span>
+                      <span className="text-slate-300">{totalGoals} G</span>
+                      <span className="text-slate-600">•</span>
+                      <span className="text-slate-300">{totalAssists} A</span>
+                      <span className="text-slate-600">•</span>
+                      <span className="text-amber-400">{totalPPP} PPP</span>
+                    </div>
+                    <span className="text-[11px] text-slate-400 font-normal">
+                      {(totalPoints / Math.max(1, totalGp)).toFixed(2)} P/GP
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between text-xs sm:text-sm font-mono font-bold pt-0.5">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <span className="text-white">{gActualGs + gRosGs} Expected Starts</span>
+                      <span className="text-slate-600">•</span>
+                      <span className="text-emerald-400">{gRosSvPct} SV%</span>
+                      <span className="text-slate-600">•</span>
+                      <span className="text-slate-300">{gGaa} GAA</span>
+                    </div>
+                  </div>
                 )}
               </div>
-            </div>
 
-            <div className="flex justify-end pt-2">
-              <button
-                onClick={() => setSelectedPlayer(null)}
-                className="px-4 py-2 rounded-lg bg-sky-600 text-white text-xs font-bold hover:bg-sky-500"
-              >
-                Close
-              </button>
+              {/* Dual Column: Current Season Actuals vs Rest-of-Season Projections */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {/* Column 1: Current Season (Actuals) */}
+                <div className="bg-rink-surface p-3.5 rounded-xl border border-rink-border space-y-2.5">
+                  <div className="flex items-center justify-between pb-2 border-b border-rink-border/70">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                      <Activity className="w-3.5 h-3.5" />
+                      <span>Current Season</span>
+                    </div>
+                    <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20">
+                      {!isGoalie ? `${actualGp} GP` : `${gActualGp} GP`}
+                    </span>
+                  </div>
+
+                  {!isGoalie ? (
+                    <div className="space-y-1.5 text-xs font-mono">
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Goals / Assists:</span>
+                        <span className="font-bold text-white">
+                          {actualGoals} G • {actualAssists} A
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Total Points:</span>
+                        <span className="font-bold text-emerald-400">
+                          {actualPoints} PTS{' '}
+                          <span className="text-slate-500 font-normal text-[11px]">
+                            ({actualGp > 0 ? (actualPoints / actualGp).toFixed(2) : '0.00'} P/GP)
+                          </span>
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Power Play:</span>
+                        <span className="font-bold text-amber-400">
+                          {actualPPP} PPP{' '}
+                          <span className="text-slate-500 font-normal text-[11px]">
+                            ({actualPPG} PPG)
+                          </span>
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Plus / Minus:</span>
+                        <span
+                          className={`font-bold ${
+                            actualPlusMinus > 0
+                              ? 'text-emerald-400'
+                              : actualPlusMinus < 0
+                              ? 'text-rose-400'
+                              : 'text-slate-300'
+                          }`}
+                        >
+                          {actualPlusMinus > 0 ? `+${actualPlusMinus}` : actualPlusMinus}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Shots on Goal:</span>
+                        <span className="font-bold text-white">
+                          {actualShots} SOG{' '}
+                          <span className="text-slate-500 font-normal text-[11px]">
+                            ({actualShPct}%)
+                          </span>
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Time on Ice (TOI):</span>
+                        <span className="font-bold text-sky-300">{actualToi}</span>
+                      </div>
+                      <div className="flex justify-between border-t border-slate-800/80 pt-1 text-[11px]">
+                        <span className="text-slate-500">Hits / Blocks / PIM:</span>
+                        <span className="text-slate-300">
+                          {actualHits}H • {actualBlocks}B • {actualPim}M
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-1.5 text-xs font-mono">
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Record:</span>
+                        <span className="font-bold text-white">
+                          {gWins}-{gLosses}-{gOtLosses}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Games Started:</span>
+                        <span className="font-bold text-white">{gActualGs} GS</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Save %:</span>
+                        <span className="font-bold text-emerald-400">{gSvPct}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Goals Against Avg:</span>
+                        <span className="font-bold text-white">{gGaa}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Shutouts:</span>
+                        <span className="font-bold text-sky-400">{gShutouts} SO</span>
+                      </div>
+                      <div className="flex justify-between border-t border-slate-800/80 pt-1 text-[11px]">
+                        <span className="text-slate-500">Saves / Shots Faced:</span>
+                        <span className="text-slate-300">
+                          {gSaves} / {gShots}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Column 2: Rest-of-Season (Projected) */}
+                <div className="bg-rink-surface p-3.5 rounded-xl border border-sky-800/40 space-y-2.5">
+                  <div className="flex items-center justify-between pb-2 border-b border-sky-800/40">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-sky-400 uppercase tracking-wider">
+                      <Zap className="w-3.5 h-3.5" />
+                      <span>Projected (ROS)</span>
+                    </div>
+                    <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-sky-500/10 text-sky-300 font-bold border border-sky-500/20">
+                      {!isGoalie ? `${rosGp} Rem GP` : `${gRosGs} Starts`}
+                    </span>
+                  </div>
+
+                  {!isGoalie ? (
+                    <div className="space-y-1.5 text-xs font-mono">
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Projected Goals:</span>
+                        <span className="font-bold text-white">{rosGoals} G</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Projected Assists:</span>
+                        <span className="font-bold text-white">{rosAssists} A</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Projected Points:</span>
+                        <span className="font-bold text-sky-400">
+                          {rosPoints} PTS{' '}
+                          <span className="text-slate-500 font-normal text-[11px]">
+                            ({rosGp > 0 ? (rosPoints / rosGp).toFixed(2) : '0.00'} P/GP)
+                          </span>
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Projected Power Play:</span>
+                        <span className="font-bold text-amber-400">{rosPPP} PPP</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Projected Plus / Minus:</span>
+                        <span
+                          className={`font-bold ${
+                            rosPlusMinus > 0
+                              ? 'text-emerald-400'
+                              : rosPlusMinus < 0
+                              ? 'text-rose-400'
+                              : 'text-slate-300'
+                          }`}
+                        >
+                          {rosPlusMinus > 0 ? `+${rosPlusMinus}` : rosPlusMinus}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Projected SOG:</span>
+                        <span className="font-bold text-white">{rosSOG} SOG</span>
+                      </div>
+                      <div className="flex justify-between border-t border-slate-800/80 pt-1 text-[11px]">
+                        <span className="text-slate-500">Volatility (SD):</span>
+                        <span className="text-amber-400 font-bold">
+                          ±{(proj?.sdPlayingTimePct ? proj.sdPlayingTimePct * 100 : 12).toFixed(0)}%
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-1.5 text-xs font-mono">
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Expected Starts:</span>
+                        <span className="font-bold text-white">{gRosGs} Starts</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Projected Save %:</span>
+                        <span className="font-bold text-emerald-400">{gRosSvPct}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Projected Tier:</span>
+                        <span className="font-bold text-sky-300">Franchise Starter</span>
+                      </div>
+                      <div className="flex justify-between border-t border-slate-800/80 pt-1 text-[11px]">
+                        <span className="text-slate-500">Playing Time Volatility:</span>
+                        <span className="text-amber-400 font-bold">
+                          ±{(proj?.sdPlayingTimePct ? proj.sdPlayingTimePct * 100 : 12).toFixed(0)}%
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="flex justify-end pt-1">
+                <button
+                  onClick={() => setSelectedPlayer(null)}
+                  className="px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-colors"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* Custom Prospect Creation Modal */}
       {isModalOpen && (
