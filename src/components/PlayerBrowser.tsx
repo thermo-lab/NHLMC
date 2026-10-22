@@ -545,7 +545,14 @@ export const PlayerBrowser: React.FC<PlayerBrowserProps> = ({
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Projected Power Play Pts:</span>
-                      <span className="font-bold text-white">{selectedPlayer.projections.rosPPP}</span>
+                      <span className="font-bold text-white">
+                        {selectedPlayer.projections.rosPPP !== undefined && selectedPlayer.projections.rosPPP > 0
+                          ? selectedPlayer.projections.rosPPP
+                          : Math.round(
+                              (selectedPlayer.projections.rosPoints || 0) *
+                                (selectedPlayer.primaryPosition === 'D' ? 0.20 : 0.25)
+                            )}
+                      </span>
                     </div>
                   </>
                 )}

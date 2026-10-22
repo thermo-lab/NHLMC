@@ -258,12 +258,66 @@ async function main() {
       const isDef = posInfo.primary === 'D';
       const hits = Math.round(skaterGp * (isDef ? 1.6 : 1.1));
       const blocks = Math.round(skaterGp * (isDef ? 2.1 : 0.5));
-      const ppp = Math.round(ppg * 1.8);
 
       const remainingGames = Math.max(0, 82 - skaterGp);
       const gPerGame = goals / skaterGp;
       const aPerGame = assists / skaterGp;
       const ptsPerGame = pts / skaterGp;
+      const rosPoints = Math.round(ptsPerGame * remainingGames);
+      const rosGoals = Math.round(gPerGame * remainingGames);
+      const rosAssists = Math.round(aPerGame * remainingGames);
+
+      // Average Time on Ice in minutes
+      const toiSeconds = s.avgTimeOnIcePerGame || 960;
+      const toiMin = toiSeconds / 60;
+
+      // Realistic Power Play Share (% of total points scored on PP)
+      let ppShare = 0.10;
+      if (!isDef) {
+        if (toiMin >= 19.0 || ptsPerGame >= 0.85 || cap >= 7000000) {
+          // Top-line / PP1 staple (Scheifele, McDavid, Eichel, MacKinnon, Kucherov, Draisaitl)
+          ppShare = 0.28;
+        } else if (toiMin >= 17.0 || ptsPerGame >= 0.65 || cap >= 4500000) {
+          // Top-6 / PP2 staple
+          ppShare = 0.22;
+        } else if (toiMin >= 14.5 || ptsPerGame >= 0.40) {
+          // Middle-six forward
+          ppShare = 0.14;
+        } else {
+          // Bottom-six checking forward
+          ppShare = 0.05;
+        }
+      } else {
+        if ((toiMin >= 21.0 && ptsPerGame >= 0.50) || cap >= 7000000) {
+          // Elite PP1 quarterback (Fox, Makar, Hedman, Hughes, Josi, Dahlin)
+          ppShare = 0.32;
+        } else if (toiMin >= 19.5 || ptsPerGame >= 0.35 || cap >= 4500000) {
+          // Top-4 offensive / secondary PP defenseman
+          ppShare = 0.20;
+        } else if (toiMin >= 17.5 && ptsPerGame >= 0.20) {
+          // Two-way defenseman
+          ppShare = 0.10;
+        } else {
+          // Shutdown / 3rd-pair defenseman
+          ppShare = 0.03;
+        }
+      }
+
+      // If observed power play goals exist, blend observed with baseline
+      if (ppg > 0) {
+        const observedPpgRate = (ppg * 2.5) / Math.max(1, pts);
+        ppShare = Math.min(0.45, Math.max(ppShare, observedPpgRate * 0.6 + ppShare * 0.4));
+      }
+
+      // Actual and Projected Power Play Points
+      let ppp = 0;
+      if (ppg > 0) {
+        ppp = Math.max(ppg, Math.round(ppg * 2.4));
+      } else if (ppShare >= 0.20 && pts >= 2) {
+        ppp = Math.max(0, Math.round(pts * ppShare));
+      }
+
+      const rosPPP = Math.round(rosPoints * ppShare);
 
       const mug = s.headshot || `https://assets.nhle.com/mugs/nhl/latest/${nhlId}.png`;
 
@@ -302,7 +356,7 @@ async function main() {
           rosAssists: Math.round(aPerGame * remainingGames),
           rosPoints: Math.round(ptsPerGame * remainingGames),
           rosPlusMinus: Math.round((plusMinus / skaterGp) * remainingGames),
-          rosPPP: Math.round((ppp / skaterGp) * remainingGames),
+          rosPPP: rosPPP,
           rosSOG: Math.round((shots / skaterGp) * remainingGames),
           rosHits: Math.round(hits * (remainingGames / skaterGp)),
           rosBlocks: Math.round(blocks * (remainingGames / skaterGp)),
