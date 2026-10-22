@@ -8,6 +8,7 @@ import {
   ShieldCheck,
   Building2,
   Trophy,
+  Target,
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -69,6 +70,18 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
               </button>
 
               <button
+                onClick={() => setActiveTab('targets')}
+                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                  activeTab === 'targets'
+                    ? 'bg-sky-500/15 text-sky-400 border border-sky-500/30 font-bold'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                }`}
+              >
+                <Target className="w-4 h-4 text-rose-400" />
+                <span>Trade Targets</span>
+              </button>
+
+              <button
                 onClick={() => setActiveTab('historical')}
                 className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                   activeTab === 'historical'
@@ -89,7 +102,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
                 }`}
               >
                 <Building2 className="w-4 h-4 text-sky-400" />
-                <span>32 Teams & Payroll</span>
+                <span>32 Teams &amp; Payroll</span>
               </button>
 
               <button
@@ -135,7 +148,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
               <button
                 onClick={() => setActiveTab('admin')}
                 className="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40"
-                title="Admin & Editorial Portal"
+                title="Admin &amp; Editorial Portal"
               >
                 <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
                 <span className="hidden sm:inline">Admin Mode</span>
@@ -156,6 +169,17 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
           >
             <Trophy className="w-3 h-3 text-amber-400" />
             <span>Trade Machine</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('targets')}
+            className={`flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-semibold whitespace-nowrap shrink-0 ${
+              activeTab === 'targets'
+                ? 'bg-sky-500/20 text-sky-400 border border-sky-500/30'
+                : 'text-slate-400'
+            }`}
+          >
+            <Target className="w-3 h-3 text-rose-400" />
+            <span>Targets</span>
           </button>
           <button
             onClick={() => setActiveTab('historical')}
