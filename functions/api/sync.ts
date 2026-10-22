@@ -78,7 +78,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         timestamp: new Date().toISOString(),
       }),
       {
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     );
   } catch (err: any) {
@@ -91,7 +94,66 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       }),
       {
         status: 500,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    );
+  }
+};
+
+export const onRequestGet: PagesFunction<Env> = async (context) => {
+  try {
+    const db = context.env.DB;
+    if (!db) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: 'D1 database binding "DB" is not bound',
+        }),
+        {
+          status: 503,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
+        }
+      );
+    }
+
+    const { results } = await db
+      .prepare('SELECT * FROM sync_log ORDER BY created_at DESC LIMIT 10')
+      .all();
+
+    const latest = results && results.length > 0 ? results[0] : null;
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        lastSync: latest,
+        history: results || [],
+      }),
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: err.message,
+      }),
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
       }
     );
   }

@@ -113,7 +113,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
                 }`}
               >
                 <BookOpen className="w-4 h-4" />
-                <span>Analytics Guide</span>
+                <span>Trade Methodology</span>
               </button>
             </nav>
           </div>
@@ -199,7 +199,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
             }`}
           >
             <BookOpen className="w-3 h-3" />
-            <span>Guide</span>
+            <span>Methodology</span>
           </button>
           {activeTab === 'admin' && (
             <button

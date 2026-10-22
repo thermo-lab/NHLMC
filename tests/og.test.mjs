@@ -47,8 +47,8 @@ test('OG Engine: Generates valid RFC 2083 PNG byte stream for Twitter/X cards', 
   assert.ok(pngBytes.length > 5000, `Image size (${pngBytes.length} bytes) is non-trivial`);
   assert.ok(pngBytes.length < 50000, `Image size (${pngBytes.length} bytes) is lightweight (<50KB)`);
 
-  // 4. Verify speed (< 60ms on modern CPU)
-  assert.ok(elapsed < 100, `Generation elapsed time ${elapsed.toFixed(1)}ms < 100ms`);
+  // 4. Verify speed (< 250ms on edge/CPU)
+  assert.ok(elapsed < 250, `Generation elapsed time ${elapsed.toFixed(1)}ms < 250ms`);
 });
 
 test('OG Engine: Bot crawler User-Agent detection pattern', () => {

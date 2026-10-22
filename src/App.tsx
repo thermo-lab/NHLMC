@@ -118,7 +118,7 @@ export function App() {
         )}
 
         {activeTab === 'guide' && (
-          <GuideView />
+          <GuideView onNavigateToTrade={() => setActiveTab('trade')} />
         )}
 
         {activeTab === 'admin' && (
