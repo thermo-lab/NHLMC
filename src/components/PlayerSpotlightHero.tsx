@@ -13,17 +13,20 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { PlayerSpotlight, SpotlightTradeOption } from '../types/spotlight';
+import { FranchiseTradeEvaluation } from '../types/franchise';
 
 interface PlayerSpotlightHeroProps {
   spotlight: PlayerSpotlight;
   onSelectOption: (option: SpotlightTradeOption) => void;
   activeDestinationTeamId?: string | null;
+  currentEvaluation?: FranchiseTradeEvaluation | null;
 }
 
 export const PlayerSpotlightHero: React.FC<PlayerSpotlightHeroProps> = ({
   spotlight,
   onSelectOption,
   activeDestinationTeamId,
+  currentEvaluation,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
@@ -275,15 +278,57 @@ export const PlayerSpotlightHero: React.FC<PlayerSpotlightHeroProps> = ({
                   </div>
 
                   {/* Financial & Cap Impact Note */}
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-2.5 rounded-lg bg-black/30 border border-slate-800/60 text-[11px]">
-                    <div className="flex items-center gap-1.5 text-slate-300">
-                      <DollarSign className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                      <span>{currentOption.capFitSummary}</span>
-                    </div>
-                    <div className="flex items-center gap-3 shrink-0 text-slate-400 font-mono text-[10px]">
-                      <span>{currentOption.destinationTeamId} Cup Δ: <strong className="text-emerald-400">{currentOption.projectedCupDeltaDestination.split(' ')[0]}</strong></span>
-                    </div>
-                  </div>
+                  {(() => {
+                    const isLoadedScenario =
+                      Boolean(currentEvaluation) &&
+                      currentEvaluation?.teamA.teamId === spotlight.currentTeamId &&
+                      currentEvaluation?.teamB.teamId === currentOption.destinationTeamId;
+
+                    const destCupDeltaVal = isLoadedScenario
+                      ? currentEvaluation!.teamB.deltas.stanleyCupDelta * 100
+                      : parseFloat(currentOption.projectedCupDeltaDestination.split(' ')[0]);
+
+                    const wpgCupDeltaVal = isLoadedScenario
+                      ? currentEvaluation!.teamA.deltas.stanleyCupDelta * 100
+                      : parseFloat(currentOption.projectedCupDeltaWinnipeg.split(' ')[0]);
+
+                    const destCupDeltaStr = isLoadedScenario
+                      ? (destCupDeltaVal > 0 ? '+' : '') + destCupDeltaVal.toFixed(1) + '%'
+                      : currentOption.projectedCupDeltaDestination.split(' ')[0];
+
+                    const wpgCupDeltaStr = isLoadedScenario
+                      ? (wpgCupDeltaVal > 0 ? '+' : '') + wpgCupDeltaVal.toFixed(1) + '%'
+                      : currentOption.projectedCupDeltaWinnipeg.split(' ')[0];
+
+                    return (
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-2.5 rounded-lg bg-black/30 border border-slate-800/60 text-[11px]">
+                        <div className="flex items-center gap-1.5 text-slate-300">
+                          <DollarSign className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                          <span>{currentOption.capFitSummary}</span>
+                        </div>
+                        <div className="flex items-center gap-2.5 shrink-0 text-slate-400 font-mono text-[10px]">
+                          {isLoadedScenario && (
+                            <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
+                              LIVE MC
+                            </span>
+                          )}
+                          <span>
+                            {spotlight.currentTeamId} Cup Δ:{' '}
+                            <strong className={wpgCupDeltaVal > 0 ? 'text-emerald-400' : wpgCupDeltaVal < 0 ? 'text-rose-400' : 'text-slate-300'}>
+                              {wpgCupDeltaStr}
+                            </strong>
+                          </span>
+                          <span>•</span>
+                          <span>
+                            {currentOption.destinationTeamId} Cup Δ:{' '}
+                            <strong className={destCupDeltaVal > 0 ? 'text-emerald-400' : destCupDeltaVal < 0 ? 'text-rose-400' : 'text-slate-300'}>
+                              {destCupDeltaStr}
+                            </strong>
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })()}
 
                   {/* Simulation CTA */}
                   <button

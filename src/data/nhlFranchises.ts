@@ -1248,8 +1248,8 @@ export const NHL_FRANCHISES: NHLTeam[] = [
     "powerPlayPct": 23.6,
     "penaltyKillPct": 83,
     "goalieGsax": -1.6,
-    "activePayroll": 89850000,
-    "capSpace": 0,
+    "activePayroll": 83500000,
+    "capSpace": 4500000,
     "retainedPayroll": 0,
     "record": {
       "gamesPlayed": 8,

@@ -44,8 +44,8 @@ export const INITIAL_PLAYER_SPOTLIGHT: PlayerSpotlight = {
       ],
       capFitSummary:
         'Buffalo absorbs net +$5.00M in salary commitment ($8.50M Hellebuyck vs $3.50M McLeod outgoing), remaining safely cap compliant under the $88.0M ceiling.',
-      projectedCupDeltaWinnipeg: '-0.3% (Clears $5.0M cap space while landing elite youth and 1st round draft equity)',
-      projectedCupDeltaDestination: '+7.6% (Vaults Buffalo from Round 2 Game 7 heartbreak into Eastern Conference powerhouse)',
+      projectedCupDeltaWinnipeg: '+0.2% (Acquires dynamic 2-way C McLeod, 6\'6" D Radim Mrtka, and 2028 1st)',
+      projectedCupDeltaDestination: '+0.2% (Crease stabilization boosts Buffalo into Eastern playoff race)',
     },
     {
       id: 'opt-car-contender',
@@ -68,8 +68,8 @@ export const INITIAL_PLAYER_SPOTLIGHT: PlayerSpotlight = {
       ],
       capFitSummary:
         'Winnipeg retains 25% ($2.125M) of Hellebuyck\'s salary, enabling Carolina to absorb his cap hit seamlessly.',
-      projectedCupDeltaWinnipeg: '+1.1% (Massive upgrade at 1C with high-end draft capital)',
-      projectedCupDeltaDestination: '+8.8% (Locks in Carolina as overwhelming favorites to repeat as Stanley Cup Champions)',
+      projectedCupDeltaWinnipeg: '+0.8% (Massive injection of 1C Sebastian Aho, elite prospect Nikishin, and 1st round pick)',
+      projectedCupDeltaDestination: '-5.9% (Surrendering 1C Sebastian Aho creates major scoring vacuum despite netminding upgrade)',
     },
     {
       id: 'opt-det-accelerator',
@@ -92,8 +92,8 @@ export const INITIAL_PLAYER_SPOTLIGHT: PlayerSpotlight = {
       ],
       capFitSummary:
         'Direct 1-for-1 salary balance: Hellebuyck ($8.5M) for Seider ($8.55M). Pure cap neutral blockbuster.',
-      projectedCupDeltaWinnipeg: '+0.2% (Establishes an impenetrable young defensive spine)',
-      projectedCupDeltaDestination: '+5.5% (Detroit clinches Wild Card contention tier)',
+      projectedCupDeltaWinnipeg: '+0.4% (Establishes an impenetrable young defensive spine with Seider, Sandin-Pellikka, Danielson)',
+      projectedCupDeltaDestination: '0.0% (Detroit locks in franchise netminder for future window; +0.2 pts in 2026-27)',
     },
     {
       id: 'opt-njd-powerhouse',
@@ -115,8 +115,8 @@ export const INITIAL_PLAYER_SPOTLIGHT: PlayerSpotlight = {
       ],
       capFitSummary:
         'New Jersey leverages $6.45M in existing cap space plus LTIR flexibility to absorb Hellebuyck.',
-      projectedCupDeltaWinnipeg: '-0.8% (Massive injection of +104 future pipeline equity)',
-      projectedCupDeltaDestination: '+7.4% (Transforms Devils into East juggernaut)',
+      projectedCupDeltaWinnipeg: '-0.4% (Massive injection of +104 future pipeline equity in Anton Silayev and 1st)',
+      projectedCupDeltaDestination: '+2.0% (Transforms Devils into East powerhouse with +2.0% Cup surge)',
     },
   ],
 };
