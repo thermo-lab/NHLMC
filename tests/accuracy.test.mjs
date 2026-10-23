@@ -17,7 +17,8 @@ import {
 import { evaluateFranchiseTrade } from '../src/engine/franchiseSimulation.ts';
 import { NHL_FRANCHISES } from '../src/data/nhlFranchises.ts';
 import { INITIAL_PLAYERS } from '../src/data/sampleLeague.ts';
-import { INITIAL_PROSPECTS } from '../src/data/nhlProspects.ts';
+import { INITIAL_PROSPECTS, generateDefaultDraftPicks } from '../src/data/nhlProspects.ts';
+import nhlPlayersJson from '../src/data/nhlPlayers.json' with { type: 'json' };
 
 test('Accuracy Benchmark: Normal distribution mean and variance convergence', () => {
   const n = 20000;
@@ -190,4 +191,47 @@ test('Accuracy Benchmark: 32-team standings hierarchy aligns with contender tier
   assert.ok(avgContenderPts > 98, `Contenders must average > 98 pts: got ${avgContenderPts}`);
   assert.ok(avgRebuilderPts < 70, `Rebuilders must average < 70 pts: got ${avgRebuilderPts}`);
   assert.ok(avgContenderPts - avgRebuilderPts > 35, 'Contender vs rebuilder point spread must be > 35 pts');
+});
+
+test('Roster Accuracy: Alexander Command prospect verified in NJD pipeline', () => {
+  const command = INITIAL_PROSPECTS.find((p) => p.name === 'Alexander Command');
+  assert.ok(command, 'Alexander Command must exist in INITIAL_PROSPECTS');
+  assert.equal(command.nhlTeam, 'NJD');
+  assert.equal(command.draftYear, 2026);
+  assert.equal(command.draftRound, 1);
+  assert.equal(command.draftPickOverall, 12);
+  assert.equal(command.potential, 'ELITE');
+  assert.equal(command.tradeValueScore, 86);
+});
+
+test('Roster Accuracy: Nick Bjugstad verified in nhlPlayers and NJD franchise roster', () => {
+  const bjugstad = nhlPlayersJson.find((p) => p.nhlId === 8475760 || p.name === 'Nick Bjugstad');
+  assert.ok(bjugstad, 'Nick Bjugstad must exist in nhlPlayers.json');
+  assert.equal(bjugstad.nhlTeam, 'NJD');
+  assert.equal(bjugstad.capHit, 1750000);
+  assert.equal(bjugstad.primaryPosition, 'C');
+
+  const njdFranchise = NHL_FRANCHISES.find((f) => f.abbrev === 'NJD');
+  assert.ok(njdFranchise, 'NJD franchise must exist');
+  assert.ok(njdFranchise.rosterPlayerIds.includes(8475760), 'NJD rosterPlayerIds must include Nick Bjugstad (8475760)');
+});
+
+test('Draft Capital Accuracy: Real-world traded draft picks are reflected in team inventories', () => {
+  // Florida traded their 2027 1st round pick to Chicago
+  const flaPicks = generateDefaultDraftPicks('FLA');
+  const flaOwn2027Rd1 = flaPicks.find((p) => p.year === 2027 && p.round === 1 && p.originalTeamId === 'FLA');
+  assert.equal(flaOwn2027Rd1, undefined, 'Florida must not own their traded-away 2027 Rd 1 pick');
+
+  const chiPicks = generateDefaultDraftPicks('CHI');
+  const chiAcquiredFla = chiPicks.find((p) => p.year === 2027 && p.round === 1 && p.originalTeamId === 'FLA');
+  assert.ok(chiAcquiredFla, 'Chicago must own Florida 2027 Round 1 pick');
+  assert.equal(chiAcquiredFla.owningTeamId, 'CHI');
+  assert.equal(chiAcquiredFla.originalTeamId, 'FLA');
+
+  // Winnipeg acquired New Jersey 2029 2nd round pick
+  const wpgPicks = generateDefaultDraftPicks('WPG');
+  const wpgAcquiredNjd = wpgPicks.find((p) => p.year === 2029 && p.round === 2 && p.originalTeamId === 'NJD');
+  assert.ok(wpgAcquiredNjd, 'Winnipeg must own New Jersey 2029 Round 2 pick');
+  assert.equal(wpgAcquiredNjd.owningTeamId, 'WPG');
+  assert.equal(wpgAcquiredNjd.originalTeamId, 'NJD');
 });

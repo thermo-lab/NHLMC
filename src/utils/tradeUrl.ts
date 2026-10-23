@@ -228,12 +228,13 @@ export function decodeTradeFromUrl(
       const picks: DraftPick[] = [];
 
       for (const token of tokens) {
-        // Match standard format with optional protection suffix: "buf-2027-rd1" or "buf-2027-rd1-unprot"
-        const standardMatch = token.match(/^([a-z]{3})-(\d{4})-rd([1-3])(?:-([a-z0-9]+))?$/i);
+        // Match standard format: "buf-2027-rd1", "chi-2027-rd1-fla", with optional "-unprot", "-top5", "-top10"
+        const standardMatch = token.match(/^([a-z]{3})-(\d{4})-rd([1-3])(?:-([a-z]{3}))?(?:-([a-z0-9]+))?$/i);
         // Match alternate format: "2027-1-buf"
         const altMatch = token.match(/^(\d{4})-([1-3])-([a-z]{3})(?:-([a-z0-9]+))?$/i);
 
         let team = defaultTeam;
+        let origTeam = defaultTeam;
         let year = 2027;
         let round: 1 | 2 | 3 = 1;
         let protection: DraftPick['protection'] = 'UNPROTECTED';
@@ -242,7 +243,20 @@ export function decodeTradeFromUrl(
           team = standardMatch[1].toUpperCase();
           year = parseInt(standardMatch[2], 10);
           round = parseInt(standardMatch[3], 10) as 1 | 2 | 3;
-          const protSuffix = standardMatch[4]?.toLowerCase();
+          const candidateOrig = standardMatch[4]?.toUpperCase();
+          const candidateProt = standardMatch[5]?.toLowerCase();
+
+          // If standardMatch[4] was actually a protection keyword (e.g. "top10") because 3 chars wasn't strictly enforced or matched
+          if (candidateOrig && VALID_FRANCHISE_IDS.has(candidateOrig)) {
+            origTeam = candidateOrig;
+          } else if (team !== defaultTeam) {
+            origTeam = team;
+            team = defaultTeam;
+          } else {
+            origTeam = team;
+          }
+
+          const protSuffix = candidateProt || (candidateOrig && !VALID_FRANCHISE_IDS.has(candidateOrig) ? candidateOrig.toLowerCase() : undefined);
           if (protSuffix === 'unprot') {
             protection = 'UNPROTECTED';
           } else if (protSuffix === 'top5') {
@@ -256,6 +270,7 @@ export function decodeTradeFromUrl(
           year = parseInt(altMatch[1], 10);
           round = parseInt(altMatch[2], 10) as 1 | 2 | 3;
           team = altMatch[3].toUpperCase();
+          origTeam = team;
           const protSuffix = altMatch[4]?.toLowerCase();
           if (protSuffix === 'unprot') {
             protection = 'UNPROTECTED';
@@ -273,6 +288,7 @@ export function decodeTradeFromUrl(
         // Allow historical and reasonable future window (2025..2035)
         if (year < 2025 || year > 2035) continue;
         if (!VALID_FRANCHISE_IDS.has(team)) team = defaultTeam;
+        if (!VALID_FRANCHISE_IDS.has(origTeam)) origTeam = team;
 
         let baseValue = round === 1 ? 76 : round === 2 ? 48 : 28;
         if (round === 1) {
@@ -281,13 +297,18 @@ export function decodeTradeFromUrl(
           else baseValue = 76;
         }
 
+        const pickId = team !== origTeam
+          ? `${team.toLowerCase()}-${year}-rd${round}-${origTeam.toLowerCase()}`
+          : `${team.toLowerCase()}-${year}-rd${round}`;
+
         picks.push({
-          id: `${team.toLowerCase()}-${year}-rd${round}`,
+          id: pickId,
           year,
           round,
           owningTeamId: team,
-          originalTeamId: team,
+          originalTeamId: origTeam,
           protection,
+          conditionNote: team !== origTeam ? `Acquired from ${origTeam}` : undefined,
           tradeValueScore: baseValue,
         });
       }

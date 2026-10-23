@@ -187,3 +187,38 @@ test('URL Engine: Correctly resolves Connor Hellebuyck (8476945) and Ryan McLeod
   assert.deepStrictEqual(teamBPlayers, ['Ryan McLeod'], 'Must resolve Ryan McLeod on Team B');
   assert.ok(!teamAPlayers.includes('Bradly Nadeau'), 'Bradly Nadeau must NOT appear on Team A');
 });
+
+test('URL Engine: Encodes and decodes acquired draft picks preserving original and owning teams', () => {
+  const acquiredPick = {
+    id: 'chi-2027-rd1-fla',
+    year: 2027,
+    round: 1,
+    owningTeamId: 'CHI',
+    originalTeamId: 'FLA',
+    protection: 'UNPROTECTED',
+    tradeValueScore: 85,
+  };
+
+  const encoded = encodeTradeToUrl({
+    teamAId: 'CHI',
+    teamBId: 'NJD',
+    teamAPlayers: [],
+    teamBPlayers: [],
+    teamAProspects: [],
+    teamBProspects: [],
+    teamADraftPicks: [acquiredPick],
+    teamBDraftPicks: [],
+  });
+
+  assert.ok(encoded.includes('dpA=chi-2027-rd1-fla-unprot'), 'Encodes acquired pick with original team and protection');
+
+  const decoded = decodeTradeFromUrl(encoded, mockPlayers, mockProspects);
+  assert.ok(decoded !== null);
+  assert.strictEqual(decoded.teamADraftPicks.length, 1);
+  const dp = decoded.teamADraftPicks[0];
+  assert.strictEqual(dp.year, 2027);
+  assert.strictEqual(dp.round, 1);
+  assert.strictEqual(dp.owningTeamId, 'CHI');
+  assert.strictEqual(dp.originalTeamId, 'FLA');
+  assert.strictEqual(dp.protection, 'UNPROTECTED');
+});

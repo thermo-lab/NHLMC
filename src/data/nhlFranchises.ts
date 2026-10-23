@@ -1208,6 +1208,7 @@ export const NHL_FRANCHISES: NHLTeam[] = [
       "pointPctg": 0.5
     },
     "rosterPlayerIds": [
+      8475760,
       8475455,
       8476462,
       8476474,

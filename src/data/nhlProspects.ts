@@ -1,4 +1,5 @@
 import { NHLProspect, DraftPick } from '../types/prospect';
+import { getFranchiseDraftPicks } from './tradedDraftPicks';
 
 export const INITIAL_PROSPECTS: NHLProspect[] = [
   {
@@ -2142,6 +2143,26 @@ export const INITIAL_PROSPECTS: NHLProspect[] = [
     "capHit": 950000
   },
   {
+    "id": "njd-alexander-command",
+    "name": "Alexander Command",
+    "nhlTeam": "NJD",
+    "position": "C",
+    "age": 18,
+    "height": "6'0\"",
+    "weight": 185,
+    "shootsCatches": "L",
+    "currentTeam": "Örebro HK (SHL / J20 Nationell)",
+    "draftInfo": "2026 Round 1, #12 Overall (NJD)",
+    "draftYear": 2026,
+    "draftRound": 1,
+    "draftPickOverall": 12,
+    "potential": "ELITE",
+    "potentialDescription": "ELITE two-way center with exceptional compete level, hockey IQ, and complete 200-foot motor.",
+    "scoutingSummary": "Alexander Command was selected 12th overall (Round 1) in the 2026 NHL Draft by NJD. Swedish international gold medalist at the 2026 U18 Worlds playing in the Örebro HK system.",
+    "tradeValueScore": 86,
+    "capHit": 950000
+  },
+  {
     "id": "nsh-egor-surin",
     "name": "Egor Surin",
     "nhlTeam": "NSH",
@@ -3904,27 +3925,9 @@ export const INITIAL_PROSPECTS: NHLProspect[] = [
 ];
 
 /**
- * Generate default future draft picks (2027, 2028, 2029) for any franchise.
- * 2025 and 2026 entry drafts are completed.
+ * Generate accurate future draft picks (2027, 2028, 2029) for any franchise,
+ * accounting for real-world traded away picks and acquired picks.
  */
 export function generateDefaultDraftPicks(teamAbbrev: string): DraftPick[] {
-  const years = [2027, 2028, 2029];
-  const rounds: (1 | 2 | 3)[] = [1, 2, 3];
-  const picks: DraftPick[] = [];
-
-  for (const year of years) {
-    for (const round of rounds) {
-      const baseValue = round === 1 ? 80 : round === 2 ? 48 : 28;
-      picks.push({
-        id: `${teamAbbrev.toLowerCase()}-${year}-rd${round}`,
-        year,
-        round,
-        owningTeamId: teamAbbrev,
-        originalTeamId: teamAbbrev,
-        protection: round === 1 ? 'TOP_10_PROTECTED' : 'UNPROTECTED',
-        tradeValueScore: baseValue,
-      });
-    }
-  }
-  return picks;
+  return getFranchiseDraftPicks(teamAbbrev);
 }

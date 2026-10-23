@@ -1,5 +1,59 @@
 [
   {
+    "id": 8475760,
+    "nhlId": 8475760,
+    "name": "Nick Bjugstad",
+    "nhlTeam": "NJD",
+    "capHit": 1750000,
+    "positions": [
+      "C",
+      "RW",
+      "F",
+      "UTIL"
+    ],
+    "primaryPosition": "C",
+    "playerType": "skater",
+    "injuryStatus": "INJURY_RESERVE",
+    "headshotUrl": "https://assets.nhle.com/mugs/nhl/latest/8475760.png",
+    "actualStats": {
+      "skater": {
+        "gamesPlayed": 26,
+        "goals": 0,
+        "assists": 2,
+        "points": 2,
+        "plusMinus": -3,
+        "powerPlayGoals": 0,
+        "powerPlayPoints": 0,
+        "shortHandedPoints": 0,
+        "shots": 28,
+        "hits": 34,
+        "blockedShots": 12,
+        "penaltyMinutes": 14,
+        "shootingPctg": 0,
+        "avgTimeOnIce": "12:45"
+      }
+    },
+    "projections": {
+      "rosGamesRemaining": 45,
+      "rosGoals": 6,
+      "rosAssists": 8,
+      "rosPoints": 14,
+      "rosPlusMinus": -4,
+      "rosPPP": 1,
+      "rosSOG": 62,
+      "rosHits": 68,
+      "rosBlocks": 24,
+      "rosPIM": 20,
+      "sdGoalRate": 0.18,
+      "sdAssistRate": 0.15,
+      "sdSOGRate": 0.1,
+      "sdHitRate": 0.14,
+      "sdBlockRate": 0.14,
+      "sdPIMRate": 0.2,
+      "sdPlusMinus": 10
+    }
+  },
+  {
     "id": 8473533,
     "nhlId": 8473533,
     "name": "Jordan Staal",

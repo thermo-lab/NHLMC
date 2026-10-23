@@ -26,6 +26,7 @@ import { NHLTeam, FranchiseTradeProposal, FranchiseTradeEvaluation } from '../ty
 import { Player } from '../types/player';
 import { NHLProspect, DraftPick, ProspectPotential } from '../types/prospect';
 import { INITIAL_PROSPECTS, generateDefaultDraftPicks } from '../data/nhlProspects';
+import { createCustomDraftPick } from '../data/tradedDraftPicks';
 import { evaluateFranchiseTrade } from '../engine/franchiseSimulation';
 import { FeaturedTradesTray } from './FeaturedTradesTray';
 import { PlayerSpotlightHero } from './PlayerSpotlightHero';
@@ -101,6 +102,17 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
   const [newProspectPotential, setNewProspectPotential] = useState<ProspectPotential>('ELITE');
   const [newProspectNotes, setNewProspectNotes] = useState('');
 
+  // Custom / Acquired Draft Pick Modal State
+  const [isPickModalOpen, setIsPickModalOpen] = useState(false);
+  const [pickModalForTeamA, setPickModalForTeamA] = useState(true);
+  const [pickModalOrigTeam, setPickModalOrigTeam] = useState('FLA');
+  const [pickModalYear, setPickModalYear] = useState(2027);
+  const [pickModalRound, setPickModalRound] = useState<1 | 2 | 3>(1);
+  const [pickModalProtection, setPickModalProtection] = useState<DraftPick['protection']>('UNPROTECTED');
+
+  const [customPicksA, setCustomPicksA] = useState<DraftPick[]>([]);
+  const [customPicksB, setCustomPicksB] = useState<DraftPick[]>([]);
+
   const playersMap = useMemo(() => {
     const map = new Map<number, Player>();
     for (const p of players) {
@@ -143,8 +155,29 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     [prospects, teamB]
   );
 
-  const teamAPickPool = useMemo(() => generateDefaultDraftPicks(teamA.abbrev), [teamA]);
-  const teamBPickPool = useMemo(() => generateDefaultDraftPicks(teamB.abbrev), [teamB]);
+  const teamAPickPool = useMemo(() => {
+    const base = generateDefaultDraftPicks(teamA.abbrev);
+    const combined = [...base];
+    for (const cp of customPicksA) {
+      if (!combined.some((p) => p.id === cp.id)) combined.push(cp);
+    }
+    for (const sp of teamADraftPicks) {
+      if (!combined.some((p) => p.id === sp.id)) combined.push(sp);
+    }
+    return combined;
+  }, [teamA, customPicksA, teamADraftPicks]);
+
+  const teamBPickPool = useMemo(() => {
+    const base = generateDefaultDraftPicks(teamB.abbrev);
+    const combined = [...base];
+    for (const cp of customPicksB) {
+      if (!combined.some((p) => p.id === cp.id)) combined.push(cp);
+    }
+    for (const sp of teamBDraftPicks) {
+      if (!combined.some((p) => p.id === sp.id)) combined.push(sp);
+    }
+    return combined;
+  }, [teamB, customPicksB, teamBDraftPicks]);
 
   React.useEffect(() => {
     if (initialTeamAId) setTeamAId(initialTeamAId);
@@ -162,6 +195,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     setTeamAPlayerIds([]);
     setTeamAProspectIds([]);
     setTeamADraftPicks([]);
+    setCustomPicksA([]);
     setActiveFeaturedProposalId(null);
   }, [teamAId]);
 
@@ -170,6 +204,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     setTeamBPlayerIds([]);
     setTeamBProspectIds([]);
     setTeamBDraftPicks([]);
+    setCustomPicksB([]);
     setActiveFeaturedProposalId(null);
   }, [teamBId]);
 
@@ -540,6 +575,26 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     setNewProspectNotes('');
   };
 
+  const handleAddAcquiredPick = () => {
+    const owningTeam = pickModalForTeamA ? teamA.abbrev : teamB.abbrev;
+    const newPick = createCustomDraftPick(
+      owningTeam,
+      pickModalOrigTeam,
+      pickModalYear,
+      pickModalRound,
+      pickModalProtection
+    );
+
+    if (pickModalForTeamA) {
+      setCustomPicksA((prev) => (prev.some((p) => p.id === newPick.id) ? prev : [...prev, newPick]));
+      setTeamADraftPicks((prev) => (prev.some((p) => p.id === newPick.id) ? prev : [...prev, newPick]));
+    } else {
+      setCustomPicksB((prev) => (prev.some((p) => p.id === newPick.id) ? prev : [...prev, newPick]));
+      setTeamBDraftPicks((prev) => (prev.some((p) => p.id === newPick.id) ? prev : [...prev, newPick]));
+    }
+    setIsPickModalOpen(false);
+  };
+
   return (
     <div className="space-y-6">
       {/* Homepage Player Spotlight Hero */}
@@ -746,7 +801,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                         <Ticket className="w-4 h-4 text-amber-400 shrink-0" />
                         <div className="min-w-0 flex-1 flex flex-wrap items-center gap-1.5">
                           <span className="font-bold text-amber-300 truncate">
-                            {pick.year} Round {pick.round} ({pick.originalTeamId})
+                            {pick.year} Round {pick.round} {pick.originalTeamId !== pick.owningTeamId ? `(via ${pick.originalTeamId})` : `(${pick.owningTeamId})`}
                           </span>
                           <button
                             type="button"
@@ -922,21 +977,45 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                 <div className="grid grid-cols-3 gap-1.5 text-xs">
                   {teamAPickPool.map((pick) => {
                     const isSelected = teamADraftPicks.some((p) => p.id === pick.id);
+                    const isAcquired = pick.originalTeamId !== pick.owningTeamId;
                     return (
                       <button
                         key={pick.id}
                         onClick={() => handleToggleDraftPick(pick, true)}
-                        className={`p-2 rounded-lg border text-center transition font-bold ${
+                        className={`p-2 rounded-lg border text-center transition font-bold relative ${
                           isSelected
                             ? 'bg-amber-500 text-black border-amber-400 shadow-sm'
                             : 'bg-rink-surface border-rink-border text-slate-300 hover:border-amber-400'
                         }`}
+                        title={pick.conditionNote || (isAcquired ? `Acquired from ${pick.originalTeamId}` : undefined)}
                       >
                         <div className="text-[10px] uppercase opacity-75">{pick.year}</div>
                         <div className="text-xs">Round {pick.round}</div>
+                        {isAcquired && (
+                          <div className={`text-[9px] mt-0.5 px-1 py-0.2 rounded font-mono font-bold tracking-tight inline-block ${
+                            isSelected ? 'bg-black/25 text-black' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                          }`}>
+                            via {pick.originalTeamId}
+                          </div>
+                        )}
                       </button>
                     );
                   })}
+                </div>
+                <div className="pt-1.5 border-t border-rink-border/50">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPickModalForTeamA(true);
+                      const candidate = franchises.find((f) => f.abbrev !== teamA.abbrev)?.abbrev || 'FLA';
+                      setPickModalOrigTeam(candidate);
+                      setIsPickModalOpen(true);
+                    }}
+                    className="w-full flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg border border-dashed border-amber-500/40 hover:border-amber-400 bg-amber-500/5 hover:bg-amber-500/10 text-amber-300 text-xs font-semibold transition"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Add Acquired / League Pick</span>
+                  </button>
                 </div>
               </div>
             )}
@@ -1094,7 +1173,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                         <Ticket className="w-4 h-4 text-amber-400 shrink-0" />
                         <div className="min-w-0 flex-1 flex flex-wrap items-center gap-1.5">
                           <span className="font-bold text-amber-300 truncate">
-                            {pick.year} Round {pick.round} ({pick.originalTeamId})
+                            {pick.year} Round {pick.round} {pick.originalTeamId !== pick.owningTeamId ? `(via ${pick.originalTeamId})` : `(${pick.owningTeamId})`}
                           </span>
                           <button
                             type="button"
@@ -1270,21 +1349,45 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                 <div className="grid grid-cols-3 gap-1.5 text-xs">
                   {teamBPickPool.map((pick) => {
                     const isSelected = teamBDraftPicks.some((p) => p.id === pick.id);
+                    const isAcquired = pick.originalTeamId !== pick.owningTeamId;
                     return (
                       <button
                         key={pick.id}
                         onClick={() => handleToggleDraftPick(pick, false)}
-                        className={`p-2 rounded-lg border text-center transition font-bold ${
+                        className={`p-2 rounded-lg border text-center transition font-bold relative ${
                           isSelected
                             ? 'bg-amber-500 text-black border-amber-400 shadow-sm'
                             : 'bg-rink-surface border-rink-border text-slate-300 hover:border-amber-400'
                         }`}
+                        title={pick.conditionNote || (isAcquired ? `Acquired from ${pick.originalTeamId}` : undefined)}
                       >
                         <div className="text-[10px] uppercase opacity-75">{pick.year}</div>
                         <div className="text-xs">Round {pick.round}</div>
+                        {isAcquired && (
+                          <div className={`text-[9px] mt-0.5 px-1 py-0.2 rounded font-mono font-bold tracking-tight inline-block ${
+                            isSelected ? 'bg-black/25 text-black' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                          }`}>
+                            via {pick.originalTeamId}
+                          </div>
+                        )}
                       </button>
                     );
                   })}
+                </div>
+                <div className="pt-1.5 border-t border-rink-border/50">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPickModalForTeamA(false);
+                      const candidate = franchises.find((f) => f.abbrev !== teamB.abbrev)?.abbrev || 'FLA';
+                      setPickModalOrigTeam(candidate);
+                      setIsPickModalOpen(true);
+                    }}
+                    className="w-full flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg border border-dashed border-amber-500/40 hover:border-amber-400 bg-amber-500/5 hover:bg-amber-500/10 text-amber-300 text-xs font-semibold transition"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Add Acquired / League Pick</span>
+                  </button>
                 </div>
               </div>
             )}
@@ -1860,6 +1963,116 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
                   className="px-5 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg shadow-purple-900/30"
                 >
                   Save & Add Prospect
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ================= ACQUIRED / CUSTOM DRAFT PICK MODAL ================= */}
+      {isPickModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className="bg-rink-dark border border-amber-500/30 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-rink-border pb-3">
+              <div className="flex items-center gap-2">
+                <Ticket className="w-5 h-5 text-amber-400" />
+                <h3 className="text-base font-bold text-white">
+                  Add Acquired / League Pick for {pickModalForTeamA ? teamA.name : teamB.name}
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsPickModalOpen(false)}
+                className="text-slate-400 hover:text-white p-1"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-400">
+              Inject a draft pick originally owned by another NHL franchise into {pickModalForTeamA ? teamA.name : teamB.name}'s trade inventory.
+            </p>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleAddAcquiredPick();
+              }}
+              className="space-y-3.5 text-xs"
+            >
+              <div>
+                <label className="block text-slate-400 font-bold mb-1">Original Franchise (Who originally owned it?)</label>
+                <select
+                  value={pickModalOrigTeam}
+                  onChange={(e) => setPickModalOrigTeam(e.target.value)}
+                  className="w-full bg-rink-surface border border-rink-border rounded-lg px-3 py-2 text-white font-semibold focus:outline-none focus:border-amber-500"
+                >
+                  {franchises.map((f) => (
+                    <option key={f.id} value={f.abbrev}>
+                      {f.name} ({f.abbrev})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-400 font-bold mb-1">Draft Year</label>
+                  <select
+                    value={pickModalYear}
+                    onChange={(e) => setPickModalYear(parseInt(e.target.value, 10))}
+                    className="w-full bg-rink-surface border border-rink-border rounded-lg px-3 py-2 text-white font-semibold focus:outline-none focus:border-amber-500"
+                  >
+                    {[2027, 2028, 2029, 2030].map((y) => (
+                      <option key={y} value={y}>
+                        {y}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-slate-400 font-bold mb-1">Draft Round</label>
+                  <select
+                    value={pickModalRound}
+                    onChange={(e) => setPickModalRound(parseInt(e.target.value, 10) as 1 | 2 | 3)}
+                    className="w-full bg-rink-surface border border-rink-border rounded-lg px-3 py-2 text-white font-semibold focus:outline-none focus:border-amber-500"
+                  >
+                    <option value={1}>Round 1</option>
+                    <option value={2}>Round 2</option>
+                    <option value={3}>Round 3</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-400 font-bold mb-1">Pick Protection</label>
+                <select
+                  value={pickModalProtection}
+                  onChange={(e) => setPickModalProtection(e.target.value as DraftPick['protection'])}
+                  className="w-full bg-rink-surface border border-rink-border rounded-lg px-3 py-2 text-white font-semibold focus:outline-none focus:border-amber-500"
+                >
+                  <option value="UNPROTECTED">Unprotected (Highest Value)</option>
+                  <option value="TOP_10_PROTECTED">Top 10 Protected</option>
+                  <option value="TOP_5_PROTECTED">Top 5 Protected</option>
+                  <option value="CONDITIONAL">Conditional</option>
+                </select>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2 border-t border-rink-border">
+                <button
+                  type="button"
+                  onClick={() => setIsPickModalOpen(false)}
+                  className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs shadow-lg shadow-amber-900/30"
+                >
+                  Add Pick to Trade Pool
                 </button>
               </div>
             </form>
