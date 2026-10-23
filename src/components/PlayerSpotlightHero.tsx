@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Flame,
   Sparkles,
@@ -13,13 +13,20 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { PlayerSpotlight, SpotlightTradeOption } from '../types/spotlight';
-import { FranchiseTradeEvaluation } from '../types/franchise';
+import { FranchiseTradeEvaluation, NHLTeam, FranchiseTradeProposal } from '../types/franchise';
+import { Player } from '../types/player';
+import { NHLProspect } from '../types/prospect';
+import { decodeTradeFromUrl } from '../utils/tradeUrl';
+import { evaluateFranchiseTrade } from '../engine/franchiseSimulation';
 
 interface PlayerSpotlightHeroProps {
   spotlight: PlayerSpotlight;
   onSelectOption: (option: SpotlightTradeOption) => void;
   activeDestinationTeamId?: string | null;
   currentEvaluation?: FranchiseTradeEvaluation | null;
+  franchises?: NHLTeam[];
+  players?: Player[];
+  prospects?: NHLProspect[];
 }
 
 export const PlayerSpotlightHero: React.FC<PlayerSpotlightHeroProps> = ({
@@ -27,6 +34,9 @@ export const PlayerSpotlightHero: React.FC<PlayerSpotlightHeroProps> = ({
   onSelectOption,
   activeDestinationTeamId,
   currentEvaluation,
+  franchises,
+  players,
+  prospects,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
@@ -58,6 +68,69 @@ export const PlayerSpotlightHero: React.FC<PlayerSpotlightHeroProps> = ({
       }
     }
   }, [activeDestinationTeamId, spotlight.options]);
+
+  // Automatically calculate true Monte Carlo simulation deltas for all spotlight scenarios
+  const automatedOptionDeltas = useMemo(() => {
+    if (!franchises || franchises.length === 0 || !players || players.length === 0) {
+      return new Map<string, { wpgDelta: number; destDelta: number }>();
+    }
+    const map = new Map<string, { wpgDelta: number; destDelta: number }>();
+    for (const opt of spotlight.options) {
+      try {
+        const decoded = decodeTradeFromUrl(opt.tradeUrlParams, players, prospects || []);
+        if (!decoded) continue;
+        const teamAObj = franchises.find((f) => f.id === decoded.teamAId) || franchises[0];
+        const teamBObj = franchises.find((f) => f.id === decoded.teamBId) || franchises[1];
+
+        const retList: { playerId: number; retainedPct: number; retainingTeamId: string }[] = [];
+        const pRets = decoded.playerRetentions || {};
+        for (const pid of decoded.teamAPlayerIds) {
+          if (pRets[pid]) retList.push({ playerId: pid, retainedPct: pRets[pid], retainingTeamId: teamAObj.id });
+        }
+        for (const pid of decoded.teamBPlayerIds) {
+          if (pRets[pid]) retList.push({ playerId: pid, retainedPct: pRets[pid], retainingTeamId: teamBObj.id });
+        }
+        if (retList.length === 0 && decoded.retainSalary && decoded.teamAPlayerIds.length > 0) {
+          retList.push({ playerId: decoded.teamAPlayerIds[0], retainedPct: decoded.retentionPct || 25, retainingTeamId: teamAObj.id });
+        }
+
+        const proposal: FranchiseTradeProposal = {
+          teamAId: teamAObj.id,
+          teamBId: teamBObj.id,
+          teamAPlayerIds: decoded.teamAPlayerIds,
+          teamBPlayerIds: decoded.teamBPlayerIds,
+          teamAProspectIds: decoded.teamAProspectIds,
+          teamBProspectIds: decoded.teamBProspectIds,
+          teamADraftPicks: decoded.teamADraftPicks.map((p) => ({
+            id: p.id,
+            year: p.year,
+            round: p.round,
+            originalTeam: p.originalTeamId,
+            isProtected: p.protection !== 'UNPROTECTED',
+            protection: p.protection,
+          })),
+          teamBDraftPicks: decoded.teamBDraftPicks.map((p) => ({
+            id: p.id,
+            year: p.year,
+            round: p.round,
+            originalTeam: p.originalTeamId,
+            isProtected: p.protection !== 'UNPROTECTED',
+            protection: p.protection,
+          })),
+          salaryRetention: retList.length > 0 ? retList : undefined,
+        };
+
+        const res = evaluateFranchiseTrade(franchises, players, proposal, 1000, prospects || []);
+        map.set(opt.id, {
+          wpgDelta: Number((res.teamA.deltas.stanleyCupDelta * 100).toFixed(1)),
+          destDelta: Number((res.teamB.deltas.stanleyCupDelta * 100).toFixed(1)),
+        });
+      } catch (e) {
+        console.error('Error auto-simulating spotlight option:', e);
+      }
+    }
+    return map;
+  }, [franchises, players, prospects, spotlight.options]);
 
   const toggleCollapse = () => {
     const next = !isCollapsed;
@@ -205,7 +278,23 @@ export const PlayerSpotlightHero: React.FC<PlayerSpotlightHeroProps> = ({
                       >
                         <div className="flex items-center justify-between text-xs font-bold text-white mb-0.5">
                           <span className="font-mono text-sky-300">{opt.destinationTeamId}</span>
-                          {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-sky-400" />}
+                          <div className="flex items-center gap-1.5">
+                            {automatedOptionDeltas.has(opt.id) && (
+                              <span
+                                className={`text-[10px] font-mono font-bold ${
+                                  (automatedOptionDeltas.get(opt.id)?.destDelta ?? 0) > 0
+                                    ? 'text-emerald-400'
+                                    : (automatedOptionDeltas.get(opt.id)?.destDelta ?? 0) < 0
+                                    ? 'text-rose-400'
+                                    : 'text-slate-400'
+                                }`}
+                              >
+                                {(automatedOptionDeltas.get(opt.id)?.destDelta ?? 0) > 0 ? '+' : ''}
+                                {(automatedOptionDeltas.get(opt.id)?.destDelta ?? 0).toFixed(1)}%
+                              </span>
+                            )}
+                            {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-sky-400 shrink-0" />}
+                          </div>
                         </div>
                         <div className="text-[11px] font-semibold text-slate-200 truncate">
                           {opt.destinationTeamName.replace(/^(The |Team )/, '')}
@@ -284,21 +373,22 @@ export const PlayerSpotlightHero: React.FC<PlayerSpotlightHeroProps> = ({
                       currentEvaluation?.teamA.teamId === spotlight.currentTeamId &&
                       currentEvaluation?.teamB.teamId === currentOption.destinationTeamId;
 
+                    const autoDeltas = automatedOptionDeltas.get(currentOption.id);
+
                     const destCupDeltaVal = isLoadedScenario
-                      ? currentEvaluation!.teamB.deltas.stanleyCupDelta * 100
+                      ? Number((currentEvaluation!.teamB.deltas.stanleyCupDelta * 100).toFixed(1))
+                      : autoDeltas !== undefined
+                      ? autoDeltas.destDelta
                       : parseFloat(currentOption.projectedCupDeltaDestination.split(' ')[0]);
 
                     const wpgCupDeltaVal = isLoadedScenario
-                      ? currentEvaluation!.teamA.deltas.stanleyCupDelta * 100
+                      ? Number((currentEvaluation!.teamA.deltas.stanleyCupDelta * 100).toFixed(1))
+                      : autoDeltas !== undefined
+                      ? autoDeltas.wpgDelta
                       : parseFloat(currentOption.projectedCupDeltaWinnipeg.split(' ')[0]);
 
-                    const destCupDeltaStr = isLoadedScenario
-                      ? (destCupDeltaVal > 0 ? '+' : '') + destCupDeltaVal.toFixed(1) + '%'
-                      : currentOption.projectedCupDeltaDestination.split(' ')[0];
-
-                    const wpgCupDeltaStr = isLoadedScenario
-                      ? (wpgCupDeltaVal > 0 ? '+' : '') + wpgCupDeltaVal.toFixed(1) + '%'
-                      : currentOption.projectedCupDeltaWinnipeg.split(' ')[0];
+                    const destCupDeltaStr = (destCupDeltaVal > 0 ? '+' : '') + destCupDeltaVal.toFixed(1) + '%';
+                    const wpgCupDeltaStr = (wpgCupDeltaVal > 0 ? '+' : '') + wpgCupDeltaVal.toFixed(1) + '%';
 
                     return (
                       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-2.5 rounded-lg bg-black/30 border border-slate-800/60 text-[11px]">
@@ -307,11 +397,9 @@ export const PlayerSpotlightHero: React.FC<PlayerSpotlightHeroProps> = ({
                           <span>{currentOption.capFitSummary}</span>
                         </div>
                         <div className="flex items-center gap-2.5 shrink-0 text-slate-400 font-mono text-[10px]">
-                          {isLoadedScenario && (
-                            <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
-                              LIVE MC
-                            </span>
-                          )}
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-sky-500/10 text-sky-400 border border-sky-500/30">
+                            {isLoadedScenario ? 'LIVE SIM' : 'AUTO MC'}
+                          </span>
                           <span>
                             {spotlight.currentTeamId} Cup Δ:{' '}
                             <strong className={wpgCupDeltaVal > 0 ? 'text-emerald-400' : wpgCupDeltaVal < 0 ? 'text-rose-400' : 'text-slate-300'}>

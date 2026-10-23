@@ -549,6 +549,9 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
           onSelectOption={handleSelectSpotlightOption}
           activeDestinationTeamId={teamBId}
           currentEvaluation={evaluation}
+          franchises={franchises}
+          players={players}
+          prospects={prospects}
         />
       )}
 
