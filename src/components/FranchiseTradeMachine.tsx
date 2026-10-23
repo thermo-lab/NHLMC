@@ -196,6 +196,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     setTeamAProspectIds([]);
     setTeamADraftPicks([]);
     setCustomPicksA([]);
+    setEvaluation(null);
     setActiveFeaturedProposalId(null);
   }, [teamAId]);
 
@@ -205,6 +206,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     setTeamBProspectIds([]);
     setTeamBDraftPicks([]);
     setCustomPicksB([]);
+    setEvaluation(null);
     setActiveFeaturedProposalId(null);
   }, [teamBId]);
 
@@ -214,7 +216,20 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
   const teamASendingProspects = teamAProspectIds.map((id) => prospectsMap.get(id)).filter(Boolean) as NHLProspect[];
   const teamBSendingProspects = teamBProspectIds.map((id) => prospectsMap.get(id)).filter(Boolean) as NHLProspect[];
 
+  const totalAssetsCount =
+    teamAPlayerIds.length +
+    teamBPlayerIds.length +
+    teamAProspectIds.length +
+    teamBProspectIds.length +
+    teamADraftPicks.length +
+    teamBDraftPicks.length;
+
   const handleRunSimulation = () => {
+    if (totalAssetsCount === 0) {
+      setEvaluation(null);
+      setIsSimulating(false);
+      return;
+    }
     setIsSimulating(true);
     setTimeout(() => {
       try {
@@ -299,9 +314,22 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     setRetainSalary(decoded.retainSalary);
     setRetentionPct(decoded.retentionPct);
 
-    // Auto-evaluate
+    // Auto-evaluate only if there are actual assets in the trade
     setTimeout(() => {
       isHydratingRef.current = false;
+      const decodedAssetsCount =
+        decoded.teamAPlayerIds.length +
+        decoded.teamBPlayerIds.length +
+        decoded.teamAProspectIds.length +
+        decoded.teamBProspectIds.length +
+        decoded.teamADraftPicks.length +
+        decoded.teamBDraftPicks.length;
+
+      if (decodedAssetsCount === 0) {
+        setEvaluation(null);
+        return;
+      }
+
       try {
         const teamAObj = franchises.find((t) => t.id === decoded.teamAId) || franchises[0];
         const teamBObj = franchises.find((t) => t.id === decoded.teamBId) || franchises[1];
@@ -360,7 +388,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     if (initialTradeParams) {
       loadTradeFromQuery(initialTradeParams);
     } else {
-      handleRunSimulation();
+      setEvaluation(null);
     }
   }, [initialTradeParams, players.length]);
 
@@ -372,6 +400,11 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
       return;
     }
     if (isHydratingRef.current) return;
+
+    if (totalAssetsCount === 0) {
+      setEvaluation(null);
+      return;
+    }
 
     const timer = setTimeout(() => {
       handleRunSimulation();
@@ -391,6 +424,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
     retainSalary,
     retentionPct,
     iterations,
+    totalAssetsCount,
   ]);
 
   const handleSelectFeaturedProposal = (proposal: FeaturedTradeProposal) => {
@@ -1399,8 +1433,13 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
       <div className="flex flex-wrap items-center justify-center gap-3 px-2">
         <button
           onClick={handleRunSimulation}
-          disabled={isSimulating}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 rounded-xl bg-gradient-to-r from-sky-600 via-blue-600 to-cyan-500 hover:from-sky-500 hover:to-cyan-400 text-white font-black text-xs sm:text-sm shadow-xl shadow-sky-900/40 active:scale-95 transition disabled:opacity-50 text-center"
+          disabled={isSimulating || totalAssetsCount === 0}
+          className={`w-full sm:w-auto flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 rounded-xl font-black text-xs sm:text-sm shadow-xl transition active:scale-95 text-center ${
+            totalAssetsCount === 0
+              ? 'bg-slate-800 text-slate-500 border border-slate-700/60 cursor-not-allowed shadow-none'
+              : 'bg-gradient-to-r from-sky-600 via-blue-600 to-cyan-500 hover:from-sky-500 hover:to-cyan-400 text-white shadow-sky-900/40'
+          }`}
+          title={totalAssetsCount === 0 ? 'Select roster players, prospects, or draft picks above to evaluate a trade' : 'Run Monte Carlo Trade Evaluation'}
         >
           {isSimulating ? (
             <>
@@ -1410,15 +1449,20 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
           ) : (
             <>
               <Zap className="w-4 h-4 shrink-0" />
-              <span>Run Monte Carlo Trade Evaluation</span>
+              <span>{totalAssetsCount === 0 ? 'Select Assets to Evaluate Trade' : 'Run Monte Carlo Trade Evaluation'}</span>
             </>
           )}
         </button>
 
         <button
           onClick={handleOpenShareModal}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-sky-500/60 text-slate-100 font-bold text-xs sm:text-sm shadow-lg transition active:scale-95"
-          title="Share Trade via Durable Link"
+          disabled={totalAssetsCount === 0}
+          className={`w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl border font-bold text-xs sm:text-sm shadow-lg transition active:scale-95 ${
+            totalAssetsCount === 0
+              ? 'bg-slate-900/40 border-slate-800 text-slate-600 cursor-not-allowed shadow-none'
+              : 'bg-slate-900 hover:bg-slate-800 border-slate-700 hover:border-sky-500/60 text-slate-100'
+          }`}
+          title={totalAssetsCount === 0 ? 'Select assets above to share trade' : 'Share Trade via Durable Link'}
         >
           <Share2 className="w-4 h-4 text-sky-400" />
           <span>Share Trade</span>
@@ -1426,8 +1470,13 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
 
         <button
           onClick={handleQuickCopy}
-          className="p-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-400 hover:text-white transition shrink-0"
-          title="Quick Copy Link"
+          disabled={totalAssetsCount === 0}
+          className={`p-3.5 rounded-xl border transition shrink-0 ${
+            totalAssetsCount === 0
+              ? 'bg-slate-900/40 border-slate-800 text-slate-700 cursor-not-allowed shadow-none'
+              : 'bg-slate-900 hover:bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
+          }`}
+          title={totalAssetsCount === 0 ? 'Select assets above to copy link' : 'Quick Copy Link'}
         >
           {quickCopiedToast ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
         </button>
@@ -1443,7 +1492,7 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
       )}
 
       {/* Simulation Results Section */}
-      {evaluation && (
+      {evaluation && totalAssetsCount > 0 ? (
         <div className="space-y-6">
           {/* Executive Verdict Banner */}
           <div className="bg-rink-card border border-rink-border rounded-xl p-4 sm:p-5 shadow-lg space-y-3">
@@ -1793,6 +1842,14 @@ export const FranchiseTradeMachine: React.FC<FranchiseTradeMachineProps> = ({
               </div>
             </div>
           </div>
+        </div>
+      ) : (
+        <div className="bg-rink-card/50 border border-dashed border-rink-border/80 rounded-xl p-8 sm:p-10 text-center max-w-xl mx-auto space-y-2.5">
+          <Layers className="w-9 h-9 text-slate-500 mx-auto opacity-50" />
+          <h4 className="text-sm font-bold text-slate-300">Ready to Simulate</h4>
+          <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
+            Select roster players, prospects, or draft picks above for either team to evaluate salary cap compliance, projected regular season points, and Stanley Cup odds.
+          </p>
         </div>
       )}
 
