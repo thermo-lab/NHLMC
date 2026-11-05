@@ -30,10 +30,21 @@ import { calculateAllGMRatings } from '../engine/gmRatings';
 import { isGMActive } from '../data/nhlGeneralManagers';
 import { GMLeaderboardModal } from './GMLeaderboardModal';
 
-export const HistoricalTradeAnalyzer: React.FC = () => {
+interface HistoricalTradeAnalyzerProps {
+  initialTradeId?: string;
+  initialGMFilter?: string;
+  onNavigateToGMs?: (gmName?: string) => void;
+}
+
+export const HistoricalTradeAnalyzer: React.FC<HistoricalTradeAnalyzerProps> = ({
+  initialTradeId,
+  initialGMFilter,
+  onNavigateToGMs,
+}) => {
   const [allTrades, setAllTrades] = useState<HistoricalTrade[]>(HISTORICAL_TRADES);
   const [isLoadingAll, setIsLoadingAll] = useState<boolean>(true);
   const [selectedTradeId, setSelectedTradeId] = useState<string>(() => {
+    if (initialTradeId) return initialTradeId;
     if (typeof window !== 'undefined') {
       const urlTrade = new URLSearchParams(window.location.search).get('trade');
       if (urlTrade) return urlTrade;
@@ -45,9 +56,22 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<'ALL' | 'MARQUEE'>('ALL');
   const [eraFilter, setEraFilter] = useState<string>('ALL');
   const [teamFilter, setTeamFilter] = useState<string>('ALL');
-  const [gmFilter, setGmFilter] = useState<string>('ALL');
+  const [gmFilter, setGmFilter] = useState<string>(initialGMFilter || 'ALL');
   const [activeGMsOnly, setActiveGMsOnly] = useState<boolean>(false);
   const [isGMModalOpen, setIsGMModalOpen] = useState<boolean>(false);
+
+  // Sync props changes if navigated from outside
+  useEffect(() => {
+    if (initialTradeId) {
+      setSelectedTradeId(initialTradeId);
+    }
+  }, [initialTradeId]);
+
+  useEffect(() => {
+    if (initialGMFilter) {
+      setGmFilter(initialGMFilter);
+    }
+  }, [initialGMFilter]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const pageSize = 12;
@@ -270,11 +294,17 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
           </div>
           <div className="shrink-0 flex items-center gap-2">
             <button
-              onClick={() => setIsGMModalOpen(true)}
+              onClick={() => {
+                if (onNavigateToGMs) {
+                  onNavigateToGMs();
+                } else {
+                  setIsGMModalOpen(true);
+                }
+              }}
               className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 via-brand-500/20 to-purple-500/20 hover:from-amber-500/30 hover:via-brand-500/30 hover:to-purple-500/30 border border-amber-500/40 hover:border-amber-400/70 text-amber-300 font-bold text-xs sm:text-sm transition-all shadow-lg active:scale-95 cursor-pointer"
             >
               <Award className="w-4 h-4 text-amber-400" />
-              <span>GM Trade Ratings</span>
+              <span>GM Trade Ratings Index</span>
               <span className="text-[10px] font-black px-1.5 py-0.5 rounded-full bg-amber-400 text-slate-950">
                 {gmRatings.length} GMs
               </span>
@@ -684,6 +714,15 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
                     >
                       {selectedTrade.teamA.generalManager || 'Front Office'}
                     </button>
+                    {onNavigateToGMs && selectedTrade.teamA.generalManager && (
+                      <button
+                        onClick={() => onNavigateToGMs(selectedTrade.teamA.generalManager)}
+                        className="text-[10px] text-sky-400 hover:text-sky-300 underline font-semibold ml-1 cursor-pointer"
+                        title="Open full GM Dossier page"
+                      >
+                        (Dossier →)
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -776,6 +815,15 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
                     >
                       {selectedTrade.teamB.generalManager || 'Front Office'}
                     </button>
+                    {onNavigateToGMs && selectedTrade.teamB.generalManager && (
+                      <button
+                        onClick={() => onNavigateToGMs(selectedTrade.teamB.generalManager)}
+                        className="text-[10px] text-sky-400 hover:text-sky-300 underline font-semibold ml-1 cursor-pointer"
+                        title="Open full GM Dossier page"
+                      >
+                        (Dossier →)
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { FranchiseTradeMachine } from './components/FranchiseTradeMachine';
 import { HistoricalTradeAnalyzer } from './components/HistoricalTradeAnalyzer';
+import { GMLeaderboardView } from './components/GMLeaderboardView';
 import { TeamsHub } from './components/TeamsHub';
 import { PlayerBrowser } from './components/PlayerBrowser';
 import { GuideView } from './components/GuideView';
@@ -15,7 +16,10 @@ import { Player } from './types/player';
 import { fetchFranchises, fetchPlayers, fetchProspects, saveProspectToD1 } from './services/api';
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<'trade' | 'targets' | 'historical' | 'teams' | 'players' | 'guide' | 'admin'>('trade');
+  const [activeTab, setActiveTab] = useState<'trade' | 'targets' | 'historical' | 'gms' | 'teams' | 'players' | 'guide' | 'admin'>('trade');
+  const [selectedGMForView, setSelectedGMForView] = useState<string | undefined>(undefined);
+  const [selectedHistoricalTradeId, setSelectedHistoricalTradeId] = useState<string | undefined>(undefined);
+  const [selectedHistoricalGMFilter, setSelectedHistoricalGMFilter] = useState<string | undefined>(undefined);
   const [franchises, setFranchises] = useState(NHL_FRANCHISES);
   const [players, setPlayers] = useState(INITIAL_PLAYERS);
   const [prospects, setProspects] = useState<NHLProspect[]>(INITIAL_PROSPECTS);
@@ -30,6 +34,11 @@ export function App() {
       if (params.has('tA') || params.has('v') || params.has('pA') || params.has('pB')) {
         setInitialTradeParams(search);
         setActiveTab('trade');
+      } else if (params.get('tab') === 'gms' || params.get('tab') === 'gm-ratings') {
+        if (params.get('gm')) {
+          setSelectedGMForView(params.get('gm') || undefined);
+        }
+        setActiveTab('gms');
       } else if (params.has('trade') || params.get('tab') === 'historical') {
         setActiveTab('historical');
       } else if (
@@ -121,7 +130,48 @@ export function App() {
         )}
 
         {activeTab === 'historical' && (
-          <HistoricalTradeAnalyzer />
+          <HistoricalTradeAnalyzer
+            initialTradeId={selectedHistoricalTradeId}
+            initialGMFilter={selectedHistoricalGMFilter}
+            onNavigateToGMs={(gmName) => {
+              if (gmName) setSelectedGMForView(gmName);
+              setActiveTab('gms');
+              if (typeof window !== 'undefined') {
+                const url = new URL(window.location.href);
+                url.searchParams.set('tab', 'gms');
+                if (gmName) url.searchParams.set('gm', gmName);
+                window.history.pushState({}, '', url.toString());
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+          />
+        )}
+
+        {activeTab === 'gms' && (
+          <GMLeaderboardView
+            initialSelectedGMName={selectedGMForView}
+            onNavigateToTrade={(tradeId) => {
+              setSelectedHistoricalTradeId(tradeId);
+              setActiveTab('historical');
+              if (typeof window !== 'undefined') {
+                const url = new URL(window.location.href);
+                url.searchParams.set('tab', 'historical');
+                url.searchParams.set('trade', tradeId);
+                window.history.pushState({}, '', url.toString());
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+            onNavigateToArchiveWithGM={(gmName) => {
+              setSelectedHistoricalGMFilter(gmName);
+              setActiveTab('historical');
+              if (typeof window !== 'undefined') {
+                const url = new URL(window.location.href);
+                url.searchParams.set('tab', 'historical');
+                window.history.pushState({}, '', url.toString());
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+          />
         )}
 
         {activeTab === 'teams' && (

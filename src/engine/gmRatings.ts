@@ -126,14 +126,24 @@ export function calculateAllGMRatings(rawTrades: HistoricalTrade[]): GMRatingSta
         tradeId: trade.id,
         title: trade.title,
         tradeDate: trade.tradeDate,
+        seasonEra: trade.seasonEra,
         teamAbbrev: party.teamAbbrev,
+        teamName: party.teamName,
         opposingTeamAbbrev: oppParty.teamAbbrev,
+        opposingTeamName: oppParty.teamName,
         opposingGM: oppParty.generalManager,
         snapshotGrade: party.snapshotGrade,
         retrospectiveGrade: party.retrospectiveGrade,
         lopsidedness: trade.historicalOutcome.lopsidednessRating,
         outcomeRole,
         headline: trade.headline,
+        acquired: party.received || [],
+        tradedAway: party.gaveUp || [],
+        winningTeam: trade.historicalOutcome.winningTeam,
+        championshipImpact: trade.historicalOutcome.championshipImpact,
+        successSummary: isTeamA
+          ? trade.historicalOutcome.teamASuccessSummary
+          : trade.historicalOutcome.teamBSuccessSummary,
       });
     };
 

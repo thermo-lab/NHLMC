@@ -16,14 +16,22 @@ export interface GMTradeSummary {
   tradeId: string;
   title: string;
   tradeDate: string;
+  seasonEra: string;
   teamAbbrev: string;
+  teamName: string;
   opposingTeamAbbrev: string;
+  opposingTeamName: string;
   opposingGM?: string;
   snapshotGrade: string;
   retrospectiveGrade: string;
   lopsidedness: string;
   outcomeRole: 'WON' | 'LOST' | 'EVEN';
   headline: string;
+  acquired: string[];
+  tradedAway: string[];
+  winningTeam?: string;
+  championshipImpact?: string;
+  successSummary?: string;
 }
 
 export type GMArchetype =

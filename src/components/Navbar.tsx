@@ -9,11 +9,12 @@ import {
   Building2,
   Trophy,
   Target,
+  Award,
 } from 'lucide-react';
 
 interface NavbarProps {
-  activeTab: 'trade' | 'targets' | 'historical' | 'teams' | 'players' | 'guide' | 'admin';
-  setActiveTab: (tab: 'trade' | 'targets' | 'historical' | 'teams' | 'players' | 'guide' | 'admin') => void;
+  activeTab: 'trade' | 'targets' | 'historical' | 'gms' | 'teams' | 'players' | 'guide' | 'admin';
+  setActiveTab: (tab: 'trade' | 'targets' | 'historical' | 'gms' | 'teams' | 'players' | 'guide' | 'admin') => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
@@ -91,6 +92,18 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
               >
                 <History className="w-4 h-4 text-brand-400" />
                 <span>Historical Blockbusters</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('gms')}
+                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                  activeTab === 'gms'
+                    ? 'bg-amber-500/15 text-amber-400 border border-amber-500/30 font-bold'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                }`}
+              >
+                <Award className="w-4 h-4 text-amber-400" />
+                <span>GM Ratings</span>
               </button>
 
               <button
@@ -191,6 +204,17 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
           >
             <History className="w-3 h-3 text-brand-400" />
             <span>Historical</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('gms')}
+            className={`flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-semibold whitespace-nowrap shrink-0 ${
+              activeTab === 'gms'
+                ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                : 'text-slate-400'
+            }`}
+          >
+            <Award className="w-3 h-3 text-amber-400" />
+            <span>GM Ratings</span>
           </button>
           <button
             onClick={() => setActiveTab('teams')}

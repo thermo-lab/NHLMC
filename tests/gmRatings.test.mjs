@@ -133,6 +133,8 @@ test('GM Ratings Engine: Correctly calculates dual ratings and drift', () => {
   assert.equal(zito.losses, 0);
   assert.ok(zito.hindsightDrift > 0, 'Zito should have positive hindsight drift');
   assert.equal(zito.archetype, 'VISIONARY_MASTERMIND');
+  assert.ok(Array.isArray(zito.trades[0].acquired), 'Must contain acquired array');
+  assert.ok(Array.isArray(zito.trades[0].tradedAway), 'Must contain tradedAway array');
 
   // Treliving: Snapshot GPA = 4.00, Retro GPA = 1.00 -> Drift = negative
   assert.equal(treliving.snapshotGpa, 4.00);
