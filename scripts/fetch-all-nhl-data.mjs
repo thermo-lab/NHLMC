@@ -601,6 +601,69 @@ async function main() {
     });
   }
 
+  // Ensure mandatory/IR veterans are preserved even if currently omitted from NHL active roster API
+  const MANDATORY_PLAYERS = [
+    {
+      id: 8475760,
+      nhlId: 8475760,
+      name: "Nick Bjugstad",
+      nhlTeam: "NJD",
+      capHit: 1750000,
+      positions: ["C", "RW", "F", "UTIL"],
+      primaryPosition: "C",
+      playerType: "skater",
+      injuryStatus: "INJURY_RESERVE",
+      headshotUrl: "https://assets.nhle.com/mugs/nhl/latest/8475760.png",
+      actualStats: {
+        skater: {
+          gamesPlayed: 26,
+          goals: 0,
+          assists: 2,
+          points: 2,
+          plusMinus: -3,
+          powerPlayGoals: 0,
+          powerPlayPoints: 0,
+          shortHandedPoints: 0,
+          shots: 28,
+          hits: 34,
+          blockedShots: 12,
+          penaltyMinutes: 14,
+          shootingPctg: 0,
+          avgTimeOnIce: "12:45",
+        },
+      },
+      projections: {
+        rosGamesRemaining: 45,
+        rosGoals: 6,
+        rosAssists: 8,
+        rosPoints: 14,
+        rosPlusMinus: -4,
+        rosPPP: 1,
+        rosSOG: 62,
+        rosHits: 68,
+        rosBlocks: 24,
+        rosPIM: 20,
+        sdGoalRate: 0.18,
+        sdAssistRate: 0.15,
+        sdSOGRate: 0.1,
+        sdHitRate: 0.14,
+        sdBlockRate: 0.14,
+        sdPIMRate: 0.2,
+        sdPlusMinus: 10,
+      },
+    },
+  ];
+
+  for (const mp of MANDATORY_PLAYERS) {
+    if (!allPlayers.some((p) => p.nhlId === mp.nhlId || p.name === mp.name)) {
+      allPlayers.push(mp);
+      const team = franchisesList.find((f) => f.abbrev === mp.nhlTeam);
+      if (team && !team.rosterPlayerIds.includes(mp.nhlId)) {
+        team.rosterPlayerIds.push(mp.nhlId);
+      }
+    }
+  }
+
   // Sort players alphabetically by team then by points/cap
   console.log(`Writing ${allPlayers.length} total players to ${PLAYERS_OUTPUT}...`);
   fs.writeFileSync(PLAYERS_OUTPUT, JSON.stringify(allPlayers, null, 2), 'utf-8');

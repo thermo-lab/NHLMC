@@ -4,6 +4,8 @@ import assert from 'node:assert/strict';
 import {
   lookupGeneralManager,
   enrichTradeWithGMs,
+  isGMActive,
+  ACTIVE_NHL_GMS,
 } from '../src/data/nhlGeneralManagers.ts';
 
 import {
@@ -153,4 +155,24 @@ test('GM Ratings Engine: Processes all marquee historical trades cleanly', () =>
     assert.ok(gm.retrospectiveRank > 0);
     assert.ok(gm.archetype);
   }
+});
+
+
+test('GM Active Status: Correctly identifies active vs historical GMs', () => {
+  assert.equal(ACTIVE_NHL_GMS.size, 32);
+
+  // Active GMs
+  assert.equal(isGMActive('Bill Zito'), true);
+  assert.equal(isGMActive('Don Sweeney'), true);
+  assert.equal(isGMActive('Brad Treliving'), true);
+  assert.equal(isGMActive('Julien BriseBois'), true);
+  assert.equal(isGMActive('Steve Yzerman'), true);
+  assert.equal(isGMActive('Eric Tulsky'), true);
+
+  // Historical/Retired GMs
+  assert.equal(isGMActive('Glen Sather'), false);
+  assert.equal(isGMActive('Rejean Houle'), false);
+  assert.equal(isGMActive('Harry Sinden'), false);
+  assert.equal(isGMActive('Cliff Fletcher'), false);
+  assert.equal(isGMActive('Mike Milbury'), false);
 });

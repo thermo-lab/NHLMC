@@ -33,9 +33,14 @@ export const GMLeaderboardModal: React.FC<GMLeaderboardModalProps> = ({
   const [search, setSearch] = useState('');
   const [selectedGM, setSelectedGM] = useState<GMRatingStats | null>(null);
   const [minTradesFilter, setMinTradesFilter] = useState<number>(3);
+  const [activeOnly, setActiveOnly] = useState<boolean>(false);
 
   const filteredAndSortedGMs = useMemo(() => {
     let list = gmRatings.filter((gm) => gm.totalTrades >= minTradesFilter);
+
+    if (activeOnly) {
+      list = list.filter((gm) => gm.isActive);
+    }
 
     if (search.trim()) {
       const q = search.toLowerCase().trim();
@@ -71,7 +76,7 @@ export const GMLeaderboardModal: React.FC<GMLeaderboardModalProps> = ({
       }
       return b.retrospectiveScore - a.retrospectiveScore;
     });
-  }, [gmRatings, activeTab, search, minTradesFilter]);
+  }, [gmRatings, activeTab, search, minTradesFilter, activeOnly]);
 
   if (!isOpen) return null;
 
@@ -202,6 +207,20 @@ export const GMLeaderboardModal: React.FC<GMLeaderboardModalProps> = ({
               <option value={10}>10+ Trades</option>
               <option value={20}>20+ Trades</option>
             </select>
+
+            {/* Active Only Filter */}
+            <button
+              onClick={() => setActiveOnly(!activeOnly)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition border cursor-pointer shrink-0 ${
+                activeOnly
+                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-sm'
+                  : 'bg-rink-surface text-slate-400 border-rink-border hover:text-white'
+              }`}
+              title="Show only currently active NHL General Managers"
+            >
+              <span className={`w-2 h-2 rounded-full ${activeOnly ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'}`} />
+              <span>Active GMs Only</span>
+            </button>
           </div>
         </div>
 

@@ -703,3 +703,22 @@ export function enrichTradeWithGMs(trade: HistoricalTrade): HistoricalTrade {
     },
   };
 }
+
+
+/**
+ * Set of all currently active NHL General Managers (32 active franchises).
+ */
+export const ACTIVE_NHL_GMS: Set<string> = new Set(
+  NHL_GM_TENURES
+    .filter((t) => t.endDate === '2099-12-31')
+    .map((t) => GM_NAME_MAP[`${t.teamAbbrev}:${t.startDate}`])
+    .filter(Boolean)
+);
+
+/**
+ * Checks whether a General Manager is currently active in the NHL.
+ */
+export function isGMActive(name: string): boolean {
+  if (!name) return false;
+  return ACTIVE_NHL_GMS.has(name);
+}

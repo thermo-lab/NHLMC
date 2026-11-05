@@ -1,6 +1,6 @@
 import { HistoricalTrade } from '../types/historicalTrade';
 import { GMRatingStats, GMTradeSummary, GMArchetype } from '../types/generalManager';
-import { enrichTradeWithGMs } from '../data/nhlGeneralManagers';
+import { enrichTradeWithGMs, isGMActive } from '../data/nhlGeneralManagers';
 
 export const GRADE_GPA_MAP: Record<string, number> = {
   'A+': 4.30,
@@ -158,7 +158,7 @@ export function calculateAllGMRatings(rawTrades: HistoricalTrade[]): GMRatingSta
     const minYr = sortedYears[0] || 2000;
     const maxYr = sortedYears[sortedYears.length - 1] || 2026;
     const activeSpan = minYr === maxYr ? `${minYr}` : `${minYr} - ${maxYr}`;
-    const isActive = maxYr >= 2024;
+    const isActive = isGMActive(name) || maxYr >= 2024;
 
     const winPctg = total > 0 ? Number(((data.wins / total) * 100).toFixed(1)) : 50.0;
 
