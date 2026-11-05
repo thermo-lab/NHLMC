@@ -1,6 +1,7 @@
 import { HistoricalTrade } from '../types/historicalTrade';
+import { enrichTradeWithGMs } from './nhlGeneralManagers';
 
-export const HISTORICAL_TRADES: HistoricalTrade[] = [
+const RAW_HISTORICAL_TRADES: HistoricalTrade[] = [
   {
     id: 'tkachuk-huberdeau-2022',
     title: 'The Matthew Tkachuk Blockbuster',
@@ -1100,10 +1101,13 @@ export const HISTORICAL_TRADES: HistoricalTrade[] = [
   },
 ];
 
+export const HISTORICAL_TRADES: HistoricalTrade[] = RAW_HISTORICAL_TRADES.map(enrichTradeWithGMs);
+
 export async function loadAllHistoricalTrades(): Promise<HistoricalTrade[]> {
   try {
     const data = await import('./allHistoricalTrades.json');
-    return (data.default || data) as HistoricalTrade[];
+    const list = (data.default || data) as HistoricalTrade[];
+    return list.map(enrichTradeWithGMs);
   } catch (err) {
     console.warn('Failed to load full historical trades archive, falling back to marquee trades:', err);
     return HISTORICAL_TRADES;

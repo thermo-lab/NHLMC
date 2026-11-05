@@ -26,6 +26,8 @@ import {
 } from 'lucide-react';
 import { HistoricalTrade } from '../types/historicalTrade';
 import { HISTORICAL_TRADES, loadAllHistoricalTrades } from '../data/historicalTrades';
+import { calculateAllGMRatings } from '../engine/gmRatings';
+import { GMLeaderboardModal } from './GMLeaderboardModal';
 
 export const HistoricalTradeAnalyzer: React.FC = () => {
   const [allTrades, setAllTrades] = useState<HistoricalTrade[]>(HISTORICAL_TRADES);
@@ -42,6 +44,8 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<'ALL' | 'MARQUEE'>('ALL');
   const [eraFilter, setEraFilter] = useState<string>('ALL');
   const [teamFilter, setTeamFilter] = useState<string>('ALL');
+  const [gmFilter, setGmFilter] = useState<string>('ALL');
+  const [isGMModalOpen, setIsGMModalOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const pageSize = 12;
@@ -110,6 +114,12 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
 
   const availableTeams = CANONICAL_NHL_TEAMS;
 
+  const gmRatings = useMemo(() => calculateAllGMRatings(allTrades), [allTrades]);
+
+  const availableGMs = useMemo(() => {
+    return Array.from(new Set(gmRatings.map((g) => g.name))).sort();
+  }, [gmRatings]);
+
   const filteredTrades = useMemo(() => {
     return allTrades.filter((t) => {
       // Category filter
@@ -136,6 +146,16 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
         }
       }
 
+      // GM filter
+      if (gmFilter !== 'ALL') {
+        const matchesGM =
+          t.teamA.generalManager === gmFilter ||
+          t.teamB.generalManager === gmFilter;
+        if (!matchesGM) {
+          return false;
+        }
+      }
+
       // Search Query filter
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
@@ -143,24 +163,26 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
         const inHeadline = t.headline.toLowerCase().includes(q);
         const inTeamA = t.teamA.teamName.toLowerCase().includes(q) || t.teamA.teamAbbrev.toLowerCase().includes(q);
         const inTeamB = t.teamB.teamName.toLowerCase().includes(q) || t.teamB.teamAbbrev.toLowerCase().includes(q);
+        const inGmA = t.teamA.generalManager?.toLowerCase().includes(q);
+        const inGmB = t.teamB.generalManager?.toLowerCase().includes(q);
         const inDate = t.tradeDate.toLowerCase().includes(q);
         const inPlayers = t.snapshotContext.players?.some((p) => p.name.toLowerCase().includes(q));
         const inGaveUpA = t.teamA.gaveUp.some((item) => item.toLowerCase().includes(q));
         const inReceivedA = t.teamA.received.some((item) => item.toLowerCase().includes(q));
 
-        if (!inTitle && !inHeadline && !inTeamA && !inTeamB && !inDate && !inPlayers && !inGaveUpA && !inReceivedA) {
+        if (!inTitle && !inHeadline && !inTeamA && !inTeamB && !inGmA && !inGmB && !inDate && !inPlayers && !inGaveUpA && !inReceivedA) {
           return false;
         }
       }
 
       return true;
     });
-  }, [allTrades, activeCategory, eraFilter, teamFilter, searchQuery, marqueeIds]);
+  }, [allTrades, activeCategory, eraFilter, teamFilter, gmFilter, searchQuery, marqueeIds]);
 
   // Reset to page 1 whenever filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [activeCategory, eraFilter, teamFilter, searchQuery]);
+  }, [activeCategory, eraFilter, teamFilter, gmFilter, searchQuery]);
 
   const totalPages = Math.max(1, Math.ceil(filteredTrades.length / pageSize));
   const paginatedTrades = useMemo(() => {
@@ -230,6 +252,18 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
             <p className="text-slate-400 text-sm mt-1 max-w-2xl">
               Inspect thousands of NHL trades through two analytical lenses: the available information at the moment of the handshake (<span className="text-sky-400 font-semibold">Snapshot</span>), versus how the assets materialized and affected franchises years later (<span className="text-emerald-400 font-semibold">Retrospective</span>).
             </p>
+          </div>
+          <div className="shrink-0 flex items-center gap-2">
+            <button
+              onClick={() => setIsGMModalOpen(true)}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 via-brand-500/20 to-purple-500/20 hover:from-amber-500/30 hover:via-brand-500/30 hover:to-purple-500/30 border border-amber-500/40 hover:border-amber-400/70 text-amber-300 font-bold text-xs sm:text-sm transition-all shadow-lg active:scale-95 cursor-pointer"
+            >
+              <Award className="w-4 h-4 text-amber-400" />
+              <span>GM Trade Ratings</span>
+              <span className="text-[10px] font-black px-1.5 py-0.5 rounded-full bg-amber-400 text-slate-950">
+                {gmRatings.length} GMs
+              </span>
+            </button>
           </div>
         </div>
       </div>
@@ -316,8 +350,43 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
                 ))}
               </select>
             </div>
+
+            {/* GM Filter Dropdown */}
+            <div className="flex items-center gap-1.5 bg-rink-surface border border-rink-border rounded-lg px-2.5 py-1.5 text-xs text-slate-300">
+              <Award className="w-3 h-3 text-amber-400" />
+              <select
+                value={gmFilter}
+                onChange={(e) => setGmFilter(e.target.value)}
+                className="bg-transparent text-slate-200 text-xs focus:outline-none cursor-pointer max-w-[150px] truncate"
+              >
+                <option value="ALL" className="bg-rink-surface text-white">All GMs ({availableGMs.length})</option>
+                {availableGMs.map((gm) => (
+                  <option key={gm} value={gm} className="bg-rink-surface text-white">
+                    {gm}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
+
+        {/* Active GM Filter Tag */}
+        {gmFilter !== 'ALL' && (
+          <div className="flex items-center gap-2 pt-1 pb-0.5">
+            <span className="text-xs text-slate-400">Filtering by General Manager:</span>
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-semibold">
+              <Award className="w-3 h-3" />
+              {gmFilter}
+              <button
+                onClick={() => setGmFilter('ALL')}
+                className="hover:text-white ml-1 text-slate-400"
+                title="Clear GM filter"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          </div>
+        )}
 
         {/* Results summary & Pagination header */}
         <div className="flex flex-wrap items-center justify-between text-xs text-slate-400 pt-1 border-t border-rink-border/50">
@@ -363,6 +432,7 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
                 setSearchQuery('');
                 setEraFilter('ALL');
                 setTeamFilter('ALL');
+                setGmFilter('ALL');
                 setActiveCategory('ALL');
               }}
               className="mt-3 px-3 py-1.5 bg-brand-600 hover:bg-brand-500 text-white rounded text-xs font-semibold"
@@ -410,6 +480,17 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
                       {viewMode === 'SNAPSHOT' ? `Grades: ${t.teamA.snapshotGrade} / ${t.teamB.snapshotGrade}` : `Outcome: ${t.historicalOutcome.winningTeam.split(' ')[0]}`}
                     </span>
                   </div>
+                  {(t.teamA.generalManager || t.teamB.generalManager) && (
+                    <div className="text-[10px] text-slate-400 truncate mt-1 pt-1 border-t border-rink-border/30 flex items-center justify-between">
+                      <span className="truncate text-slate-300 font-medium max-w-[45%]" title={t.teamA.generalManager}>
+                        {t.teamA.generalManager || t.teamA.teamAbbrev}
+                      </span>
+                      <span className="text-slate-600 px-1">⇄</span>
+                      <span className="truncate text-slate-300 font-medium text-right max-w-[45%]" title={t.teamB.generalManager}>
+                        {t.teamB.generalManager || t.teamB.teamAbbrev}
+                      </span>
+                    </div>
+                  )}
                 </button>
               );
             })}
@@ -539,9 +620,20 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
                   <h3 className="text-base font-bold text-white">
                     {selectedTrade.teamA.teamName}
                   </h3>
-                  <span className="text-xs text-slate-400">
-                    Acquired Core Assets
-                  </span>
+                  <div className="flex items-center gap-1.5 text-xs text-slate-400">
+                    <span>GM:</span>
+                    <button
+                      onClick={() => {
+                        if (selectedTrade.teamA.generalManager) {
+                          setGmFilter(selectedTrade.teamA.generalManager);
+                        }
+                      }}
+                      className="text-amber-300 font-semibold hover:underline hover:text-amber-200 cursor-pointer"
+                      title="Filter all trades by this General Manager"
+                    >
+                      {selectedTrade.teamA.generalManager || 'Front Office'}
+                    </button>
+                  </div>
                 </div>
               </div>
               <div className="text-right">
@@ -620,9 +712,20 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
                   <h3 className="text-base font-bold text-white">
                     {selectedTrade.teamB.teamName}
                   </h3>
-                  <span className="text-xs text-slate-400">
-                    Acquired Core Assets
-                  </span>
+                  <div className="flex items-center gap-1.5 text-xs text-slate-400">
+                    <span>GM:</span>
+                    <button
+                      onClick={() => {
+                        if (selectedTrade.teamB.generalManager) {
+                          setGmFilter(selectedTrade.teamB.generalManager);
+                        }
+                      }}
+                      className="text-amber-300 font-semibold hover:underline hover:text-amber-200 cursor-pointer"
+                      title="Filter all trades by this General Manager"
+                    >
+                      {selectedTrade.teamB.generalManager || 'Front Office'}
+                    </button>
+                  </div>
                 </div>
               </div>
               <div className="text-right">
@@ -881,6 +984,17 @@ export const HistoricalTradeAnalyzer: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* GM Trade Ratings Leaderboard Modal */}
+      <GMLeaderboardModal
+        isOpen={isGMModalOpen}
+        onClose={() => setIsGMModalOpen(false)}
+        gmRatings={gmRatings}
+        onSelectGM={(gmName) => {
+          setGmFilter(gmName);
+          setIsGMModalOpen(false);
+        }}
+      />
     </div>
   );
 };

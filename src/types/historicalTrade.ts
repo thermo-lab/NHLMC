@@ -2,6 +2,7 @@ export interface TradeParty {
   teamName: string;
   teamAbbrev: string;
   teamLogo?: string;
+  generalManager?: string;
   gaveUp: string[];
   received: string[];
   snapshotGrade: 'A+' | 'A' | 'A-' | 'B+' | 'B' | 'B-' | 'C+' | 'C' | 'C-' | 'D+' | 'D' | 'D-' | 'F';
