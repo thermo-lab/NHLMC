@@ -292,11 +292,11 @@
         "powerPlayGoals": 2,
         "powerPlayPoints": 5,
         "shortHandedPoints": 0,
-        "shots": 48,
+        "shots": 47,
         "hits": 26,
         "blockedShots": 12,
         "penaltyMinutes": 22,
-        "shootingPctg": 0.146,
+        "shootingPctg": 0.149,
         "avgTimeOnIce": "15:57"
       }
     },
@@ -307,7 +307,7 @@
       "rosPoints": 31,
       "rosPlusMinus": 12,
       "rosPPP": 9,
-      "rosSOG": 116,
+      "rosSOG": 114,
       "rosHits": 63,
       "rosBlocks": 29,
       "rosPIM": 53,
@@ -1490,11 +1490,11 @@
         "powerPlayGoals": 2,
         "powerPlayPoints": 5,
         "shortHandedPoints": 0,
-        "shots": 25,
+        "shots": 24,
         "hits": 14,
         "blockedShots": 7,
         "penaltyMinutes": 4,
-        "shootingPctg": 0.16,
+        "shootingPctg": 0.167,
         "avgTimeOnIce": "17:52"
       }
     },
@@ -1505,7 +1505,7 @@
       "rosPoints": 32,
       "rosPlusMinus": -11,
       "rosPPP": 14,
-      "rosSOG": 133,
+      "rosSOG": 127,
       "rosHits": 74,
       "rosBlocks": 37,
       "rosPIM": 21,
@@ -2753,8 +2753,8 @@
         "otLosses": 0,
         "shutouts": 1,
         "goalsAgainst": 30,
-        "saves": 279,
-        "shotsAgainst": 308,
+        "saves": 280,
+        "shotsAgainst": 309,
         "goalsAgainstAverage": 2.49,
         "savePercentage": 0.906
       }
@@ -5496,7 +5496,7 @@
         "powerPlayGoals": 0,
         "powerPlayPoints": 0,
         "shortHandedPoints": 0,
-        "shots": 22,
+        "shots": 23,
         "hits": 35,
         "blockedShots": 46,
         "penaltyMinutes": 14,
@@ -5511,7 +5511,7 @@
       "rosPoints": 3,
       "rosPlusMinus": 8,
       "rosPPP": 0,
-      "rosSOG": 60,
+      "rosSOG": 63,
       "rosHits": 95,
       "rosBlocks": 125,
       "rosPIM": 38,
@@ -5762,8 +5762,8 @@
         "otLosses": 1,
         "shutouts": 0,
         "goalsAgainst": 44,
-        "saves": 375,
-        "shotsAgainst": 419,
+        "saves": 374,
+        "shotsAgainst": 418,
         "goalsAgainstAverage": 2.59,
         "savePercentage": 0.895
       }
@@ -10235,6 +10235,58 @@
       "sdSavePctg": 0.015,
       "sdGAARate": 0.35,
       "sdWinRate": 0.08
+    }
+  },
+  {
+    "id": 8482141,
+    "nhlId": 8482141,
+    "name": "Lukas Cormier",
+    "nhlTeam": "VGK",
+    "capHit": 1000000,
+    "positions": [
+      "D",
+      "UTIL"
+    ],
+    "primaryPosition": "D",
+    "playerType": "skater",
+    "injuryStatus": "ACTIVE",
+    "headshotUrl": "https://assets.nhle.com/mugs/nhl/latest/8482141.png",
+    "actualStats": {
+      "skater": {
+        "gamesPlayed": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "plusMinus": 0,
+        "powerPlayGoals": 0,
+        "powerPlayPoints": 0,
+        "shortHandedPoints": 0,
+        "shots": 0,
+        "hits": 0,
+        "blockedShots": 0,
+        "penaltyMinutes": 0,
+        "shootingPctg": 0.1
+      }
+    },
+    "projections": {
+      "rosGamesRemaining": 58,
+      "rosGoals": 6,
+      "rosAssists": 10,
+      "rosPoints": 16,
+      "rosPlusMinus": 0,
+      "rosPPP": 2,
+      "rosSOG": 55,
+      "rosHits": 30,
+      "rosBlocks": 20,
+      "rosPIM": 16,
+      "sdPlayingTimePct": 0.2,
+      "sdGoalRate": 0.25,
+      "sdAssistRate": 0.2,
+      "sdSOGRate": 0.15,
+      "sdHitRate": 0.2,
+      "sdBlockRate": 0.2,
+      "sdPIMRate": 0.25,
+      "sdPlusMinus": 8
     }
   },
   {
@@ -15755,10 +15807,10 @@
         "otLosses": 2,
         "shutouts": 1,
         "goalsAgainst": 22,
-        "saves": 164,
-        "shotsAgainst": 186,
+        "saves": 166,
+        "shotsAgainst": 188,
         "goalsAgainstAverage": 3.38,
-        "savePercentage": 0.882
+        "savePercentage": 0.883
       }
     },
     "projections": {
@@ -15766,7 +15818,7 @@
       "rosGamesStarted": 18,
       "rosWins": 5,
       "rosGAA": 3.38,
-      "rosSavePctg": 0.882,
+      "rosSavePctg": 0.883,
       "rosSaves": 495,
       "rosShutouts": 1,
       "sdPlayingTimePct": 0.15,
@@ -20650,11 +20702,11 @@
         "powerPlayGoals": 0,
         "powerPlayPoints": 0,
         "shortHandedPoints": 0,
-        "shots": 22,
+        "shots": 23,
         "hits": 20,
         "blockedShots": 9,
         "penaltyMinutes": 2,
-        "shootingPctg": 0.045,
+        "shootingPctg": 0.043,
         "avgTimeOnIce": "15:40"
       }
     },
@@ -20665,7 +20717,7 @@
       "rosPoints": 28,
       "rosPlusMinus": -14,
       "rosPPP": 4,
-      "rosSOG": 78,
+      "rosSOG": 82,
       "rosHits": 71,
       "rosBlocks": 32,
       "rosPIM": 7,
@@ -23496,11 +23548,11 @@
         "powerPlayGoals": 0,
         "powerPlayPoints": 2,
         "shortHandedPoints": 0,
-        "shots": 22,
+        "shots": 23,
         "hits": 14,
         "blockedShots": 19,
         "penaltyMinutes": 4,
-        "shootingPctg": 0.045,
+        "shootingPctg": 0.043,
         "avgTimeOnIce": "23:37"
       }
     },
@@ -23511,7 +23563,7 @@
       "rosPoints": 49,
       "rosPlusMinus": 57,
       "rosPPP": 16,
-      "rosSOG": 178,
+      "rosSOG": 187,
       "rosHits": 114,
       "rosBlocks": 154,
       "rosPIM": 32,
@@ -24138,11 +24190,11 @@
         "powerPlayGoals": 1,
         "powerPlayPoints": 2,
         "shortHandedPoints": 0,
-        "shots": 26,
+        "shots": 25,
         "hits": 14,
         "blockedShots": 7,
         "penaltyMinutes": 0,
-        "shootingPctg": 0.192,
+        "shootingPctg": 0.2,
         "avgTimeOnIce": "16:17"
       }
     },
@@ -24153,7 +24205,7 @@
       "rosPoints": 42,
       "rosPlusMinus": -5,
       "rosPPP": 10,
-      "rosSOG": 138,
+      "rosSOG": 133,
       "rosHits": 74,
       "rosBlocks": 37,
       "rosPIM": 0,
@@ -24661,10 +24713,10 @@
         "otLosses": 0,
         "shutouts": 0,
         "goalsAgainst": 10,
-        "saves": 95,
-        "shotsAgainst": 105,
+        "saves": 96,
+        "shotsAgainst": 106,
         "goalsAgainstAverage": 2.47,
-        "savePercentage": 0.905
+        "savePercentage": 0.906
       }
     },
     "projections": {
@@ -24672,7 +24724,7 @@
       "rosGamesStarted": 8,
       "rosWins": 5,
       "rosGAA": 2.47,
-      "rosSavePctg": 0.905,
+      "rosSavePctg": 0.906,
       "rosSaves": 220,
       "rosShutouts": 0,
       "sdPlayingTimePct": 0.15,
@@ -26975,11 +27027,11 @@
         "powerPlayGoals": 0,
         "powerPlayPoints": 0,
         "shortHandedPoints": 0,
-        "shots": 6,
+        "shots": 7,
         "hits": 5,
         "blockedShots": 6,
         "penaltyMinutes": 2,
-        "shootingPctg": 0.167,
+        "shootingPctg": 0.143,
         "avgTimeOnIce": "17:12"
       }
     },
@@ -26990,7 +27042,7 @@
       "rosPoints": 53,
       "rosPlusMinus": 0,
       "rosPPP": 11,
-      "rosSOG": 158,
+      "rosSOG": 184,
       "rosHits": 132,
       "rosBlocks": 158,
       "rosPIM": 53,
@@ -27617,11 +27669,11 @@
         "powerPlayGoals": 1,
         "powerPlayPoints": 2,
         "shortHandedPoints": 0,
-        "shots": 22,
+        "shots": 23,
         "hits": 20,
         "blockedShots": 9,
         "penaltyMinutes": 15,
-        "shootingPctg": 0.091,
+        "shootingPctg": 0.087,
         "avgTimeOnIce": "11:56"
       }
     },
@@ -27632,7 +27684,7 @@
       "rosPoints": 11,
       "rosPlusMinus": -25,
       "rosPPP": 5,
-      "rosSOG": 78,
+      "rosSOG": 82,
       "rosHits": 71,
       "rosBlocks": 32,
       "rosPIM": 53,
@@ -28869,11 +28921,11 @@
         "powerPlayGoals": 0,
         "powerPlayPoints": 0,
         "shortHandedPoints": 0,
-        "shots": 6,
+        "shots": 7,
         "hits": 15,
         "blockedShots": 7,
         "penaltyMinutes": 4,
-        "shootingPctg": 0.167,
+        "shootingPctg": 0.143,
         "avgTimeOnIce": "10:59"
       }
     },
@@ -28884,7 +28936,7 @@
       "rosPoints": 19,
       "rosPlusMinus": -5,
       "rosPPP": 1,
-      "rosSOG": 29,
+      "rosSOG": 34,
       "rosHits": 73,
       "rosBlocks": 34,
       "rosPIM": 19,
@@ -32970,11 +33022,11 @@
         "powerPlayGoals": 2,
         "powerPlayPoints": 5,
         "shortHandedPoints": 0,
-        "shots": 48,
+        "shots": 49,
         "hits": 21,
         "blockedShots": 10,
         "penaltyMinutes": 4,
-        "shootingPctg": 0.063,
+        "shootingPctg": 0.061,
         "avgTimeOnIce": "16:58"
       }
     },
@@ -32985,7 +33037,7 @@
       "rosPoints": 20,
       "rosPlusMinus": -10,
       "rosPPP": 9,
-      "rosSOG": 159,
+      "rosSOG": 162,
       "rosHits": 70,
       "rosBlocks": 33,
       "rosPIM": 13,
@@ -35093,10 +35145,10 @@
         "otLosses": 1,
         "shutouts": 0,
         "goalsAgainst": 43,
-        "saves": 306,
-        "shotsAgainst": 349,
+        "saves": 305,
+        "shotsAgainst": 348,
         "goalsAgainstAverage": 3.43,
-        "savePercentage": 0.877
+        "savePercentage": 0.876
       }
     },
     "projections": {
@@ -35104,7 +35156,7 @@
       "rosGamesStarted": 31,
       "rosWins": 12,
       "rosGAA": 3.43,
-      "rosSavePctg": 0.877,
+      "rosSavePctg": 0.876,
       "rosSaves": 853,
       "rosShutouts": 1,
       "sdPlayingTimePct": 0.15,
@@ -36611,10 +36663,10 @@
         "otLosses": 0,
         "shutouts": 0,
         "goalsAgainst": 22,
-        "saves": 140,
-        "shotsAgainst": 162,
+        "saves": 141,
+        "shotsAgainst": 163,
         "goalsAgainstAverage": 3.47,
-        "savePercentage": 0.864
+        "savePercentage": 0.865
       }
     },
     "projections": {
@@ -36622,7 +36674,7 @@
       "rosGamesStarted": 16,
       "rosWins": 7,
       "rosGAA": 3.47,
-      "rosSavePctg": 0.864,
+      "rosSavePctg": 0.865,
       "rosSaves": 440,
       "rosShutouts": 1,
       "sdPlayingTimePct": 0.15,
@@ -39650,8 +39702,8 @@
         "otLosses": 1,
         "shutouts": 0,
         "goalsAgainst": 27,
-        "saves": 255,
-        "shotsAgainst": 282,
+        "saves": 254,
+        "shotsAgainst": 281,
         "goalsAgainstAverage": 2.71,
         "savePercentage": 0.904
       }
@@ -40432,11 +40484,11 @@
         "powerPlayGoals": 2,
         "powerPlayPoints": 5,
         "shortHandedPoints": 0,
-        "shots": 59,
+        "shots": 58,
         "hits": 21,
         "blockedShots": 10,
         "penaltyMinutes": 14,
-        "shootingPctg": 0.102,
+        "shootingPctg": 0.103,
         "avgTimeOnIce": "19:53"
       }
     },
@@ -40447,7 +40499,7 @@
       "rosPoints": 46,
       "rosPlusMinus": -10,
       "rosPPP": 15,
-      "rosSOG": 196,
+      "rosSOG": 192,
       "rosHits": 70,
       "rosBlocks": 33,
       "rosPIM": 46,
@@ -46915,8 +46967,8 @@
         "otLosses": 1,
         "shutouts": 0,
         "goalsAgainst": 55,
-        "saves": 440,
-        "shotsAgainst": 495,
+        "saves": 441,
+        "shotsAgainst": 496,
         "goalsAgainstAverage": 3.53,
         "savePercentage": 0.889
       }
