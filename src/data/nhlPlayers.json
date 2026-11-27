@@ -24609,6 +24609,59 @@
     }
   },
   {
+    "id": 8485594,
+    "nhlId": 8485594,
+    "name": "Yegor Borikov",
+    "nhlTeam": "UTA",
+    "capHit": 3500000,
+    "positions": [
+      "RW",
+      "F",
+      "UTIL"
+    ],
+    "primaryPosition": "RW",
+    "playerType": "skater",
+    "injuryStatus": "ACTIVE",
+    "headshotUrl": "https://assets.nhle.com/mugs/nhl/latest/8485594.png",
+    "actualStats": {
+      "skater": {
+        "gamesPlayed": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "plusMinus": 0,
+        "powerPlayGoals": 0,
+        "powerPlayPoints": 0,
+        "shortHandedPoints": 0,
+        "shots": 0,
+        "hits": 0,
+        "blockedShots": 0,
+        "penaltyMinutes": 0,
+        "shootingPctg": 0.1
+      }
+    },
+    "projections": {
+      "rosGamesRemaining": 56,
+      "rosGoals": 6,
+      "rosAssists": 10,
+      "rosPoints": 16,
+      "rosPlusMinus": 0,
+      "rosPPP": 2,
+      "rosSOG": 55,
+      "rosHits": 30,
+      "rosBlocks": 20,
+      "rosPIM": 16,
+      "sdPlayingTimePct": 0.2,
+      "sdGoalRate": 0.25,
+      "sdAssistRate": 0.2,
+      "sdSOGRate": 0.15,
+      "sdHitRate": 0.2,
+      "sdBlockRate": 0.2,
+      "sdPIMRate": 0.25,
+      "sdPlusMinus": 8
+    }
+  },
+  {
     "id": 8485010,
     "nhlId": 8485010,
     "name": "Gregor Biber",
@@ -26370,6 +26423,59 @@
       "sdSavePctg": 0.015,
       "sdGAARate": 0.35,
       "sdWinRate": 0.08
+    }
+  },
+  {
+    "id": 8481704,
+    "nhlId": 8481704,
+    "name": "Juuso Parssinen",
+    "nhlTeam": "NYR",
+    "capHit": 3500000,
+    "positions": [
+      "C",
+      "F",
+      "UTIL"
+    ],
+    "primaryPosition": "C",
+    "playerType": "skater",
+    "injuryStatus": "ACTIVE",
+    "headshotUrl": "https://assets.nhle.com/mugs/nhl/latest/8481704.png",
+    "actualStats": {
+      "skater": {
+        "gamesPlayed": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "plusMinus": 0,
+        "powerPlayGoals": 0,
+        "powerPlayPoints": 0,
+        "shortHandedPoints": 0,
+        "shots": 0,
+        "hits": 0,
+        "blockedShots": 0,
+        "penaltyMinutes": 0,
+        "shootingPctg": 0.1
+      }
+    },
+    "projections": {
+      "rosGamesRemaining": 58,
+      "rosGoals": 6,
+      "rosAssists": 10,
+      "rosPoints": 16,
+      "rosPlusMinus": 0,
+      "rosPPP": 2,
+      "rosSOG": 55,
+      "rosHits": 30,
+      "rosBlocks": 20,
+      "rosPIM": 16,
+      "sdPlayingTimePct": 0.2,
+      "sdGoalRate": 0.25,
+      "sdAssistRate": 0.2,
+      "sdSOGRate": 0.15,
+      "sdHitRate": 0.2,
+      "sdBlockRate": 0.2,
+      "sdPIMRate": 0.25,
+      "sdPlusMinus": 8
     }
   },
   {
@@ -33998,19 +34104,20 @@
     }
   },
   {
-    "id": 8479333,
-    "nhlId": 8479333,
-    "name": "Libor Hajek",
+    "id": 8483481,
+    "nhlId": 8483481,
+    "name": "Cam Lund",
     "nhlTeam": "SJS",
-    "capHit": 1000000,
+    "capHit": 3500000,
     "positions": [
-      "D",
+      "C",
+      "F",
       "UTIL"
     ],
-    "primaryPosition": "D",
+    "primaryPosition": "C",
     "playerType": "skater",
     "injuryStatus": "ACTIVE",
-    "headshotUrl": "https://assets.nhle.com/mugs/nhl/latest/8479333.png",
+    "headshotUrl": "https://assets.nhle.com/mugs/nhl/latest/8483481.png",
     "actualStats": {
       "skater": {
         "gamesPlayed": 0,
@@ -46098,6 +46205,59 @@
       "sdSavePctg": 0.015,
       "sdGAARate": 0.35,
       "sdWinRate": 0.08
+    }
+  },
+  {
+    "id": 8483833,
+    "nhlId": 8483833,
+    "name": "Atley Calvert",
+    "nhlTeam": "PIT",
+    "capHit": 3500000,
+    "positions": [
+      "C",
+      "F",
+      "UTIL"
+    ],
+    "primaryPosition": "C",
+    "playerType": "skater",
+    "injuryStatus": "ACTIVE",
+    "headshotUrl": "https://assets.nhle.com/mugs/nhl/latest/8483833.png",
+    "actualStats": {
+      "skater": {
+        "gamesPlayed": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "plusMinus": 0,
+        "powerPlayGoals": 0,
+        "powerPlayPoints": 0,
+        "shortHandedPoints": 0,
+        "shots": 0,
+        "hits": 0,
+        "blockedShots": 0,
+        "penaltyMinutes": 0,
+        "shootingPctg": 0.1
+      }
+    },
+    "projections": {
+      "rosGamesRemaining": 58,
+      "rosGoals": 6,
+      "rosAssists": 10,
+      "rosPoints": 16,
+      "rosPlusMinus": 0,
+      "rosPPP": 2,
+      "rosSOG": 55,
+      "rosHits": 30,
+      "rosBlocks": 20,
+      "rosPIM": 16,
+      "sdPlayingTimePct": 0.2,
+      "sdGoalRate": 0.25,
+      "sdAssistRate": 0.2,
+      "sdSOGRate": 0.15,
+      "sdHitRate": 0.2,
+      "sdBlockRate": 0.2,
+      "sdPIMRate": 0.25,
+      "sdPlusMinus": 8
     }
   },
   {
